@@ -1,5 +1,6 @@
 #include "game.h"
 
+using namespace std;
 Game::~Game() {
 
 }
@@ -75,11 +76,15 @@ void Game::GameLoop() {
 		SDLClose();
 	}
 
+	
+	
 	while (!quit) {
+
+		startTime = std::chrono::high_resolution_clock::now();
 
 		HandleInput();
 		Draw();
-		//FrameSync();
+		FrameSync();
 		
 	}
 
@@ -89,4 +94,23 @@ void Game::GameLoop() {
 
 void Game::FrameSync() {
 
+	endTime = chrono::high_resolution_clock::now();
+	
+	chrono::duration<double> timeDuration = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
+
+	int deltaTime = timeDuration.count();
+
+	if (deltaTime < fixedDeltaTime) {
+
+		Sleep(fixedDeltaTime - deltaTime);
+	}
+
+	frameCount++;
+
+	if (frameCount >= 60) {
+
+		secondsElapsed++;
+		frameCount = 0;
+		cout << "Tick\n";
+	}
 }
