@@ -3,11 +3,13 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <iostream>
+#include <vector>
 #include <string.h>
 #include <map>
 #include <Windows.h>
 #include <chrono>
 #include "Constants.h"
+#include "Brick.h"
 
 using namespace std;
 
@@ -27,6 +29,8 @@ private:
 	float imageX = 0;
 	float imageY = 0;
 
+	vector<Brick> bricks;
+
 	map<string, bool> keyStates{
 		{"w", false},
 		{"a", false},
@@ -44,6 +48,8 @@ public:
 	SDL_Renderer* gameRenderer = nullptr;
 	SDL_Texture* gameTexture = nullptr;
 
+	string brickTexturePath = "Images/brick.png";
+
 	SDL_Event e;
 
 	bool quit = false;
@@ -52,6 +58,8 @@ public:
 
 	bool SDLInit();
 	void SDLClose();
+
+	void GameInit();
 
 	void GameLoop();
 	bool Update();

@@ -81,8 +81,8 @@ void Game::SDLClose() {
 
 }
 
-void Game::GameLoop() {
-
+void Game::GameInit() {
+	
 	//check if sdl was setup correctly
 	if (!SDLInit())
 	{
@@ -90,7 +90,14 @@ void Game::GameLoop() {
 		SDLClose();
 	}
 
+	bricks.push_back(Brick(500, 500, 32, LoadTextureFromFile(brickTexturePath)));
+	bricks.push_back(Brick(532, 500, 32, LoadTextureFromFile(brickTexturePath)));
+	bricks.push_back(Brick(564, 500, 32, LoadTextureFromFile(brickTexturePath)));
+}
 
+void Game::GameLoop() {
+
+	GameInit();
 
 	while (!quit) {
 
@@ -244,6 +251,12 @@ void Game::Render() {
 	default:
 		break;
 	}
+
+	for (int i = 0; i < bricks.size(); i++) {
+
+		SDL_RenderCopyEx(gameRenderer, bricks[i].texture, NULL, &bricks[i].location, 0, NULL, SDL_FLIP_NONE);
+	}
+	
 	
 
 	SDL_RenderPresent(gameRenderer);
