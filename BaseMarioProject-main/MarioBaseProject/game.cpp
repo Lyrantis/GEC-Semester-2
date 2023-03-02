@@ -3,6 +3,9 @@
 using namespace std;
 Game::~Game() {
 
+	delete playerTexture;
+	delete brickTexture;
+
 }
 
 bool Game::SDLInit() {
@@ -41,14 +44,20 @@ bool Game::SDLInit() {
 				return false;
 			}
 
-			//load Image
-			playerTexture = LoadTextureFromFile("Images/test.bmp");
-			brickTexture = LoadTextureFromFile("Images/brick.png");
+			playerTexture = new Texture2D(gameRenderer);
 
-			if (playerTexture == nullptr) {
+			if (!playerTexture->LoadFromFile("Images/test.bmp", 64, 64)) {
 
 				return false;
 			}
+
+			brickTexture = new Texture2D(gameRenderer);
+
+			if (!brickTexture->LoadFromFile("Images/brick.png", 32, 32)) {
+
+				return false;
+			}
+
 		}
 		else
 		{
@@ -70,9 +79,6 @@ void Game::SDLClose() {
 	//quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
-
-	//Clear Texture 
-	FreeTexture();
 
 	//Release Renderer
 	SDL_DestroyRenderer(gameRenderer);
@@ -239,10 +245,10 @@ void Game::Render() {
 	SDL_SetRenderDrawColor(gameRenderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(gameRenderer);
 
-	SDL_RenderCopyEx(gameRenderer, playerTexture, NULL, &player.location, 0, NULL, SDL_FLIP_NONE);
+	playerTexture->Render(Vector2D(player.location.x, player.location.y), SDL_FLIP_NONE);
 	for (int i = 0; i < bricks.size(); i++) {
 
-		SDL_RenderCopyEx(gameRenderer, brickTexture, NULL, &bricks[i].location, 0, NULL, SDL_FLIP_NONE);
+		brickTexture->Render(Vector2D(bricks[i].location.x, bricks[i].location.y), SDL_FLIP_NONE);
 	}
 	
 	
@@ -250,41 +256,6 @@ void Game::Render() {
 	SDL_RenderPresent(gameRenderer);
 }
 
-SDL_Texture* Game::LoadTextureFromFile(std::string path) {
-
-	SDL_Texture* p_texture = nullptr;
-
-	//Load image
-	SDL_Surface* p_surface = IMG_Load(path.c_str());
-
-	if (p_surface != nullptr) {
-
-		//create the texture from the pixels on the surface
-		p_texture = SDL_CreateTextureFromSurface(gameRenderer, p_surface);
-		if (p_texture == nullptr)
-		{
-			cout << "Unable to create texture from surface. Error: " << SDL_GetError();
-		}
-		//remove the loaded surface now that we have a texture
-		SDL_FreeSurface(p_surface);
-
-	}
-	else {
-		cout << "Unable to create texture from surface. Error: " << IMG_GetError();
-	}
-
-	return p_texture;
-}
-
-void Game::FreeTexture() {
-
-	if (playerTexture != nullptr) {
-
-		SDL_DestroyTexture(playerTexture);
-		playerTexture = nullptr;
-
-	}
-}
 
 void Game::FrameSync() {
 

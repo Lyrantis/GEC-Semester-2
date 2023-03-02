@@ -9,6 +9,8 @@
 #include <Windows.h>
 #include <chrono>
 #include "Constants.h"
+#include "Commons.h"
+#include "Texture2D.h"
 #include "Player.h"
 #include "Brick.h"
 
@@ -49,10 +51,10 @@ public:
 	SDL_Window* gameWindow = nullptr;
 	SDL_Surface* gameSurface = nullptr;
 	SDL_Renderer* gameRenderer = nullptr;
-	SDL_Texture* playerTexture = nullptr;
+	Texture2D* playerTexture = nullptr;
 
 	string brickTexturePath = "Images/brick.png";
-	SDL_Texture* brickTexture = nullptr;
+	Texture2D* brickTexture = nullptr;
 
 	SDL_Event e;
 
@@ -71,8 +73,6 @@ public:
 	void Draw();
 
 	void Render();
-	SDL_Texture* LoadTextureFromFile(string path);
-	void FreeTexture();
 
 	void FrameSync();
 
