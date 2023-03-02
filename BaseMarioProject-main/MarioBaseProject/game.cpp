@@ -42,9 +42,10 @@ bool Game::SDLInit() {
 			}
 
 			//load Image
-			gameTexture = LoadTextureFromFile("Images/test.bmp");
+			playerTexture = LoadTextureFromFile("Images/test.bmp");
+			brickTexture = LoadTextureFromFile("Images/brick.png");
 
-			if (gameTexture == nullptr) {
+			if (playerTexture == nullptr) {
 
 				return false;
 			}
@@ -90,9 +91,11 @@ void Game::GameInit() {
 		SDLClose();
 	}
 
-	bricks.push_back(Brick(500, 500, 32, LoadTextureFromFile(brickTexturePath)));
-	bricks.push_back(Brick(532, 500, 32, LoadTextureFromFile(brickTexturePath)));
-	bricks.push_back(Brick(564, 500, 32, LoadTextureFromFile(brickTexturePath)));
+	Player player = Player(0, 0, 64);
+
+	bricks.push_back(Brick(500, 500, 32));
+	bricks.push_back(Brick(532, 500, 32));
+	bricks.push_back(Brick(564, 500, 32));
 }
 
 void Game::GameLoop() {
@@ -163,7 +166,6 @@ bool Game::Update() {
 			case SDLK_d:
 
 				keyStates["d"] = true;
-				cout << "Pressed\n";
 				break;
 			}
 
@@ -191,7 +193,6 @@ bool Game::Update() {
 			case SDLK_d:
 
 				keyStates["d"] = false;
-				cout << "Released\n";
 				break;
 			
 			}
@@ -210,16 +211,16 @@ bool Game::Update() {
 void Game::HandleInput() {
 
 	if (keyStates["w"] == true) {
-		imageY -= 5;
+		player.location.y -= player.speed;
 	}
 	if (keyStates["s"] == true) {
-		imageY += 5;
+		player.location.y += player.speed;
 	}
 	if (keyStates["a"] == true) {
-		imageX -= 5;
+		player.location.x -= player.speed;
 	}
 	if (keyStates["d"] == true) {
-		imageX += 5;
+		player.location.x += player.speed;
 	}
 	
 }
@@ -235,26 +236,13 @@ void Game::Draw() {
 void Game::Render() {
 
 	//Clear Screen
-	SDL_SetRenderDrawColor(gameRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_SetRenderDrawColor(gameRenderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(gameRenderer);
 
-	SDL_Rect renderLocation = { imageX, imageY, 100, 100 };
-
-	switch (imageFlipped)
-	{
-	case true:
-
-		SDL_RenderCopyEx(gameRenderer, gameTexture, NULL, &renderLocation, 0, NULL, SDL_FLIP_VERTICAL);
-		break;
-	case false:
-		SDL_RenderCopyEx(gameRenderer, gameTexture, NULL, &renderLocation, 0, NULL, SDL_FLIP_NONE);
-	default:
-		break;
-	}
-
+	SDL_RenderCopyEx(gameRenderer, playerTexture, NULL, &player.location, 0, NULL, SDL_FLIP_NONE);
 	for (int i = 0; i < bricks.size(); i++) {
 
-		SDL_RenderCopyEx(gameRenderer, bricks[i].texture, NULL, &bricks[i].location, 0, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(gameRenderer, brickTexture, NULL, &bricks[i].location, 0, NULL, SDL_FLIP_NONE);
 	}
 	
 	
@@ -290,10 +278,10 @@ SDL_Texture* Game::LoadTextureFromFile(std::string path) {
 
 void Game::FreeTexture() {
 
-	if (gameTexture != nullptr) {
+	if (playerTexture != nullptr) {
 
-		SDL_DestroyTexture(gameTexture);
-		gameTexture = nullptr;
+		SDL_DestroyTexture(playerTexture);
+		playerTexture = nullptr;
 
 	}
 }
@@ -317,6 +305,5 @@ void Game::FrameSync() {
 
 		secondsElapsed++;
 		frameCount = 0;
-		cout << "Tick\n";
 	}
 }

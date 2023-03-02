@@ -8,16 +8,16 @@ Brick::Brick() {
 
 }
 
-Brick::Brick(float xPos, float yPos, float brickSize, SDL_Texture* brickTexture) {
+Brick::Brick(float xPos, float yPos, float brickSize) {
 
 	x = xPos;
 	y = yPos;
 	size = brickSize;
-	texture = brickTexture;
 	location = { x, y, size, size };
 
 }
 
 Brick::~Brick() {
+
 
 }

@@ -9,6 +9,7 @@
 #include <Windows.h>
 #include <chrono>
 #include "Constants.h"
+#include "Player.h"
 #include "Brick.h"
 
 using namespace std;
@@ -29,6 +30,8 @@ private:
 	float imageX = 0;
 	float imageY = 0;
 
+	Player player; 
+
 	vector<Brick> bricks;
 
 	map<string, bool> keyStates{
@@ -46,9 +49,10 @@ public:
 	SDL_Window* gameWindow = nullptr;
 	SDL_Surface* gameSurface = nullptr;
 	SDL_Renderer* gameRenderer = nullptr;
-	SDL_Texture* gameTexture = nullptr;
+	SDL_Texture* playerTexture = nullptr;
 
 	string brickTexturePath = "Images/brick.png";
+	SDL_Texture* brickTexture = nullptr;
 
 	SDL_Event e;
 

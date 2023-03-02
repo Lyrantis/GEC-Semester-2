@@ -7,16 +7,18 @@ Player::Player() {
 	size = 64; 
 	location = { x, y, size, size };
 
-	texture = nullptr;
 
 }
 
-Player::Player(int xPos, int yPos, int playerSize, SDL_Texture* playerTexture) {
+Player::Player(int xPos, int yPos, int playerSize) {
 
 	x = xPos;
 	y = yPos;
 	size = playerSize;
-	texture = playerTexture;
 
 	location = { x, y, size, size };
+}
+
+Player::~Player() {
+
 }
