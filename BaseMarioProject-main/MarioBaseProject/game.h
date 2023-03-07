@@ -11,6 +11,7 @@
 #include "Constants.h"
 #include "Commons.h"
 #include "Texture2D.h"
+#include "ScreenManager.h"
 #include "Player.h"
 #include "Brick.h"
 
@@ -20,6 +21,8 @@ class Game
 {
 
 private:
+
+	ScreenManager* screenManager;
 
 	const float fps = 60.0f;
 	const float fixedDeltaTime = 1000.0f / fps;

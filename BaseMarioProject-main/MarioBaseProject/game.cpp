@@ -84,6 +84,9 @@ void Game::SDLClose() {
 	SDL_DestroyRenderer(gameRenderer);
 	gameRenderer = nullptr;
 
+	delete screenManager;
+	screenManager = nullptr;
+
 	exit(0);
 
 }
@@ -95,6 +98,10 @@ void Game::GameInit() {
 	{
 		std::cout << "Init failed\n";
 		SDLClose();
+	}
+	else {
+		screenManager = new ScreenManager(gameRenderer, SCREEN_LEVEL1);
+
 	}
 
 	Player player = Player(0, 0, 64);
@@ -245,6 +252,8 @@ void Game::Render() {
 	SDL_SetRenderDrawColor(gameRenderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(gameRenderer);
 
+	screenManager->Render();
+
 	playerTexture->Render(Vector2D(player.location.x, player.location.y), SDL_FLIP_NONE);
 	for (int i = 0; i < bricks.size(); i++) {
 
@@ -274,7 +283,9 @@ void Game::FrameSync() {
 
 	if (frameCount >= 60) {
 
+		cout << secondsElapsed << endl;
 		secondsElapsed++;
 		frameCount = 0;
 	}
+
 }
