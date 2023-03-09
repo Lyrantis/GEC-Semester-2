@@ -14,6 +14,7 @@
 #include "ScreenManager.h"
 #include "Player.h"
 #include "Brick.h"
+#include <time.h>
 
 using namespace std;
 
@@ -31,11 +32,14 @@ private:
 	chrono::high_resolution_clock::time_point startTime;
 	chrono::high_resolution_clock::time_point endTime;
 
+	Uint32 g_old_time;
+	Uint32 new_time;
+
 	bool imageFlipped = false;
 	float imageX = 0;
 	float imageY = 0;
 
-	Player player; 
+	Player* player; 
 
 	vector<Brick> bricks;
 
@@ -62,7 +66,7 @@ public:
 	SDL_Event e;
 
 	bool quit = false;
-
+	Game();
 	~Game();
 
 	bool SDLInit();

@@ -1,9 +1,14 @@
 #include "game.h"
 
 using namespace std;
+
+Game::Game() {
+
+}
 Game::~Game() {
 
-	delete playerTexture;
+	delete player;
+	player = nullptr;
 	delete brickTexture;
 
 }
@@ -41,13 +46,6 @@ bool Game::SDLInit() {
 			if (!(IMG_Init(imageFlags) & imageFlags))
 			{
 				cout << "SDL_Image could not initialise. Error: " << IMG_GetError();
-				return false;
-			}
-
-			playerTexture = new Texture2D(gameRenderer);
-
-			if (!playerTexture->LoadFromFile("Images/test.bmp", 64, 64)) {
-
 				return false;
 			}
 
@@ -99,12 +97,10 @@ void Game::GameInit() {
 		std::cout << "Init failed\n";
 		SDLClose();
 	}
-	else {
-		screenManager = new ScreenManager(gameRenderer, SCREEN_LEVEL1);
+	screenManager = new ScreenManager(gameRenderer, SCREEN_LEVEL1);
+	g_old_time = SDL_GetTicks();
 
-	}
-
-	Player player = Player(0, 0, 64);
+	player = new Player(gameRenderer, "Images/Mario.png", Vector2D(0, 0));
 
 	bricks.push_back(Brick(500, 500, 32));
 	bricks.push_back(Brick(532, 500, 32));
@@ -132,7 +128,9 @@ void Game::GameLoop() {
 
 bool Game::Update() {
 
-	while (SDL_PollEvent(&e)) {
+	new_time = SDL_GetTicks();
+
+	SDL_PollEvent(&e);
 
 		switch (e.type) {
 
@@ -150,72 +148,79 @@ bool Game::Update() {
 				return true;
 				break;
 
-			case SDLK_SPACE:
+				/*case SDLK_SPACE:
 
-				if (imageFlipped) {
-					imageFlipped = false;
+					if (imageFlipped) {
+						imageFlipped = false;
+					}
+					else {
+						imageFlipped = true;
+					}
+
+					break;
+
+				case SDLK_w:
+
+					keyStates["w"] = true;
+					break;
+
+				case SDLK_s:
+
+					keyStates["s"] = true;
+					break;
+
+				case SDLK_a:
+
+					keyStates["a"] = true;
+					break;
+
+				case SDLK_d:
+
+					keyStates["d"] = true;
+					break;
 				}
-				else {
-					imageFlipped = true;
+
+				break;
+
+			case SDL_KEYUP:
+
+				switch (e.key.keysym.sym) {
+
+				case SDLK_w:
+
+					keyStates["w"] = false;
+					break;
+
+				case SDLK_s:
+
+					keyStates["s"] = false;
+					break;
+
+				case SDLK_a:
+
+					keyStates["a"] = false;
+					break;
+
+				case SDLK_d:
+
+					keyStates["d"] = false;
+					break;
+
 				}
 
-				break;
+				break;*/
 
-			case SDLK_w:
-
-				keyStates["w"] = true;
-				break;
-
-			case SDLK_s:
-
-				keyStates["s"] = true;
-				break;
-
-			case SDLK_a:
-
-				keyStates["a"] = true;
-				break;
-
-			case SDLK_d:
-
-				keyStates["d"] = true;
-				break;
 			}
-
-			break;
-
-		case SDL_KEYUP:
-
-			switch (e.key.keysym.sym) {
-
-			case SDLK_w:
-
-				keyStates["w"] = false;
-				break;
-
-			case SDLK_s:
-
-				keyStates["s"] = false;
-				break;
-
-			case SDLK_a:
-
-				keyStates["a"] = false;
-				break;
-
-			case SDLK_d:
-
-				keyStates["d"] = false;
-				break;
-			
-			}
-
-			break;
-
 		}
-	}
+	
 
-	HandleInput();
+	float deltaTime = (new_time - g_old_time) / 1000.0f;
+
+	player->Update(deltaTime, e);
+
+	screenManager->Update(deltaTime, e);
+
+	g_old_time = new_time;
 
 	return false;
 
@@ -223,18 +228,18 @@ bool Game::Update() {
 
 void Game::HandleInput() {
 
-	if (keyStates["w"] == true) {
-		player.location.y -= player.speed;
-	}
-	if (keyStates["s"] == true) {
-		player.location.y += player.speed;
-	}
-	if (keyStates["a"] == true) {
-		player.location.x -= player.speed;
-	}
-	if (keyStates["d"] == true) {
-		player.location.x += player.speed;
-	}
+	//if (keyStates["w"] == true) {
+	//	player.location.y -= player.speed;
+	//}
+	//if (keyStates["s"] == true) {
+	//	player.location.y += player.speed;
+	//}
+	//if (keyStates["a"] == true) {
+	//	player.location.x -= player.speed;
+	//}
+	//if (keyStates["d"] == true) {
+	//	player.location.x += player.speed;
+	//}
 	
 }
 
@@ -253,8 +258,8 @@ void Game::Render() {
 	SDL_RenderClear(gameRenderer);
 
 	screenManager->Render();
+	player->Render();
 
-	playerTexture->Render(Vector2D(player.location.x, player.location.y), SDL_FLIP_NONE);
 	for (int i = 0; i < bricks.size(); i++) {
 
 		brickTexture->Render(Vector2D(bricks[i].location.x, bricks[i].location.y), SDL_FLIP_NONE);
