@@ -13,7 +13,10 @@
 #include "Texture2D.h"
 #include "ScreenManager.h"
 #include "Player.h"
+#include "Mario.h"
+#include "Luigi.h"
 #include "Brick.h"
+#include "Collisions.h"
 #include <time.h>
 
 using namespace std;
@@ -39,7 +42,8 @@ private:
 	float imageX = 0;
 	float imageY = 0;
 
-	Player* player; 
+	Mario* mario;
+	Luigi* luigi;
 
 	vector<Brick> bricks;
 

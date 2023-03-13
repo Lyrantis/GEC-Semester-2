@@ -7,8 +7,8 @@ Game::Game() {
 }
 Game::~Game() {
 
-	delete player;
-	player = nullptr;
+	delete mario;
+	mario = nullptr;
 	delete brickTexture;
 
 }
@@ -100,7 +100,8 @@ void Game::GameInit() {
 	screenManager = new ScreenManager(gameRenderer, SCREEN_LEVEL1);
 	g_old_time = SDL_GetTicks();
 
-	player = new Player(gameRenderer, "Images/Mario.png", Vector2D(0, 0));
+	mario = new Mario(gameRenderer, "Images/Mario.png", Vector2D(0, 0), 32, 42);
+	luigi = new Luigi(gameRenderer, "Images/Luigi.png", Vector2D(100, 0), 32, 42);
 
 	bricks.push_back(Brick(500, 500, 32));
 	bricks.push_back(Brick(532, 500, 32));
@@ -148,75 +149,22 @@ bool Game::Update() {
 				return true;
 				break;
 
-				/*case SDLK_SPACE:
-
-					if (imageFlipped) {
-						imageFlipped = false;
-					}
-					else {
-						imageFlipped = true;
-					}
-
-					break;
-
-				case SDLK_w:
-
-					keyStates["w"] = true;
-					break;
-
-				case SDLK_s:
-
-					keyStates["s"] = true;
-					break;
-
-				case SDLK_a:
-
-					keyStates["a"] = true;
-					break;
-
-				case SDLK_d:
-
-					keyStates["d"] = true;
-					break;
-				}
-
-				break;
-
-			case SDL_KEYUP:
-
-				switch (e.key.keysym.sym) {
-
-				case SDLK_w:
-
-					keyStates["w"] = false;
-					break;
-
-				case SDLK_s:
-
-					keyStates["s"] = false;
-					break;
-
-				case SDLK_a:
-
-					keyStates["a"] = false;
-					break;
-
-				case SDLK_d:
-
-					keyStates["d"] = false;
-					break;
-
-				}
-
-				break;*/
-
 			}
 		}
 	
 
 	float deltaTime = (new_time - g_old_time) / 1000.0f;
 
-	player->Update(deltaTime, e);
+	mario->Update(deltaTime, e);
+	luigi->Update(deltaTime, e);
+
+	if (Collisions::Instance()->Circle(mario->GetCollisionRadius(), luigi->GetCollisionRadius())) {
+		std::cout << "Circle collsion" << endl;
+	}
+
+	if (Collisions::Instance()->Box(mario->GetCollisionBox(), luigi->GetCollisionBox())) {
+		std::cout << "Box collision" << endl;
+	}
 
 	screenManager->Update(deltaTime, e);
 
@@ -258,7 +206,8 @@ void Game::Render() {
 	SDL_RenderClear(gameRenderer);
 
 	screenManager->Render();
-	player->Render();
+	mario->Render();
+	luigi->Render();
 
 	for (int i = 0; i < bricks.size(); i++) {
 
