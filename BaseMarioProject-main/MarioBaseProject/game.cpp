@@ -9,7 +9,16 @@ Game::~Game() {
 
 	delete mario;
 	mario = nullptr;
-	delete brickTexture;
+	
+	delete luigi;
+	luigi = nullptr;
+
+	int brickNum = bricks.size();
+	for (int i = 0; i < brickNum; i++) {
+
+		delete bricks[i];
+		bricks[i] = nullptr;
+	}
 
 }
 
@@ -46,13 +55,6 @@ bool Game::SDLInit() {
 			if (!(IMG_Init(imageFlags) & imageFlags))
 			{
 				cout << "SDL_Image could not initialise. Error: " << IMG_GetError();
-				return false;
-			}
-
-			brickTexture = new Texture2D(gameRenderer);
-
-			if (!brickTexture->LoadFromFile("Images/brick.png", 32, 32)) {
-
 				return false;
 			}
 
@@ -103,9 +105,9 @@ void Game::GameInit() {
 	mario = new Mario(gameRenderer, "Images/Mario.png", Vector2D(0, 0), 32, 42);
 	luigi = new Luigi(gameRenderer, "Images/Luigi.png", Vector2D(100, 0), 32, 42);
 
-	bricks.push_back(Brick(500, 500, 32));
-	bricks.push_back(Brick(532, 500, 32));
-	bricks.push_back(Brick(564, 500, 32));
+	bricks.push_back(new Brick(gameRenderer, "Images/Brick.png", Vector2D(500, 700), 32, 32));
+	bricks.push_back(new Brick(gameRenderer, "Images/Brick.png", Vector2D(532, 700), 32, 32));
+	bricks.push_back(new Brick(gameRenderer, "Images/Brick.png", Vector2D(564, 700), 32, 32));
 }
 
 void Game::GameLoop() {
@@ -158,9 +160,6 @@ bool Game::Update() {
 	mario->Update(deltaTime, e);
 	luigi->Update(deltaTime, e);
 
-	if (Collisions::Instance()->Circle(mario->GetCollisionRadius(), luigi->GetCollisionRadius())) {
-		std::cout << "Circle collsion" << endl;
-	}
 
 	if (Collisions::Instance()->Box(mario->GetCollisionBox(), luigi->GetCollisionBox())) {
 		std::cout << "Box collision" << endl;
@@ -211,7 +210,7 @@ void Game::Render() {
 
 	for (int i = 0; i < bricks.size(); i++) {
 
-		brickTexture->Render(Vector2D(bricks[i].location.x, bricks[i].location.y), SDL_FLIP_NONE);
+		bricks[i]->Render();
 	}
 	
 	

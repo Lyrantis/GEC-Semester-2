@@ -1,23 +1,33 @@
 #include "Brick.h"
+#include "Texture2D.h"
 
-Brick::Brick() {
+Brick::Brick(SDL_Renderer* renderer, std::string imagePath, Vector2D position, int imageW, int imageH) {
 
-	x = 0;
-	y = 0;
-	size = 32;
+	m_renderer = renderer;
+	m_position = position;
 
-}
+	m_texture = new Texture2D(m_renderer);
 
-Brick::Brick(float xPos, float yPos, float brickSize) {
+	m_size = Vector2D(imageW, imageH);
 
-	x = xPos;
-	y = yPos;
-	size = brickSize;
-	location = { x, y, size, size };
+	if (!m_texture->LoadFromFile(imagePath, imageW, imageH)) {
+
+		std::cout << "Failed to load brick texture!\n";
+	}
 
 }
 
 Brick::~Brick() {
 
+	m_renderer = nullptr;
+}
 
+void Brick::Render() {
+
+	m_texture->Render(m_position, SDL_FLIP_NONE);
+}
+
+Vector2D Brick::GetPosition() {
+
+	return m_position;
 }

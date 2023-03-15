@@ -22,7 +22,6 @@ protected:
 
 public:
 
-	SDL_Rect location;
 	int speed = 5;
 
 	std::map<std::string, bool> keyStates{

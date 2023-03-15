@@ -45,7 +45,7 @@ private:
 	Mario* mario;
 	Luigi* luigi;
 
-	vector<Brick> bricks;
+	vector<Brick*> bricks;
 
 	map<string, bool> keyStates{
 		{"w", false},
@@ -62,10 +62,6 @@ public:
 	SDL_Window* gameWindow = nullptr;
 	SDL_Surface* gameSurface = nullptr;
 	SDL_Renderer* gameRenderer = nullptr;
-	Texture2D* playerTexture = nullptr;
-
-	string brickTexturePath = "Images/brick.png";
-	Texture2D* brickTexture = nullptr;
 
 	SDL_Event e;
 
