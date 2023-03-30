@@ -6,10 +6,8 @@ using namespace std;
 
 GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : Screen(renderer) {
 
-	SetUpLevel();
-
 	m_level_map = nullptr;
-
+	SetUpLevel();
 
 }
 
@@ -50,11 +48,13 @@ bool GameScreenLevel1::SetUpLevel() {
 
 	m_backgroundTexture = new Texture2D(m_renderer);
 
-	if (!m_backgroundTexture->LoadFromFile("Images/test.bmp", SCREEN_WIDTH, SCREEN_HEIGHT)) {
+	if (!m_backgroundTexture->LoadFromFile("Images/BackgroundMB.png", SCREEN_WIDTH, SCREEN_HEIGHT)) {
 
 		cout << "Failed to load background texture!\n";
 		return false;
 	}
+
+	SetLevelMap();
 
 	mario = new Mario(m_renderer, "Images/Mario.png", Vector2D(0, 0), 32, 42, m_level_map);
 	luigi = new Luigi(m_renderer, "Images/Luigi.png", Vector2D(100, 0), 32, 42, m_level_map);
@@ -62,7 +62,8 @@ bool GameScreenLevel1::SetUpLevel() {
 
 void GameScreenLevel1::SetLevelMap() {
 
-	int map[MAP_HEIGHT][MAP_WIDTH] = { { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+	int map[MAP_HEIGHT][MAP_WIDTH] = { 
+					  { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
 					  { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
 					  { 1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1 },
 					  { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },

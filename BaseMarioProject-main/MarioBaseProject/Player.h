@@ -23,7 +23,7 @@ protected:
 
 public:
 
-	int speed = 5;
+	int speed = 100;
 
 	std::map<std::string, bool> keyStates{
 		{"w", false},

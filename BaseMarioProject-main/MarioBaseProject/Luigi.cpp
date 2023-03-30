@@ -91,19 +91,5 @@ void Luigi::Update(float deltaTime, SDL_Event e) {
 
 	HandleInputs(deltaTime);
 
-	if (m_is_jumping) {
-
-		m_position.y -= m_jump_force;
-		m_jump_force -= JUMP_FORCE_DECREMENT;
-
-		if (m_jump_force <= 0.0f) {
-			m_is_jumping = false;
-			m_jump_force = INITIAL_JUMP_FORCE;
-		}
-	}
-
-	if (!m_grounded) {
-
-		AddGravity(deltaTime);
-	}
+	Player::Update(deltaTime, e);
 }

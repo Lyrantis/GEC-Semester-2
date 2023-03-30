@@ -60,87 +60,14 @@ void Player::Update(float deltaTime, SDL_Event e) {
 		//collided with ground so we can jump again
 		m_can_jump = true;
 	}
-
-	switch (e.type)
-	{
-
-	case SDL_KEYDOWN:
-
-		switch (e.key.keysym.sym) {
-		case SDLK_SPACE:
-
-			if (m_can_jump) {
-
-				Jump(deltaTime);
-			}
-			break;
-
-		case SDLK_w:
-
-			keyStates["w"] = true;
-			break;
-
-		case SDLK_s:
-
-			keyStates["s"] = true;
-			break;
-
-		case SDLK_a:
-			
-			keyStates["a"] = true;
-			break;
-
-		case SDLK_d:
-			
-			keyStates["d"] = true;
-			break;
-		}
-		break;
-
-	case SDL_KEYUP:
-
-		switch (e.key.keysym.sym) {
-		case SDLK_SPACE:
-
-			//jump
-			break;
-
-		case SDLK_w:
-
-			keyStates["w"] = false;
-			break;
-
-		case SDLK_s:
-
-			keyStates["s"] = false;
-			break;
-
-		case SDLK_a:
-
-			keyStates["a"] = false;
-			break;
-
-		case SDLK_d:
-
-			keyStates["d"] = false;
-			break;
-
-		}
-
-		break;
-
-	}
-		
-	HandleInputs(deltaTime);
-
+	
 	if (m_is_jumping) {
 
-		m_position.y -= m_jump_force;
-		m_jump_force -= JUMP_FORCE_DECREMENT;
+		m_position.y -= m_jump_force * deltaTime;
+		m_jump_force -= JUMP_FORCE_DECREMENT * deltaTime;
 
 		if (m_jump_force <= 0.0f) {
 			m_is_jumping = false;
-			m_jump_force = INITIAL_JUMP_FORCE;
 		}
 	}
 
@@ -172,25 +99,26 @@ void Player::HandleInputs(float deltaTime) {
 void Player::MoveLeft(float deltaTime) {
 	
 	m_direction = FACING_LEFT; 
-	m_position.x -= speed;
+	m_position.x -= speed * deltaTime;
 }
 
 void Player::MoveRight(float deltaTime) {
 
 	m_direction = FACING_RIGHT;
-	m_position.x += speed;
+	m_position.x += speed * deltaTime;
 }
 
 void Player::Jump(float deltaTime) {
 
 	m_grounded = false;
+	m_jump_force = INITIAL_JUMP_FORCE;
 	m_is_jumping = true;
 	m_can_jump = false;
 }
 
 void Player::AddGravity(float deltaTime) {
 
-	m_position.y += GRAVITY_STRENGTH;
+	m_position.y += GRAVITY_STRENGTH * deltaTime;
 
 	if (m_position.y >= SCREEN_HEIGHT - m_size.y) {
 

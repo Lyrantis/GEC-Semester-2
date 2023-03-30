@@ -151,7 +151,7 @@ bool Game::Update() {
 
 	g_old_time = new_time;
 
-	FrameSync();
+	//FrameSync();
 
 	return false;
 

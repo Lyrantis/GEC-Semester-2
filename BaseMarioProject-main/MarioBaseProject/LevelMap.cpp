@@ -35,7 +35,7 @@ LevelMap::~LevelMap() {
 
 }
 
-int LevelMap::GetTileAt(unsigned int w, unsigned int h) {
+int LevelMap::GetTileAt(unsigned int h, unsigned int w) {
 
 	if (h < MAP_HEIGHT && w < MAP_WIDTH)
 	{
@@ -46,4 +46,7 @@ int LevelMap::GetTileAt(unsigned int w, unsigned int h) {
 
 }
 
+void LevelMap::SetTileAt(unsigned int row, unsigned int column, unsigned int new_value) {
 
+	m_map[row][column] = new_value;
+}
