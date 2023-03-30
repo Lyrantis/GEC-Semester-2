@@ -1,7 +1,7 @@
 #include "Mario.h"
 #include "Texture2D.h"
 
-Mario::Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH) : Player(renderer, imagePath, start_position, imageW, imageH) {
+Mario::Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) : Player(renderer, imagePath, start_position, imageW, imageH, map) {
 
 	m_renderer = renderer;
 	m_position = start_position;

@@ -9,7 +9,6 @@
 #include <Windows.h>
 #include <chrono>
 #include "Constants.h"
-#include "Commons.h"
 #include "Texture2D.h"
 #include "ScreenManager.h"
 #include "Player.h"
@@ -18,6 +17,9 @@
 #include "Brick.h"
 #include "Collisions.h"
 #include <time.h>
+#include "Screen.h"
+#include "Commons.h"
+#include "LevelMap.h"
 
 using namespace std;
 
@@ -32,18 +34,12 @@ private:
 	const float fixedDeltaTime = 1000.0f / fps;
 	int frameCount = 0;
 	int secondsElapsed = 0;
+
 	chrono::high_resolution_clock::time_point startTime;
 	chrono::high_resolution_clock::time_point endTime;
 
 	Uint32 g_old_time;
 	Uint32 new_time;
-
-	bool imageFlipped = false;
-	float imageX = 0;
-	float imageY = 0;
-
-	Mario* mario;
-	Luigi* luigi;
 
 	vector<Brick*> bricks;
 

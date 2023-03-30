@@ -7,12 +7,6 @@ Game::Game() {
 }
 Game::~Game() {
 
-	delete mario;
-	mario = nullptr;
-	
-	delete luigi;
-	luigi = nullptr;
-
 	int brickNum = bricks.size();
 	for (int i = 0; i < brickNum; i++) {
 
@@ -102,8 +96,6 @@ void Game::GameInit() {
 	screenManager = new ScreenManager(gameRenderer, SCREEN_LEVEL1);
 	g_old_time = SDL_GetTicks();
 
-	mario = new Mario(gameRenderer, "Images/Mario.png", Vector2D(0, 0), 32, 42);
-	luigi = new Luigi(gameRenderer, "Images/Luigi.png", Vector2D(100, 0), 32, 42);
 
 	bricks.push_back(new Brick(gameRenderer, "Images/Brick.png", Vector2D(500, 700), 32, 32));
 	bricks.push_back(new Brick(gameRenderer, "Images/Brick.png", Vector2D(532, 700), 32, 32));
@@ -116,12 +108,8 @@ void Game::GameLoop() {
 
 	while (!quit) {
 
-		startTime = chrono::high_resolution_clock::now();
-
 		quit = Update();
-		//Draw();
 		Render();
-		FrameSync();
 
 	}
 
@@ -132,6 +120,7 @@ void Game::GameLoop() {
 bool Game::Update() {
 
 	new_time = SDL_GetTicks();
+	startTime = chrono::high_resolution_clock::now();
 
 	SDL_PollEvent(&e);
 
@@ -154,20 +143,15 @@ bool Game::Update() {
 			}
 		}
 	
+	
 
 	float deltaTime = (new_time - g_old_time) / 1000.0f;
-
-	mario->Update(deltaTime, e);
-	luigi->Update(deltaTime, e);
-
-
-	if (Collisions::Instance()->Box(mario->GetCollisionBox(), luigi->GetCollisionBox())) {
-		std::cout << "Box collision" << endl;
-	}
 
 	screenManager->Update(deltaTime, e);
 
 	g_old_time = new_time;
+
+	FrameSync();
 
 	return false;
 
@@ -205,24 +189,19 @@ void Game::Render() {
 	SDL_RenderClear(gameRenderer);
 
 	screenManager->Render();
-	mario->Render();
-	luigi->Render();
 
 	for (int i = 0; i < bricks.size(); i++) {
 
 		bricks[i]->Render();
 	}
 	
-	
-
 	SDL_RenderPresent(gameRenderer);
 }
-
 
 void Game::FrameSync() {
 
 	endTime = chrono::high_resolution_clock::now();
-	
+
 	chrono::duration<double> timeDuration = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
 
 	int deltaTime = timeDuration.count();

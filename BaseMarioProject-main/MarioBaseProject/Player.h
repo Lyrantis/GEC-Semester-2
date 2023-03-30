@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <iostream>
 #include "Constants.h"
+#include "LevelMap.h"
 #include "Commons.h"
 #include <map>
 
@@ -40,7 +41,7 @@ public:
 	float m_jump_force = INITIAL_JUMP_FORCE;
 
 	Player();
-	Player(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH);
+	Player(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map);
 
 	~Player();
 
@@ -65,6 +66,7 @@ public:
 
 private:
 
+	LevelMap* m_current_level_map;
 	
 };
 

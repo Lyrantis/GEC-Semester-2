@@ -5,7 +5,7 @@
 Player::Player() {
 	
 }
-Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH) {
+Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) {
 
 	m_renderer = renderer;
 	m_position = start_position;
@@ -15,6 +15,8 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D start_pos
 	m_size = Vector2D(imageW, imageH);
 
 	m_collision_radius = 16.0f;
+
+	m_current_level_map = map;
 
 	if (!m_texture->LoadFromFile(imagePath, imageW, imageH)) {
 
@@ -43,6 +45,21 @@ void Player::Render() {
 }
 
 void Player::Update(float deltaTime, SDL_Event e) {
+
+	//collision position variables
+	int centralX_position = (int)(m_position.x + (m_texture->GetWidth() * 0.5)) / TILE_WIDTH;
+	int foot_position = (int)(m_position.y + m_texture->GetHeight()) / TILE_HEIGHT;
+
+	//deal with gravity
+	if (m_current_level_map->GetTileAt(foot_position, centralX_position) == 0)
+	{
+		AddGravity(deltaTime);
+	}
+	else
+	{
+		//collided with ground so we can jump again
+		m_can_jump = true;
+	}
 
 	switch (e.type)
 	{
@@ -127,11 +144,6 @@ void Player::Update(float deltaTime, SDL_Event e) {
 		}
 	}
 
-	if (!m_grounded) {
-
-		AddGravity(deltaTime);
-	}
-	
 }
 
 void Player::HandleInputs(float deltaTime) {

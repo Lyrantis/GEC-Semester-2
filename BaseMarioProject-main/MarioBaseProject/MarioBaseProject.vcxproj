@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -170,6 +170,7 @@
     <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="GameScreenLevel1.cpp" />
+    <ClCompile Include="LevelMap.cpp" />
     <ClCompile Include="Luigi.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="GameScreenLevel1.h" />
+    <ClInclude Include="LevelMap.h" />
     <ClInclude Include="Luigi.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Player.h" />
