@@ -11,7 +11,7 @@
 #include "Constants.h"
 #include "Texture2D.h"
 #include "ScreenManager.h"
-#include "Player.h"
+#include "Character.h"
 #include "Mario.h"
 #include "Luigi.h"
 #include "Brick.h"

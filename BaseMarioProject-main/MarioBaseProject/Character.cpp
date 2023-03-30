@@ -1,11 +1,11 @@
-#include "Player.h"
+#include "Character.h"
 #include "Texture2D.h"
 
 
-Player::Player() {
+Character::Character() {
 	
 }
-Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) {
+Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) {
 
 	m_renderer = renderer;
 	m_position = start_position;
@@ -26,12 +26,12 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D start_pos
 
 }
 
-Player::~Player() {
+Character::~Character() {
 
 	m_renderer = nullptr;
 }
 
-void Player::Render() {
+void Character::Render() {
 
 	if (m_direction == FACING_RIGHT)
 	{
@@ -44,7 +44,7 @@ void Player::Render() {
 
 }
 
-void Player::Update(float deltaTime, SDL_Event e) {
+void Character::Update(float deltaTime, SDL_Event e) {
 
 	//collision position variables
 	int centralX_position = (int)(m_position.x + (m_texture->GetWidth() * 0.5)) / TILE_WIDTH;
@@ -73,7 +73,7 @@ void Player::Update(float deltaTime, SDL_Event e) {
 
 }
 
-void Player::HandleInputs(float deltaTime) {
+void Character::HandleInputs(float deltaTime) {
 
 	if (keyStates["w"]) {
 
@@ -96,49 +96,54 @@ void Player::HandleInputs(float deltaTime) {
 
 }
 
-void Player::MoveLeft(float deltaTime) {
-	
+void Character::MoveLeft(float deltaTime) 
+{
 	m_direction = FACING_LEFT; 
 	m_position.x -= speed * deltaTime;
 }
 
-void Player::MoveRight(float deltaTime) {
-
+void Character::MoveRight(float deltaTime) 
+{
 	m_direction = FACING_RIGHT;
 	m_position.x += speed * deltaTime;
 }
 
-void Player::Jump(float deltaTime) {
-
+void Character::Jump(float deltaTime) 
+{
 	m_grounded = false;
 	m_jump_force = INITIAL_JUMP_FORCE;
 	m_is_jumping = true;
 	m_can_jump = false;
 }
 
-void Player::AddGravity(float deltaTime) {
-
+void Character::AddGravity(float deltaTime) 
+{
 	m_position.y += GRAVITY_STRENGTH * deltaTime;
 
-	if (m_position.y >= SCREEN_HEIGHT - m_size.y) {
-
+	if (m_position.y >= SCREEN_HEIGHT - m_size.y) 
+	{
 		m_position.y = SCREEN_HEIGHT - m_size.y;
 		m_grounded = true;
 		m_can_jump = true;
 	}
 }
 
-void Player::SetPosition(Vector2D new_position) {
+void Character::CancelJump() 
+{
+	m_jump_force = 0;
+}
 
+void Character::SetPosition(Vector2D new_position)
+{
 	m_position = new_position;
 }
 
-Vector2D Player::GetPosition() {
-
+Vector2D Character::GetPosition() 
+{
 	return m_position;
 }
 
-Circle2D Player::GetCollisionRadius() {
-
+Circle2D Character::GetCollisionRadius() 
+{
 	return Circle2D(m_position.x, m_position.y, m_collision_radius);
 }

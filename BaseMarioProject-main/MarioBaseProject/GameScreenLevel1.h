@@ -1,8 +1,8 @@
 #pragma once
 #include "game.h"
 
-
 class Texture2D;
+class PowBlock;
 
 class GameScreenLevel1 : Screen
 {
@@ -14,6 +14,8 @@ private:
 	Mario* mario;
 	Luigi* luigi;
 
+	PowBlock* m_pow_block;
+
 	bool SetUpLevel();
 	void SetLevelMap();
 
@@ -24,5 +26,5 @@ public:
 
 	void Render() override;
 	void Update(float deltaTime, SDL_Event e) override;
-
+	void UpdatePOWBlock();
 };

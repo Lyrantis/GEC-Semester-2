@@ -8,7 +8,7 @@
 
 class Texture2D;
 
-class Player
+class Character
 {
 
 protected:
@@ -23,7 +23,7 @@ protected:
 
 public:
 
-	int speed = 100;
+	int speed = 200;
 
 	std::map<std::string, bool> keyStates{
 		{"w", false},
@@ -40,10 +40,10 @@ public:
 	bool m_is_jumping = false;
 	float m_jump_force = INITIAL_JUMP_FORCE;
 
-	Player();
-	Player(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map);
+	Character();
+	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map);
 
-	~Player();
+	~Character();
 
 	virtual void Render();
 	virtual void Update(float deltaTime, SDL_Event e);
@@ -55,6 +55,8 @@ public:
 	void Jump(float deltsTime);
 	void AddGravity(float deltaTime);
 
+	bool IsJumping() { return m_is_jumping;}
+	void CancelJump();
 	void SetPosition(Vector2D new_position);
 	Vector2D GetPosition();
 	Circle2D GetCollisionRadius();
