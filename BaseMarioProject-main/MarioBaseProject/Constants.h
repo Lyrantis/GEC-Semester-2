@@ -9,3 +9,4 @@
 #define JUMP_FORCE_DECREMENT 400.0f
 #define TILE_WIDTH 64
 #define TILE_HEIGHT 64
+#define SHAKE_DURATION 0.25f

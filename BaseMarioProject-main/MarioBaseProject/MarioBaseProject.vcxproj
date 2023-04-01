@@ -174,7 +174,8 @@
     <ClCompile Include="Luigi.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="PowBlock.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -207,7 +208,8 @@
     <ClInclude Include="LevelMap.h" />
     <ClInclude Include="Luigi.h" />
     <ClInclude Include="Mario.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="PowBlock.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ScreenManager.h" />
     <ClInclude Include="Texture2D.h" />

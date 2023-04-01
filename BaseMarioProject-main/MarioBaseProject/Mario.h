@@ -1,7 +1,7 @@
 #pragma once
-#include "Player.h"
+#include "Character.h"
 
-class Mario : public Player
+class Mario : public Character
 {
 public:
 

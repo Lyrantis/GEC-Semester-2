@@ -1,7 +1,7 @@
 #include "Mario.h"
 #include "Texture2D.h"
 
-Mario::Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) : Player(renderer, imagePath, start_position, imageW, imageH, map) {
+Mario::Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) : Character(renderer, imagePath, start_position, imageW, imageH, map) {
 
 	m_renderer = renderer;
 	m_position = start_position;
@@ -92,5 +92,5 @@ void Mario::Update(float deltaTime, SDL_Event e) {
 
 	
 
-	Player::Update(deltaTime, e);
+	Character::Update(deltaTime, e);
 }

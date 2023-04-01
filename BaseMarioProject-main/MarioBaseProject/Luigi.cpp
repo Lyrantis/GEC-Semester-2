@@ -1,7 +1,7 @@
 #include "Luigi.h"
 #include "Texture2D.h"
 
-Luigi::Luigi(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) : Player(renderer, imagePath, start_position, imageW, imageH, map) {
+Luigi::Luigi(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) : Character(renderer, imagePath, start_position, imageW, imageH, map) {
 
 	m_renderer = renderer;
 	m_position = start_position;
@@ -91,5 +91,5 @@ void Luigi::Update(float deltaTime, SDL_Event e) {
 
 	HandleInputs(deltaTime);
 
-	Player::Update(deltaTime, e);
+	Character::Update(deltaTime, e);
 }

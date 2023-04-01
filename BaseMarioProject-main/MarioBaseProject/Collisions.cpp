@@ -1,5 +1,5 @@
 #include "Collisions.h"
-#include "Player.h"
+#include "Character.h"
 
 Collisions* Collisions::m_instance = nullptr;
 
