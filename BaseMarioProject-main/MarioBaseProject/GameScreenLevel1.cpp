@@ -37,6 +37,27 @@ void GameScreenLevel1::Render() {
 
 	m_pow_block->Render();
 
+	SDL_SetRenderDrawColor(m_renderer, 0, 255, 0, 255);
+	Rect2D temp = m_pow_block->GetCollisionBox();
+	SDL_Rect* rect = new SDL_Rect();
+	rect->x = (int)temp.x;
+	rect->y = (int)temp.y;
+	rect->w = (int)temp.w;
+	rect->h = (int)temp.h;
+	
+
+	SDL_RenderDrawRect(m_renderer, rect);
+
+	temp = mario->GetCollisionBox();
+	rect = new SDL_Rect();
+	rect->x = (int)temp.x;
+	rect->y = (int)temp.y;
+	rect->w = (int)temp.w;
+	rect->h = (int)temp.h;
+
+
+	SDL_RenderDrawRect(m_renderer, rect);
+
 }
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e) 
@@ -60,15 +81,10 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 		}
 	}
 
-
 	mario->Update(deltaTime, e);
 	luigi->Update(deltaTime, e);
 
 	UpdatePOWBlock();
-
-	if (Collisions::Instance()->Box(mario->GetCollisionBox(), luigi->GetCollisionBox())) {
-		std::cout << "Box collision" << endl;
-	}
 
 }
 
@@ -76,6 +92,7 @@ void GameScreenLevel1::UpdatePOWBlock() {
 
 	if (Collisions::Instance()->Box(mario->GetCollisionBox(), m_pow_block->GetCollisionBox())) 
 	{
+		std::cout << "Working\n";
 		if (m_pow_block->IsAvailable())
 		{
 			//collided while jumping

@@ -34,8 +34,6 @@ public:
 		{"shift", false}
 	};
 
-	bool m_grounded = false;
-
 	bool m_can_jump = false;
 	bool m_is_jumping = false;
 	float m_jump_force = INITIAL_JUMP_FORCE;
