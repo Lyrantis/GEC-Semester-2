@@ -51,7 +51,7 @@ void PowBlock::Render() {
 
 		//determine where to draw it
 		SDL_Rect dest_rect = {
-		static_cast<int>(m_position.x), static_cast<int>(m_position.y), m_single_sprite_w, m_single_sprite_h
+		static_cast<int>(m_position.x), static_cast<int>(m_position.y), TILE_WIDTH, TILE_HEIGHT
 		};
 
 		//draw the sprite

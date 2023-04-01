@@ -7,13 +7,6 @@ Game::Game() {
 }
 Game::~Game() {
 
-	int brickNum = bricks.size();
-	for (int i = 0; i < brickNum; i++) {
-
-		delete bricks[i];
-		bricks[i] = nullptr;
-	}
-
 }
 
 bool Game::SDLInit() {
@@ -96,10 +89,6 @@ void Game::GameInit() {
 	screenManager = new ScreenManager(gameRenderer, SCREEN_LEVEL1);
 	g_old_time = SDL_GetTicks();
 
-
-	bricks.push_back(new Brick(gameRenderer, "Images/Brick.png", Vector2D(500, 700), 32, 32));
-	bricks.push_back(new Brick(gameRenderer, "Images/Brick.png", Vector2D(532, 700), 32, 32));
-	bricks.push_back(new Brick(gameRenderer, "Images/Brick.png", Vector2D(564, 700), 32, 32));
 }
 
 void Game::GameLoop() {
@@ -151,27 +140,8 @@ bool Game::Update() {
 
 	g_old_time = new_time;
 
-	//FrameSync();
-
 	return false;
 
-}
-
-void Game::HandleInput() {
-
-	//if (keyStates["w"] == true) {
-	//	player.location.y -= player.speed;
-	//}
-	//if (keyStates["s"] == true) {
-	//	player.location.y += player.speed;
-	//}
-	//if (keyStates["a"] == true) {
-	//	player.location.x -= player.speed;
-	//}
-	//if (keyStates["d"] == true) {
-	//	player.location.x += player.speed;
-	//}
-	
 }
 
 void Game::Draw() {
@@ -189,35 +159,6 @@ void Game::Render() {
 	SDL_RenderClear(gameRenderer);
 
 	screenManager->Render();
-
-	for (int i = 0; i < bricks.size(); i++) {
-
-		bricks[i]->Render();
-	}
 	
 	SDL_RenderPresent(gameRenderer);
-}
-
-void Game::FrameSync() {
-
-	endTime = chrono::high_resolution_clock::now();
-
-	chrono::duration<double> timeDuration = chrono::duration_cast<chrono::milliseconds>(endTime - startTime);
-
-	int deltaTime = timeDuration.count();
-
-	if (deltaTime < fixedDeltaTime) {
-
-		Sleep(fixedDeltaTime - deltaTime);
-	}
-
-	frameCount++;
-
-	if (frameCount >= 60) {
-
-		cout << secondsElapsed << endl;
-		secondsElapsed++;
-		frameCount = 0;
-	}
-
 }

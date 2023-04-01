@@ -14,7 +14,6 @@
 #include "Character.h"
 #include "Mario.h"
 #include "Luigi.h"
-#include "Brick.h"
 #include "Collisions.h"
 #include <time.h>
 #include "Screen.h"
@@ -40,8 +39,6 @@ private:
 
 	Uint32 g_old_time;
 	Uint32 new_time;
-
-	vector<Brick*> bricks;
 
 	map<string, bool> keyStates{
 		{"w", false},
