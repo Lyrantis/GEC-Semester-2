@@ -11,19 +11,24 @@ class Texture2D;
 class Character
 {
 
+private:
+
+	LevelMap* m_current_level_map;
+
 protected:
 
 	SDL_Renderer* m_renderer;
 	Vector2D m_position;
 	FACING m_direction = FACING_RIGHT;
 	Texture2D* m_texture;
+	Vector2D m_sprite_size;
 
 	Vector2D m_size;
 	float m_collision_radius;
 
 public:
 
-	int speed = 200;
+	float m_movement_speed = 200;
 
 	std::map<std::string, bool> keyStates{
 		{"w", false},
@@ -39,7 +44,7 @@ public:
 	float m_jump_force = INITIAL_JUMP_FORCE;
 
 	Character();
-	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map);
+	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, float movement_speed, Vector2D size, LevelMap* map);
 
 	~Character();
 
@@ -62,11 +67,7 @@ public:
 		return Rect2D(m_position.x, m_position.y,
 			m_size.x, m_size.y);
 	}
-
-
-private:
-
-	LevelMap* m_current_level_map;
+	Vector2D GetSize() { return m_size; }
 	
 };
 

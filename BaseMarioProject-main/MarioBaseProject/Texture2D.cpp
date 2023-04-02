@@ -74,6 +74,23 @@ void Texture2D::Render(SDL_Rect src_rect, SDL_Rect src_dest, SDL_RendererFlip fl
 	SDL_RenderCopyEx(m_renderer, m_texture, &src_rect, &src_dest, angle, nullptr, flip);
 }
 
+void Texture2D::Render(Rect2D src_rect, Rect2D dest_rect, SDL_RendererFlip flip, double angle) 
+{
+	SDL_Rect sourceRect;
+	sourceRect.x = src_rect.x;
+	sourceRect.y = src_rect.y;
+	sourceRect.w = src_rect.w;
+	sourceRect.h = src_rect.h;
+
+	SDL_Rect destRect;
+	destRect.x = dest_rect.x;
+	destRect.y = dest_rect.y;
+	destRect.w = dest_rect.w;
+	destRect.h = dest_rect.h;
+
+	SDL_RenderCopyEx(m_renderer, m_texture, &sourceRect, &destRect, angle, nullptr, flip);
+}
+
 Texture2D::~Texture2D() 
 {
 

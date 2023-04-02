@@ -1,20 +1,8 @@
 #include "Mario.h"
 #include "Texture2D.h"
 
-Mario::Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) : Character(renderer, imagePath, start_position, imageW, imageH, map) {
+Mario::Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, float movement_speed, Vector2D size, LevelMap* map) : Character(renderer, imagePath, imageSize, start_position, movement_speed, size, map) {
 
-	m_renderer = renderer;
-	m_position = start_position;
-
-	m_texture = new Texture2D(m_renderer);
-
-	m_size = Vector2D(imageW, imageH);
-
-	if (!m_texture->LoadFromFile(imagePath, imageW, imageH)) {
-
-		std::cout << "Failed to load player texture!\n";
-
-	}
 }
 
 void Mario::Update(float deltaTime, SDL_Event e) {

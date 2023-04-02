@@ -5,20 +5,22 @@
 Character::Character() {
 	
 }
-Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) {
+Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, float movement_speed, Vector2D size, LevelMap* map) {
 
 	m_renderer = renderer;
-	m_position = start_position;
-
 	m_texture = new Texture2D(m_renderer);
+	m_sprite_size = imageSize;
 
-	m_size = Vector2D(imageW, imageH);
+	m_position = start_position;
+	m_movement_speed = movement_speed;
+
+	m_size = size;
 
 	m_collision_radius = 16.0f;
 
 	m_current_level_map = map;
 
-	if (!m_texture->LoadFromFile(imagePath, imageW, imageH)) {
+	if (!m_texture->LoadFromFile(imagePath, m_sprite_size.x, m_sprite_size.y)) {
 
 		std::cout << "Failed to load player texture!\n";
 
@@ -35,7 +37,7 @@ void Character::Render() {
 
 	if (m_direction == FACING_RIGHT)
 	{
-		m_texture->Render(m_position, SDL_FLIP_NONE);
+		m_texture->Render(SDL_Rect(), SDL_Rect(), SDL_FLIP_NONE);
 	}
 	else
 	{
@@ -44,11 +46,12 @@ void Character::Render() {
 
 }
 
-void Character::Update(float deltaTime, SDL_Event e) {
-
+void Character::Update(float deltaTime, SDL_Event e) 
+{
 	//collision position variables
-	int centralX_position = (int)(m_position.x + (m_texture->GetWidth() * 0.5)) / TILE_WIDTH;
-	int foot_position = (int)(m_position.y + m_texture->GetHeight()) / TILE_HEIGHT;
+	int centralX_position = (int)(m_position.x + (m_size.x * 0.5)) / TILE_WIDTH;
+	int rightX_position = (int)(m_position.x + m_size.x);
+	int foot_position = (int)(m_position.y + m_size.y) / TILE_HEIGHT;
 	int head_position = (int)(m_position.y) / TILE_HEIGHT;
 
 	//deal with gravity
@@ -62,12 +65,13 @@ void Character::Update(float deltaTime, SDL_Event e) {
 		m_can_jump = true;
 	}
 	
-	if (m_is_jumping) {
+	if (m_is_jumping) 
+	{
 
 		m_position.y -= m_jump_force * deltaTime;
 		m_jump_force -= JUMP_FORCE_DECREMENT * deltaTime;
 		
-		if (head_position != foot_position && m_current_level_map->GetTileAt(head_position, centralX_position))
+		if (m_current_level_map->GetTileAt(head_position, centralX_position))
 		{
 			CancelJump();
 		}
@@ -107,13 +111,13 @@ void Character::HandleInputs(float deltaTime) {
 void Character::MoveLeft(float deltaTime) 
 {
 	m_direction = FACING_LEFT; 
-	m_position.x -= speed * deltaTime;
+	m_position.x -= m_movement_speed * deltaTime;
 }
 
 void Character::MoveRight(float deltaTime) 
 {
 	m_direction = FACING_RIGHT;
-	m_position.x += speed * deltaTime;
+	m_position.x += m_movement_speed * deltaTime;
 }
 
 void Character::Jump(float deltaTime) 

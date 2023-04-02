@@ -5,15 +5,14 @@
 
 using namespace std;
 
-GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : Screen(renderer) {
-
+GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : Screen(renderer) 
+{
 	m_level_map = nullptr;
 	SetUpLevel();
-
 }
 
-GameScreenLevel1::~GameScreenLevel1() {
-
+GameScreenLevel1::~GameScreenLevel1() 
+{
 	delete m_backgroundTexture;
 	m_backgroundTexture = nullptr;
 
@@ -25,47 +24,23 @@ GameScreenLevel1::~GameScreenLevel1() {
 
 	delete m_pow_block;
 	m_pow_block = nullptr;
-
 }
 
-void GameScreenLevel1::Render() {
-
+void GameScreenLevel1::Render() 
+{
 	m_backgroundTexture->Render(Vector2D(0.0f, m_background_yPos), SDL_FLIP_NONE);
 
 	mario->Render();
 	luigi->Render();
 
 	m_pow_block->Render();
-
-	SDL_SetRenderDrawColor(m_renderer, 0, 255, 0, 255);
-	Rect2D temp = m_pow_block->GetCollisionBox();
-	SDL_Rect* rect = new SDL_Rect();
-	rect->x = (int)temp.x;
-	rect->y = (int)temp.y;
-	rect->w = (int)temp.w;
-	rect->h = (int)temp.h;
-	
-
-	SDL_RenderDrawRect(m_renderer, rect);
-
-	temp = mario->GetCollisionBox();
-	rect = new SDL_Rect();
-	rect->x = (int)temp.x;
-	rect->y = (int)temp.y;
-	rect->w = (int)temp.w;
-	rect->h = (int)temp.h;
-
-
-	SDL_RenderDrawRect(m_renderer, rect);
-
 }
 
 void GameScreenLevel1::Update(float deltaTime, SDL_Event e) 
 {
-
 	/*
- * do the screen shake if required
- */
+	 * do the screen shake if required
+	 */
 	if (m_screenshake)
 	{
 		m_shake_time -= deltaTime;
@@ -85,14 +60,21 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	luigi->Update(deltaTime, e);
 
 	UpdatePOWBlock();
-
 }
 
 void GameScreenLevel1::UpdatePOWBlock() {
 
-	if (Collisions::Instance()->Box(mario->GetCollisionBox(), m_pow_block->GetCollisionBox())) 
+	Vector2D marioPos = mario->GetPosition();
+	int marioGridLocation[2] = {(int)marioPos.x / TILE_WIDTH, (int)marioPos.y / TILE_HEIGHT};
+
+	Vector2D luigiPos = luigi->GetPosition();
+	int luigiGridLocation[2] = { (int)luigiPos.x / TILE_WIDTH, (int)luigiPos.y / TILE_HEIGHT };
+
+	Vector2D POWPos = m_pow_block->GetPosition();
+	int POWGridLocation[2] = { (int)POWPos.x / TILE_WIDTH, (int)POWPos.y / TILE_HEIGHT };
+
+	if (marioGridLocation[0] == POWGridLocation[0] && marioGridLocation[1] == POWGridLocation[1])
 	{
-		std::cout << "Working\n";
 		if (m_pow_block->IsAvailable())
 		{
 			//collided while jumping
@@ -102,11 +84,10 @@ void GameScreenLevel1::UpdatePOWBlock() {
 				m_pow_block->TakeHit();
 				mario->CancelJump();
 			}
-
 		}
 	}
 
-	if (Collisions::Instance()->Box(luigi->GetCollisionBox(), m_pow_block->GetCollisionBox()))
+	if (luigiGridLocation[0] == POWGridLocation[0] && luigiGridLocation[1] == POWGridLocation[1])
 	{
 		if (m_pow_block->IsAvailable())
 		{
@@ -117,35 +98,33 @@ void GameScreenLevel1::UpdatePOWBlock() {
 				m_pow_block->TakeHit();
 				luigi->CancelJump();
 			}
-
 		}
 	}
 }
 
-bool GameScreenLevel1::SetUpLevel() {
-
+bool GameScreenLevel1::SetUpLevel() 
+{
 	m_backgroundTexture = new Texture2D(m_renderer);
 
-	if (!m_backgroundTexture->LoadFromFile("Images/BackgroundMB.png", SCREEN_WIDTH, SCREEN_HEIGHT)) {
-
+	if (!m_backgroundTexture->LoadFromFile("Images/BackgroundMB.png", SCREEN_WIDTH, SCREEN_HEIGHT)) 
+	{
 		cout << "Failed to load background texture!\n";
 		return false;
 	}
 
 	SetLevelMap();
 
-	mario = new Mario(m_renderer, "Images/Mario.png", Vector2D(0, 0), 64, 84, m_level_map);
-	luigi = new Luigi(m_renderer, "Images/Luigi.png", Vector2D(100, 0), 64, 84, m_level_map);
+	mario = new Mario(m_renderer, "Images/Mario.png", Vector2D(32, 42), Vector2D(0, 0), 200.0f, Vector2D(64, 84), m_level_map);
+	luigi = new Luigi(m_renderer, "Images/Luigi.png", Vector2D(32, 42), Vector2D(100, 0), 200.0f, Vector2D(64, 84), m_level_map);
 
 	m_pow_block = new PowBlock(m_renderer, m_level_map);
 
 	m_screenshake = false;
 	m_background_yPos = 0.0f;
-
 }
 
-void GameScreenLevel1::SetLevelMap() {
-
+void GameScreenLevel1::SetLevelMap() 
+{
 	int map[MAP_HEIGHT][MAP_WIDTH] = { 
 					  { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
 					  { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },

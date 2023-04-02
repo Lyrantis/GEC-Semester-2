@@ -170,6 +170,7 @@
     <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="GameScreenLevel1.cpp" />
+    <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="LevelMap.cpp" />
     <ClCompile Include="Luigi.cpp" />
     <ClCompile Include="main.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="GameScreenLevel1.h" />
+    <ClInclude Include="Koopa.h" />
     <ClInclude Include="LevelMap.h" />
     <ClInclude Include="Luigi.h" />
     <ClInclude Include="Mario.h" />
