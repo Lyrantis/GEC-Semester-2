@@ -21,14 +21,20 @@ protected:
 	Vector2D m_position;
 	FACING m_direction = FACING_RIGHT;
 	Texture2D* m_texture;
+	Vector2D m_sprite_pos = { 0.0f, 0.0f };
 	Vector2D m_sprite_size;
+	float m_single_sprite_w;
+	float single_sprite_h;
 
 	Vector2D m_size;
 	float m_collision_radius;
 
+	bool m_alive = true;
+	bool m_injured;
+
 public:
 
-	float m_movement_speed = 200;
+	float m_movement_speed;
 
 	std::map<std::string, bool> keyStates{
 		{"w", false},
@@ -44,7 +50,7 @@ public:
 	float m_jump_force = INITIAL_JUMP_FORCE;
 
 	Character();
-	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, float movement_speed, Vector2D size, LevelMap* map);
+	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, Vector2D size, FACING start_facing, float movement_speed, LevelMap* map);
 
 	~Character();
 
@@ -68,6 +74,10 @@ public:
 			m_size.x, m_size.y);
 	}
 	Vector2D GetSize() { return m_size; }
-	
+	bool GetInjured() { return m_injured; }
+	bool GetAlive() { return m_alive; }
+	void SetAlive(bool isAlive) { m_alive = isAlive; }
+
+	void FlipDirection();
 };
 

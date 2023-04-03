@@ -5,24 +5,26 @@
 Character::Character() {
 	
 }
-Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, float movement_speed, Vector2D size, LevelMap* map) {
+
+Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, Vector2D size, FACING start_facing, float movement_speed, LevelMap* map) {
 
 	m_renderer = renderer;
 	m_texture = new Texture2D(m_renderer);
 	m_sprite_size = imageSize;
 
 	m_position = start_position;
+	m_direction = start_facing;
 	m_movement_speed = movement_speed;
 
 	m_size = size;
 
-	m_collision_radius = 16.0f;
+	m_collision_radius = size.x / 2.0f;
 
 	m_current_level_map = map;
 
 	if (!m_texture->LoadFromFile(imagePath, m_sprite_size.x, m_sprite_size.y)) {
 
-		std::cout << "Failed to load player texture!\n";
+		std::cout << "Failed to load character texture!\n";
 
 	}
 
@@ -37,11 +39,11 @@ void Character::Render() {
 
 	if (m_direction == FACING_RIGHT)
 	{
-		m_texture->Render(SDL_Rect(), SDL_Rect(), SDL_FLIP_NONE);
+		m_texture->Render(Rect2D(m_sprite_pos.x, m_sprite_pos.y, m_sprite_size.x, m_sprite_size.y), Rect2D(m_position.x, m_position.y, m_size.x, m_size.y), SDL_FLIP_NONE);
 	}
 	else
 	{
-		m_texture->Render(m_position, SDL_FLIP_HORIZONTAL);
+		m_texture->Render(Rect2D(m_sprite_pos.x, m_sprite_pos.y, m_sprite_size.x, m_sprite_size.y), Rect2D(m_position.x, m_position.y, m_size.x, m_size.y), SDL_FLIP_HORIZONTAL);
 	}
 
 }
@@ -155,5 +157,17 @@ Vector2D Character::GetPosition()
 
 Circle2D Character::GetCollisionRadius() 
 {
-	return Circle2D(m_position.x, m_position.y, m_collision_radius);
+	return Circle2D(m_position.x + (m_size.x / 2), m_position.y + (m_size.y / 2), m_collision_radius);
+}
+
+void Character::FlipDirection()
+{
+	if (m_direction == FACING_LEFT)
+	{
+		m_direction = FACING_RIGHT;
+	}
+	else
+	{
+		m_direction = FACING_LEFT;
+	}
 }

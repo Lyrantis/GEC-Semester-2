@@ -6,22 +6,16 @@ class Koopa : public Character
 
 private:
 
-	float m_single_sprite_w;
-	float single_sprite_h;
+	float m_injured_time = 0.0f;
 
-	bool m_injured;
-	float m_injured_time;
-
-	//void FlipBackRound();
+	void FlipBackUp(float deltaTime);
 
 public:
 
-	Koopa(SDL_Renderer* renderer, std::string imagePath, LevelMap* map, Vector2D start_position, FACING start_facing, float movement_speed);
-	//~Koopa();
+	Koopa(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, FACING start_facing, LevelMap* map);
+	~Koopa();
 
-	//void TakeDamage();
-	//void Jump();
-	//void Update(float deltaTime, SDL_Event e);
-
+	void TakeDamage(float deltaTime);
+	void Update(float deltaTime, SDL_Event e);
 };
 

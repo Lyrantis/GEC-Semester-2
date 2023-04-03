@@ -22,12 +22,24 @@ GameScreenLevel1::~GameScreenLevel1()
 	delete luigi;
 	luigi = nullptr;
 
+	for (int i = 0; i < m_enemies.size(); i++)
+	{
+		delete m_enemies[i];
+	}
+
+	m_enemies.clear();
+
 	delete m_pow_block;
 	m_pow_block = nullptr;
 }
 
 void GameScreenLevel1::Render() 
 {
+	for (int i = 0; i < m_enemies.size(); i++)
+	{
+		m_enemies[i]->Render();
+	}
+
 	m_backgroundTexture->Render(Vector2D(0.0f, m_background_yPos), SDL_FLIP_NONE);
 
 	mario->Render();
@@ -59,11 +71,88 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	mario->Update(deltaTime, e);
 	luigi->Update(deltaTime, e);
 
-	UpdatePOWBlock();
+	UpdateEnemies(deltaTime, e);
+	UpdatePOWBlock(deltaTime);
 }
 
-void GameScreenLevel1::UpdatePOWBlock() {
+void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
+{
+	if (!m_enemies.empty())
+	{
+		int enemyIndexToDelete = -1;
+		for (unsigned int i = 0; i < m_enemies.size(); i++)
+		{
+			//is the enemy off screen to the left / right?
+			if (m_enemies[i]->GetPosition().x <= 0.0f || m_enemies[i]->GetPosition().x >= SCREEN_WIDTH - (float)(m_enemies[i]->GetSize().x))
+			{
+				//check if the enemy is on the bottom row of tiles
+				if (m_enemies[i]->GetPosition().y >= SCREEN_HEIGHT - (TILE_HEIGHT + m_enemies[i]->GetSize().y))
+				{
+					m_enemies[i]->SetAlive(false);
+				}
+				else
+				{
+					m_enemies[i]->FlipDirection();
+				}
+			}
 
+			m_enemies[i]->Update(deltaTime, e);
+
+			//check to see if enemy collides with player
+			if ((m_enemies[i]->GetPosition().y > 300.0f || m_enemies[i]->GetPosition().y <= 64.0f) && (m_enemies[i]->GetPosition().x < 64.0f || m_enemies[i]->GetPosition().x > SCREEN_WIDTH - 96.0f))
+			{
+				//ignore collisions if behind pipe
+			}
+			else
+			{
+				if (Collisions::Instance()->Circle(m_enemies[i]->GetCollisionRadius(), mario->GetCollisionRadius()))
+				{
+
+					std::cout << "Collision detected\n";
+					if (m_enemies[i]->GetInjured())
+					{
+						m_enemies[i]->SetAlive(false);
+					}
+					else
+					{
+						//kill mario
+					}
+				}
+			}
+
+			//if the enemy is no longer alive then schedule it for deletion
+			if (!m_enemies[i]->GetAlive())
+			{
+				enemyIndexToDelete = i;
+			}
+		}
+
+		//remove dead enemies -1 each update
+
+		if (enemyIndexToDelete != -1)
+		{
+			m_enemies.erase(m_enemies.begin() + enemyIndexToDelete);
+		}
+	}
+
+	m_enemy_wave_time -= deltaTime;
+
+	if (m_enemy_wave_time <= 0.0f)
+	{
+		m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
+
+		CreateKoopa(Vector2D(KOOPA_WIDTH, TILE_HEIGHT), FACING_RIGHT, KOOPA_SPEED);
+		CreateKoopa(Vector2D(SCREEN_WIDTH - KOOPA_WIDTH, TILE_HEIGHT), FACING_LEFT, KOOPA_SPEED);
+	}
+}
+
+void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction, float speed)
+{
+	m_enemies.push_back(new Koopa(m_renderer, "Images/Koopa.png", position, direction, m_level_map));
+}
+
+void GameScreenLevel1::UpdatePOWBlock(float deltaTime) 
+{
 	Vector2D marioPos = mario->GetPosition();
 	int marioGridLocation[2] = {(int)marioPos.x / TILE_WIDTH, (int)marioPos.y / TILE_HEIGHT};
 
@@ -80,7 +169,7 @@ void GameScreenLevel1::UpdatePOWBlock() {
 			//collided while jumping
 			if (mario->IsJumping())
 			{
-				DoScreenShake();
+				DoScreenShake(deltaTime);
 				m_pow_block->TakeHit();
 				mario->CancelJump();
 			}
@@ -114,8 +203,10 @@ bool GameScreenLevel1::SetUpLevel()
 
 	SetLevelMap();
 
-	mario = new Mario(m_renderer, "Images/Mario.png", Vector2D(32, 42), Vector2D(0, 0), 200.0f, Vector2D(64, 84), m_level_map);
-	luigi = new Luigi(m_renderer, "Images/Luigi.png", Vector2D(32, 42), Vector2D(100, 0), 200.0f, Vector2D(64, 84), m_level_map);
+	mario = new Mario(m_renderer, "Images/Mario.png", Vector2D(0, 0), FACING_RIGHT, m_level_map);
+	luigi = new Luigi(m_renderer, "Images/Luigi.png", Vector2D(100, 0), FACING_RIGHT, m_level_map);
+
+	m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 
 	m_pow_block = new PowBlock(m_renderer, m_level_map);
 
@@ -151,10 +242,14 @@ void GameScreenLevel1::SetLevelMap()
 
 }
 
-void GameScreenLevel1::DoScreenShake() 
+void GameScreenLevel1::DoScreenShake(float deltaTime) 
 {
 	m_screenshake = true;
 	m_shake_time = SHAKE_DURATION;
 	m_wobble = 0.0f;
 
+	for (int i = 0; i < m_enemies.size(); i++)
+	{
+		m_enemies[i]->TakeDamage(deltaTime);
+	}
 }

@@ -1,7 +1,7 @@
 #include "Luigi.h"
 #include "Texture2D.h"
 
-Luigi::Luigi(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, float movement_speed, Vector2D size, LevelMap* map) : Character(renderer, imagePath, imageSize, start_position, movement_speed, size, map) {
+Luigi::Luigi(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, FACING start_facing, LevelMap* map) : Character(renderer, imagePath, Vector2D(PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT), start_position, Vector2D(PLAYER_WIDTH, PLAYER_HEIGHT), start_facing, PLAYER_SPEED, map) {
 
 }
 
