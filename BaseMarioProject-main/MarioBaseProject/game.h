@@ -15,6 +15,7 @@
 #include "Mario.h"
 #include "Luigi.h"
 #include "Koopa.h"
+#include "Coin.h"
 #include "Collisions.h"
 #include <time.h>
 #include "Screen.h"

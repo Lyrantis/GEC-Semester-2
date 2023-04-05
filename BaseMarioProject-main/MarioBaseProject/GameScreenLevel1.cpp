@@ -45,6 +45,11 @@ void GameScreenLevel1::Render()
 	mario->Render();
 	luigi->Render();
 
+	for (int i = 0; i < m_coins.size(); i++)
+	{
+		m_coins[i]->Render();
+	}
+
 	m_pow_block->Render();
 }
 
@@ -71,6 +76,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	mario->Update(deltaTime, e);
 	luigi->Update(deltaTime, e);
 
+	UpdateCoins(deltaTime);
 	UpdateEnemies(deltaTime, e);
 	UpdatePOWBlock(deltaTime);
 }
@@ -141,7 +147,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 	{
 		m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 
-		CreateKoopa(Vector2D(KOOPA_WIDTH, TILE_HEIGHT), FACING_RIGHT, KOOPA_SPEED);
+		CreateKoopa(Vector2D(0, TILE_HEIGHT), FACING_RIGHT, KOOPA_SPEED);
 		CreateKoopa(Vector2D(SCREEN_WIDTH - KOOPA_WIDTH, TILE_HEIGHT), FACING_LEFT, KOOPA_SPEED);
 	}
 }
@@ -149,6 +155,42 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction, float speed)
 {
 	m_enemies.push_back(new Koopa(m_renderer, "Images/Koopa.png", position, direction, m_level_map));
+}
+
+void GameScreenLevel1::CreateCoin(Vector2D position)
+{
+	m_coins.push_back(new Coin(m_renderer, "Images/Coin.png", position, m_level_map));
+}
+
+void GameScreenLevel1::UpdateCoins(float deltaTime)
+{
+	if (!m_coins.empty())
+	{
+		int coinIndexToDelete = -1;
+		for (int i = 0; i < m_coins.size(); i++)
+		{
+			m_coins[i]->Update(deltaTime);
+
+			if (Collisions::Instance()->Circle(mario->GetCollisionRadius(), m_coins[i]->GetCollisionRadius()))
+			{
+				mario->AddScore(m_coins[i]->GetScoreValue());
+			}
+			else if (Collisions::Instance()->Circle(luigi->GetCollisionRadius(), m_coins[i]->GetCollisionRadius()))
+			{
+				luigi->AddScore(m_coins[i]->GetScoreValue());
+			}
+
+			if (m_coins[i]->GetCollected())
+			{
+				coinIndexToDelete = i;
+			}
+		}
+
+		if (coinIndexToDelete != -1)
+		{
+			m_coins.erase(m_coins.begin() + coinIndexToDelete);
+		}
+	}
 }
 
 void GameScreenLevel1::UpdatePOWBlock(float deltaTime) 
@@ -206,12 +248,16 @@ bool GameScreenLevel1::SetUpLevel()
 	mario = new Mario(m_renderer, "Images/Mario.png", Vector2D(0, 0), FACING_RIGHT, m_level_map);
 	luigi = new Luigi(m_renderer, "Images/Luigi.png", Vector2D(100, 0), FACING_RIGHT, m_level_map);
 
+	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4));
+
 	m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 
 	m_pow_block = new PowBlock(m_renderer, m_level_map);
 
 	m_screenshake = false;
 	m_background_yPos = 0.0f;
+
+	return true;
 }
 
 void GameScreenLevel1::SetLevelMap() 
@@ -239,7 +285,6 @@ void GameScreenLevel1::SetLevelMap()
 
 	//set the new one
 	m_level_map = new LevelMap(map);
-
 }
 
 void GameScreenLevel1::DoScreenShake(float deltaTime) 

@@ -1,11 +1,6 @@
 #include "Character.h"
 #include "Texture2D.h"
 
-
-Character::Character() {
-	
-}
-
 Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, Vector2D size, FACING start_facing, float movement_speed, LevelMap* map) {
 
 	m_renderer = renderer;
@@ -51,17 +46,17 @@ void Character::Render() {
 void Character::Update(float deltaTime, SDL_Event e) 
 {
 	//collision position variables
-	int centralX_position = (int)(m_position.x + (m_size.x * 0.5)) / TILE_WIDTH;
-	int rightX_position = (int)(m_position.x + m_size.x);
-	int foot_position = (int)(m_position.y + m_size.y) / TILE_HEIGHT;
+	int leftX_position = (int)(m_position.x + 1) / TILE_WIDTH;
+	int rightX_position = (int)(m_position.x + (m_size.x - 1)) / TILE_WIDTH;
+	int foot_position = (int)(m_position.y + (m_size.y)) / TILE_HEIGHT;
 	int head_position = (int)(m_position.y) / TILE_HEIGHT;
 
 	//deal with gravity
-	if (m_current_level_map->GetTileAt(foot_position, centralX_position) == 0)
+	if ((m_current_level_map->GetTileAt(foot_position, leftX_position) == 0) && (m_current_level_map->GetTileAt(foot_position, rightX_position) == 0))
 	{
 		AddGravity(deltaTime);
 	}
-	else
+	else if ((m_current_level_map->GetTileAt(foot_position, leftX_position) == 1) || (m_current_level_map->GetTileAt(foot_position, rightX_position) == 1))
 	{
 		//collided with ground so we can jump again
 		m_can_jump = true;
@@ -69,11 +64,10 @@ void Character::Update(float deltaTime, SDL_Event e)
 	
 	if (m_is_jumping) 
 	{
-
 		m_position.y -= m_jump_force * deltaTime;
 		m_jump_force -= JUMP_FORCE_DECREMENT * deltaTime;
 		
-		if (m_current_level_map->GetTileAt(head_position, centralX_position))
+		if ((m_current_level_map->GetTileAt(head_position, leftX_position) == 1) || (m_current_level_map->GetTileAt(head_position, rightX_position) == 1))
 		{
 			CancelJump();
 		}
@@ -82,9 +76,7 @@ void Character::Update(float deltaTime, SDL_Event e)
 		{
 			m_is_jumping = false;
 		}
-
 	}
-
 }
 
 void Character::HandleInputs(float deltaTime) {
@@ -112,14 +104,32 @@ void Character::HandleInputs(float deltaTime) {
 
 void Character::MoveLeft(float deltaTime) 
 {
-	m_direction = FACING_LEFT; 
-	m_position.x -= m_movement_speed * deltaTime;
+	m_direction = FACING_LEFT;
+
+	int leftX_position = (int)(m_position.x) / TILE_WIDTH;
+	int foot_position = (int)(m_position.y + (m_size.y - 1)) / TILE_HEIGHT;
+	int middle_y_position = (int)((m_position.y + (m_size.y / 2)) / TILE_HEIGHT);
+	int head_position = (int)(m_position.y) / TILE_HEIGHT;
+
+	if ((m_current_level_map->GetTileAt(foot_position, leftX_position) == 0) && (m_current_level_map->GetTileAt(head_position, leftX_position) == 0) && (m_current_level_map->GetTileAt(middle_y_position, leftX_position) == 0))
+	{
+		m_position.x -= m_movement_speed * deltaTime;
+	}
 }
 
 void Character::MoveRight(float deltaTime) 
 {
 	m_direction = FACING_RIGHT;
-	m_position.x += m_movement_speed * deltaTime;
+
+	int rightX_position = (int)(m_position.x + m_size.x) / TILE_WIDTH;
+	int foot_position = (int)(m_position.y + (m_size.y - 1)) / TILE_HEIGHT;
+	int middle_y_position = (int)((m_position.y + (m_size.y / 2)) / TILE_HEIGHT);
+	int head_position = (int)(m_position.y) / TILE_HEIGHT;
+
+	if ((m_current_level_map->GetTileAt(foot_position, rightX_position) == 0) && (m_current_level_map->GetTileAt(head_position, rightX_position) == 0) && (m_current_level_map->GetTileAt(middle_y_position, rightX_position) == 0))
+	{
+		m_position.x += m_movement_speed * deltaTime;
+	}
 }
 
 void Character::Jump(float deltaTime) 

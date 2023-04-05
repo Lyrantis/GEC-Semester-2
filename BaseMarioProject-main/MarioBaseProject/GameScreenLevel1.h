@@ -16,6 +16,7 @@ private:
 	Luigi* luigi;
 
 	vector<Koopa*> m_enemies;
+	vector<Coin*> m_coins;
 
 	PowBlock* m_pow_block;
 
@@ -32,6 +33,9 @@ private:
 
 	void UpdateEnemies(float deltaTime, SDL_Event e);
 	void CreateKoopa(Vector2D position, FACING direction, float speed);
+
+	void CreateCoin(Vector2D position);
+	void UpdateCoins(float deltaTime);
 
 public:
 

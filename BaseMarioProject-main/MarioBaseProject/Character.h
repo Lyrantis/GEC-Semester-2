@@ -23,14 +23,12 @@ protected:
 	Texture2D* m_texture;
 	Vector2D m_sprite_pos = { 0.0f, 0.0f };
 	Vector2D m_sprite_size;
-	float m_single_sprite_w;
-	float single_sprite_h;
 
 	Vector2D m_size;
 	float m_collision_radius;
 
 	bool m_alive = true;
-	bool m_injured;
+	bool m_injured = false;
 
 public:
 
@@ -49,7 +47,6 @@ public:
 	bool m_is_jumping = false;
 	float m_jump_force = INITIAL_JUMP_FORCE;
 
-	Character();
 	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, Vector2D size, FACING start_facing, float movement_speed, LevelMap* map);
 
 	~Character();
@@ -79,5 +76,5 @@ public:
 	void SetAlive(bool isAlive) { m_alive = isAlive; }
 
 	void FlipDirection();
-};
 
+};

@@ -81,6 +81,9 @@
     <ClCompile Include="Coin.cpp">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2\DLL\libFLAC-8.dll">
@@ -179,6 +182,12 @@
       <Filter>Header Files\Characters</Filter>
     </ClInclude>
     <ClInclude Include="Coin.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="FighterFly.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
       <Filter>Header Files\Characters</Filter>
     </ClInclude>
   </ItemGroup>

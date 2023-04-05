@@ -180,6 +180,7 @@
     <ClCompile Include="PowBlock.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +207,8 @@
     <ClInclude Include="Collisions.h" />
     <ClInclude Include="Commons.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="FighterFly.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="GameScreenLevel1.h" />
     <ClInclude Include="Koopa.h" />

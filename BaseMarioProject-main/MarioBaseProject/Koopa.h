@@ -1,7 +1,7 @@
 #pragma once
-#include "Character.h"
+#include "Enemy.h"
 
-class Koopa : public Character
+class Koopa : public Enemy
 {
 
 private:
@@ -18,4 +18,3 @@ public:
 	void TakeDamage(float deltaTime);
 	void Update(float deltaTime, SDL_Event e);
 };
-
