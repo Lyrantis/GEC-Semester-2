@@ -28,6 +28,9 @@
 // Level 
 #define INITIAL_ENEMY_WAVE_TIME 10.0f
 
+// Enemy
+#define INJURED_TIME 2.5f
+
 // Koopa
 #define KOOPA_WIDTH 64
 #define KOOPA_HEIGHT 64
@@ -36,7 +39,17 @@
 #define KOOPA_SPRITE_HEIGHT 30
 
 #define KOOPA_SPEED 96.0f
-#define INJURED_TIME 2.5f
+
+// Fly
+#define FLY_WIDTH 48
+#define FLY_HEIGHT 48
+
+#define FLY_SPRITE_WIDTH 16
+#define FLY_SPRITE_HEIGHT 16
+
+#define FLY_SPEED 192.0f
+#define FLY_JUMP_FORCE 200.0f
+#define FLY_JUMP_DELAY 1.0f
 
 // Coin
 #define COIN_WIDTH 32

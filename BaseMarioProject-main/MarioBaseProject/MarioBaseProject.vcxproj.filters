@@ -84,6 +84,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
+    <ClCompile Include="FighterFly.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2\DLL\libFLAC-8.dll">
