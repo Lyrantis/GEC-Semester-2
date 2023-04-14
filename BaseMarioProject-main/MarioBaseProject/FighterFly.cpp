@@ -12,5 +12,18 @@ FighterFly::~FighterFly()
 
 void FighterFly::Update(float deltaTime, SDL_Event e)
 {
+	Enemy::Update(deltaTime, e);
 
+	if (!m_injured && m_is_jumping)
+	{
+		//enemy is not injured so move
+		if (m_direction == FACING_LEFT)
+		{
+			Character::MoveLeft(deltaTime);
+		}
+		else if (m_direction == FACING_RIGHT)
+		{
+			Character::MoveRight(deltaTime);
+		}
+	}
 }

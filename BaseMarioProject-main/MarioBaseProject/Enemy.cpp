@@ -12,29 +12,20 @@ Enemy::~Enemy()
 
 void Enemy::TakeDamage(float deltaTime)
 {
-	m_sprite_pos.x = m_sprite_size.x;
-	m_injured = true;
-	m_injured_time = INJURED_TIME;
-	Character::Jump(deltaTime);
+	if (!m_is_jumping)
+	{
+		m_sprite_pos.x = m_sprite_size.x;
+		m_injured = true;
+		m_injured_time = INJURED_TIME;
+		Character::Jump(deltaTime);
+	}
 }
 
 void Enemy::Update(float deltaTime, SDL_Event e)
 {
 	Character::Update(deltaTime, e);
 
-	if (!m_injured)
-	{
-		//enemy is not injured so move
-		if (m_direction == FACING_LEFT)
-		{
-			Character::MoveLeft(deltaTime);
-		}
-		else if (m_direction == FACING_RIGHT)
-		{
-			Character::MoveRight(deltaTime);
-		}
-	}
-	else
+	if(m_injured)
 	{
 		//count down the injured time
 		m_injured_time -= deltaTime;

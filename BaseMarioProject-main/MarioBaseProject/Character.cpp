@@ -55,6 +55,8 @@ void Character::Update(float deltaTime, SDL_Event e)
 	if ((m_current_level_map->GetTileAt(foot_position, leftX_position) == 0) && (m_current_level_map->GetTileAt(foot_position, rightX_position) == 0))
 	{
 		AddGravity(deltaTime);
+		m_is_jumping = true;
+		m_can_jump = false;
 	}
 	else if ((m_current_level_map->GetTileAt(foot_position, leftX_position) == 1) || (m_current_level_map->GetTileAt(foot_position, rightX_position) == 1))
 	{

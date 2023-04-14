@@ -15,7 +15,7 @@ private:
 	Mario* mario;
 	Luigi* luigi;
 
-	vector<Koopa*> m_enemies;
+	vector<Enemy*> m_enemies;
 	vector<Coin*> m_coins;
 
 	PowBlock* m_pow_block;
@@ -32,7 +32,8 @@ private:
 	void DoScreenShake(float deltaTime);
 
 	void UpdateEnemies(float deltaTime, SDL_Event e);
-	void CreateKoopa(Vector2D position, FACING direction, float speed);
+	void CreateKoopa(Vector2D position, FACING direction);
+	void CreateFly(Vector2D position, FACING direction);
 
 	void CreateCoin(Vector2D position);
 	void UpdateCoins(float deltaTime);

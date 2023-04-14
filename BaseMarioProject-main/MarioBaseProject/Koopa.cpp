@@ -10,3 +10,21 @@ Koopa::~Koopa()
 {
 	
 }
+
+void Koopa::Update(float deltaTime, SDL_Event e)
+{
+	Enemy::Update(deltaTime, e);
+
+	if (!m_injured)
+	{
+		//enemy is not injured so move
+		if (m_direction == FACING_LEFT)
+		{
+			Character::MoveLeft(deltaTime);
+		}
+		else if (m_direction == FACING_RIGHT)
+		{
+			Character::MoveRight(deltaTime);
+		}
+	}
+}

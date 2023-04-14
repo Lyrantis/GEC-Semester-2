@@ -147,14 +147,19 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 	{
 		m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 
-		CreateKoopa(Vector2D(0, TILE_HEIGHT), FACING_RIGHT, KOOPA_SPEED);
-		CreateKoopa(Vector2D(SCREEN_WIDTH - KOOPA_WIDTH, TILE_HEIGHT), FACING_LEFT, KOOPA_SPEED);
+		CreateKoopa(Vector2D(0, TILE_HEIGHT), FACING_RIGHT);
+		CreateKoopa(Vector2D(SCREEN_WIDTH - KOOPA_WIDTH, TILE_HEIGHT), FACING_LEFT);
 	}
 }
 
-void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction, float speed)
+void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction)
 {
 	m_enemies.push_back(new Koopa(m_renderer, "Images/Koopa.png", position, direction, m_level_map));
+}
+
+void GameScreenLevel1::CreateFly(Vector2D position, FACING direction)
+{
+	m_enemies.push_back(new Koopa(m_renderer, "Images/Fighter_Fly.png", position, direction, m_level_map));
 }
 
 void GameScreenLevel1::CreateCoin(Vector2D position)
@@ -249,6 +254,7 @@ bool GameScreenLevel1::SetUpLevel()
 	luigi = new Luigi(m_renderer, "Images/Luigi.png", Vector2D(100, 0), FACING_RIGHT, m_level_map);
 
 	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4));
+	CreateFly(Vector2D(TILE_WIDTH, 0), FACING_RIGHT);
 
 	m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 

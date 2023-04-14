@@ -15,6 +15,6 @@ public:
 	Koopa(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, FACING start_facing, LevelMap* map);
 	~Koopa();
 
-	/*void TakeDamage(float deltaTime);
-	void Update(float deltaTime, SDL_Event e);*/
+	//void TakeDamage(float deltaTime);
+	void Update(float deltaTime, SDL_Event e);
 };
