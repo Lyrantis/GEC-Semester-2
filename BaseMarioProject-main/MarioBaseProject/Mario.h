@@ -1,15 +1,14 @@
 #pragma once
-#include "Character.h"
+#include "Player.h"
+#include "Texture2D.h"
 
-class Mario : public Character
+class Mario : public Player
 {
 public:
 
-	int m_score = 0;
-
 	Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, FACING start_facing, LevelMap* map);
+	~Mario();
 
-	void Render();
 	void Update(float deltaTime, SDL_Event e);
-	void AddScore(int scoreToAdd) { m_score += scoreToAdd; }
+
 };

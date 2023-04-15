@@ -1,15 +1,13 @@
 #pragma once
-#include "Character.h"
+#include "Player.h"
 
-class Luigi : public Character
+class Luigi : public Player
 {
 public:
 
-	int m_score = 0;
-
 	Luigi(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, FACING start_facing, LevelMap* map);
+	~Luigi();
 
-	void Render();
 	void Update(float deltaTime, SDL_Event e);
-	void AddScore(int scoreToAdd) { m_score += scoreToAdd; }
+
 };

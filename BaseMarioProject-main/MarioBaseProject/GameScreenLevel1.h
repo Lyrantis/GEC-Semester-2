@@ -24,7 +24,6 @@ private:
 	SoundEffect* m_coin_pickup_sound;
 	SoundEffect* m_enemy_defeat_sound;
 	SoundEffect* m_player_spawn_sound;
-	SoundEffect* m_jump_sound;
 	SoundEffect* m_enemy_spawn_sound;
 
 	float m_enemy_wave_time;

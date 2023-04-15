@@ -76,7 +76,6 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 	mario->Update(deltaTime, e);
 	luigi->Update(deltaTime, e);
-	m_jump_sound->Play(0);
 
 	UpdateCoins(deltaTime);
 	UpdateEnemies(deltaTime, e);
@@ -303,7 +302,6 @@ void GameScreenLevel1::SetLevelMap()
 
 bool GameScreenLevel1::SetUpSounds()
 {
-	m_jump_sound = new SoundEffect("Sounds/Jump.wav");
 	return true;
 }
 
