@@ -83,7 +83,5 @@ void Luigi::Update(float deltaTime, SDL_Event e) {
 
 	}
 
-	HandleInputs(deltaTime);
-
-	Character::Update(deltaTime, e);
+	Player::Update(deltaTime, e);
 }

@@ -4,6 +4,8 @@ FighterFly::FighterFly(SDL_Renderer* renderer, std::string imagePath, Vector2D s
 {
 	m_jump_delay = FLY_JUMP_DELAY;
 	m_initial_jump_force = FLY_JUMP_FORCE;
+
+	m_score_value = FLY_SCORE_VALUE;
 }
 
 FighterFly::~FighterFly()

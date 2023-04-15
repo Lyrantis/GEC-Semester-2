@@ -118,11 +118,27 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 					std::cout << "Collision detected\n";
 					if (m_enemies[i]->GetInjured())
 					{
-						m_enemies[i]->SetAlive(false);
+						m_enemies[i]->Die();
+						mario->AddScore(m_enemies[i]->GetScoreValue());
 					}
 					else
 					{
-						//kill mario
+						mario->Die();
+					}
+				}
+
+				if (Collisions::Instance()->Circle(m_enemies[i]->GetCollisionRadius(), luigi->GetCollisionRadius()))
+				{
+
+					std::cout << "Collision detected\n";
+					if (m_enemies[i]->GetInjured())
+					{
+						m_enemies[i]->Die();
+						luigi->AddScore(m_enemies[i]->GetScoreValue());
+					}
+					else
+					{
+						luigi->Die();
 					}
 				}
 			}
@@ -142,7 +158,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 		}
 	}
 
-	/*m_enemy_wave_time -= deltaTime;
+	m_enemy_wave_time -= deltaTime;
 
 	if (m_enemy_wave_time <= 0.0f)
 	{
@@ -150,7 +166,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 
 		CreateKoopa(Vector2D(0, TILE_HEIGHT), FACING_RIGHT);
 		CreateKoopa(Vector2D(SCREEN_WIDTH - KOOPA_WIDTH, TILE_HEIGHT), FACING_LEFT);
-	}*/
+	}
 }
 
 void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction)
@@ -180,10 +196,12 @@ void GameScreenLevel1::UpdateCoins(float deltaTime)
 			if (Collisions::Instance()->Circle(mario->GetCollisionRadius(), m_coins[i]->GetCollisionRadius()))
 			{
 				mario->AddScore(m_coins[i]->GetScoreValue());
+				m_coins[i]->Die();
 			}
 			else if (Collisions::Instance()->Circle(luigi->GetCollisionRadius(), m_coins[i]->GetCollisionRadius()))
 			{
 				luigi->AddScore(m_coins[i]->GetScoreValue());
+				m_coins[i]->Die();
 			}
 
 			if (m_coins[i]->GetCollected())

@@ -17,9 +17,12 @@ public:
 	~Coin();
 
 	void Update(float deltaTime);
-	int GetScoreValue();
 
-	bool GetCollected() { return m_collected;  }
+	void Die();
+
+	int GetScoreValue() { return m_score_value; }
+
+	bool GetCollected() { return m_collected; }
 
 };
 

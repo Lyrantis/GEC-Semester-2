@@ -82,6 +82,13 @@ void Character::Update(float deltaTime, SDL_Event e)
 	}
 }
 
+void Character::Die()
+{
+	m_death_sound->Play(0);
+	m_alive = false;
+
+}
+
 void Character::HandleInputs(float deltaTime) {
 
 	if (keyStates["w"]) {

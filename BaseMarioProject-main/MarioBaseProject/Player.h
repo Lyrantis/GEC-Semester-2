@@ -1,5 +1,4 @@
 #include "Character.h"
-#include "SoundEffect.h"
 #pragma once
 
 class Player : public Character
@@ -18,6 +17,8 @@ public:
 
 	virtual void Update(float deltaTime, SDL_Event e);
 	void Render();
+
+	void Die();
 
 	int GetScore() { return m_score; }
 	void AddScore(int scoreToAdd) { m_score += scoreToAdd; }

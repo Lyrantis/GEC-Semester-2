@@ -77,7 +77,5 @@ void Mario::Update(float deltaTime, SDL_Event e) {
 		break;
 	}
 
-	HandleInputs(deltaTime);
-
-	Character::Update(deltaTime, e);
+	Player::Update(deltaTime, e);
 }

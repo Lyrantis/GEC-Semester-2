@@ -6,6 +6,8 @@ Coin::Coin(SDL_Renderer* renderer, std::string imagePath, Vector2D position, Lev
 
 	m_current_frame = 0;
 	m_frame_delay = COIN_FRAME_DELAY;
+
+	m_death_sound = new SoundEffect("Sounds/Coin.wav");
 }
 
 Coin::~Coin()
@@ -34,13 +36,9 @@ void Coin::Update(float deltaTime)
 	}
 }
 
-int Coin::GetScoreValue()
+void Coin::Die()
 {
-	if (!m_collected)
-	{
-		m_collected = true;
-		return m_score_value;
-	}
-	
-	return 0;
+	Character::Die();
+	m_collected = true;
 }
+

@@ -21,7 +21,6 @@ private:
 	PowBlock* m_pow_block;
 
 	SoundEffect* m_death_sound;
-	SoundEffect* m_coin_pickup_sound;
 	SoundEffect* m_enemy_defeat_sound;
 	SoundEffect* m_player_spawn_sound;
 	SoundEffect* m_enemy_spawn_sound;

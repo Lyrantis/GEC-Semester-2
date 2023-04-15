@@ -4,6 +4,8 @@ Koopa::Koopa(SDL_Renderer* renderer, std::string imagePath, Vector2D start_posit
 {
 	m_injured = false;
 	m_sprite_pos.x = 0.0f;
+
+	m_score_value = KOOPA_SCORE_VALUE;
 }
 
 Koopa::~Koopa() 

@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <iostream>
+#include "SoundEffect.h"
 #include "Constants.h"
 #include "LevelMap.h"
 #include "Commons.h"
@@ -23,7 +24,7 @@ protected:
 	Texture2D* m_texture;
 	Vector2D m_sprite_pos = { 0.0f, 0.0f };
 	Vector2D m_sprite_size;
-
+	SoundEffect* m_death_sound;
 	Vector2D m_size;
 	float m_collision_radius;
 
@@ -55,6 +56,8 @@ public:
 
 	virtual void Render();
 	virtual void Update(float deltaTime, SDL_Event e);
+
+	virtual void Die();
 
 	void HandleInputs(float deltaTime);
 	void MoveLeft(float deltaTime);
