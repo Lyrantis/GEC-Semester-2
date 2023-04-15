@@ -15,12 +15,14 @@
 #include "Mario.h"
 #include "Luigi.h"
 #include "Koopa.h"
+#include "FighterFly.h"
 #include "Coin.h"
 #include "Collisions.h"
 #include <time.h>
 #include "Screen.h"
 #include "Commons.h"
 #include "LevelMap.h"
+
 
 using namespace std;
 
@@ -71,12 +73,8 @@ public:
 
 	void GameLoop();
 	bool Update();
-	void HandleInput();
-	void Draw();
-
 	void Render();
 
-	void FrameSync();
-
+	void LoadMusic(string path);
 };
 

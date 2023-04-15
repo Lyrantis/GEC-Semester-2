@@ -5,6 +5,18 @@ Mario::Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D start_posit
 
 }
 
+void Mario::Render()
+{
+	if (m_direction == FACING_RIGHT)
+	{
+		m_texture->Render(Rect2D(m_sprite_pos.x, m_sprite_pos.y, m_sprite_size.x, m_sprite_size.y), Rect2D(m_position.x, m_position.y, m_size.x, m_size.y), SDL_FLIP_HORIZONTAL);
+	}
+	else
+	{
+		m_texture->Render(Rect2D(m_sprite_pos.x, m_sprite_pos.y, m_sprite_size.x, m_sprite_size.y), Rect2D(m_position.x, m_position.y, m_size.x, m_size.y), SDL_FLIP_NONE);
+	}
+}
+
 void Mario::Update(float deltaTime, SDL_Event e) {
 
 	switch (e.type)

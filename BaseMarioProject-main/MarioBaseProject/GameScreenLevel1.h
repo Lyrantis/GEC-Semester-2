@@ -20,6 +20,13 @@ private:
 
 	PowBlock* m_pow_block;
 
+	SoundEffect* m_death_sound;
+	SoundEffect* m_coin_pickup_sound;
+	SoundEffect* m_enemy_defeat_sound;
+	SoundEffect* m_player_spawn_sound;
+	SoundEffect* m_jump_sound;
+	SoundEffect* m_enemy_spawn_sound;
+
 	float m_enemy_wave_time;
 
 	bool m_screenshake;
@@ -29,6 +36,7 @@ private:
 
 	bool SetUpLevel();
 	void SetLevelMap();
+	bool SetUpSounds();
 	void DoScreenShake(float deltaTime);
 
 	void UpdateEnemies(float deltaTime, SDL_Event e);

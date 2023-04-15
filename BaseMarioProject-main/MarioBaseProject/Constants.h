@@ -21,8 +21,8 @@
 // Player
 #define PLAYER_WIDTH 64
 #define PLAYER_HEIGHT 84
-#define PLAYER_SPRITE_WIDTH 32
-#define PLAYER_SPRITE_HEIGHT 42
+#define PLAYER_SPRITE_WIDTH 16
+#define PLAYER_SPRITE_HEIGHT 22
 #define PLAYER_SPEED 200.0f
 
 // Level 
@@ -47,8 +47,8 @@
 #define FLY_SPRITE_WIDTH 16
 #define FLY_SPRITE_HEIGHT 16
 
-#define FLY_SPEED 192.0f
-#define FLY_JUMP_FORCE 200.0f
+#define FLY_SPEED 120.0f
+#define FLY_JUMP_FORCE 450.0f
 #define FLY_JUMP_DELAY 1.0f
 
 // Coin

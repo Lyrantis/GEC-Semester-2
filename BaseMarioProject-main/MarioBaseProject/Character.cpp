@@ -55,13 +55,14 @@ void Character::Update(float deltaTime, SDL_Event e)
 	if ((m_current_level_map->GetTileAt(foot_position, leftX_position) == 0) && (m_current_level_map->GetTileAt(foot_position, rightX_position) == 0))
 	{
 		AddGravity(deltaTime);
-		m_is_jumping = true;
 		m_can_jump = false;
+		m_is_grounded = false;
 	}
 	else if ((m_current_level_map->GetTileAt(foot_position, leftX_position) == 1) || (m_current_level_map->GetTileAt(foot_position, rightX_position) == 1))
 	{
 		//collided with ground so we can jump again
 		m_can_jump = true;
+		m_is_grounded = true;
 	}
 	
 	if (m_is_jumping) 
@@ -136,7 +137,7 @@ void Character::MoveRight(float deltaTime)
 
 void Character::Jump(float deltaTime) 
 {
-	m_jump_force = INITIAL_JUMP_FORCE;
+	m_jump_force = m_initial_jump_force;
 	m_is_jumping = true;
 	m_can_jump = false;
 }

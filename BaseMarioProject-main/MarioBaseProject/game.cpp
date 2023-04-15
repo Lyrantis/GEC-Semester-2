@@ -10,9 +10,8 @@ Game::~Game() {
 }
 
 bool Game::SDLInit() {
-
 	//Setup SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
 		std::cout << "SDL did not initialise. Error: " << SDL_GetError();
 		return false;
@@ -52,6 +51,11 @@ bool Game::SDLInit() {
 			return false;
 		}
 
+		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		{
+			cout << "Mixer failed to init. You fucked it up " << Mix_GetError();
+			return false;
+		}
 	}
 
 	return true;
@@ -144,15 +148,9 @@ bool Game::Update() {
 
 }
 
-void Game::Draw() {
 
-	gameSurface = SDL_GetWindowSurface(gameWindow);
-	SDL_FillRect(gameSurface, NULL, SDL_MapRGB(gameSurface->format, 0x00, 0x00, 0x00));
-	SDL_UpdateWindowSurface(gameWindow);
-
-}
-
-void Game::Render() {
+void Game::Render() 
+{
 
 	//Clear Screen
 	SDL_SetRenderDrawColor(gameRenderer, 0x00, 0x00, 0x00, 0xFF);

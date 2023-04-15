@@ -29,6 +29,7 @@ protected:
 
 	bool m_alive = true;
 	bool m_injured = false;
+	bool m_is_grounded = false;
 
 public:
 
@@ -46,6 +47,7 @@ public:
 	bool m_can_jump = false;
 	bool m_is_jumping = false;
 	float m_jump_force = INITIAL_JUMP_FORCE;
+	float m_initial_jump_force = INITIAL_JUMP_FORCE;
 
 	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, Vector2D size, FACING start_facing, float movement_speed, LevelMap* map);
 
@@ -58,7 +60,7 @@ public:
 	void MoveLeft(float deltaTime);
 	void MoveRight(float deltaTime);
 
-	void Jump(float deltsTime);
+	void Jump(float deltaTime);
 	void AddGravity(float deltaTime);
 
 	bool IsJumping() { return m_is_jumping;}

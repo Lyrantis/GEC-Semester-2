@@ -9,6 +9,7 @@ GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : Screen(renderer)
 {
 	m_level_map = nullptr;
 	SetUpLevel();
+	SetUpSounds();
 }
 
 GameScreenLevel1::~GameScreenLevel1() 
@@ -75,6 +76,7 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 	mario->Update(deltaTime, e);
 	luigi->Update(deltaTime, e);
+	m_jump_sound->Play(0);
 
 	UpdateCoins(deltaTime);
 	UpdateEnemies(deltaTime, e);
@@ -141,7 +143,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 		}
 	}
 
-	m_enemy_wave_time -= deltaTime;
+	/*m_enemy_wave_time -= deltaTime;
 
 	if (m_enemy_wave_time <= 0.0f)
 	{
@@ -149,7 +151,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 
 		CreateKoopa(Vector2D(0, TILE_HEIGHT), FACING_RIGHT);
 		CreateKoopa(Vector2D(SCREEN_WIDTH - KOOPA_WIDTH, TILE_HEIGHT), FACING_LEFT);
-	}
+	}*/
 }
 
 void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction)
@@ -159,7 +161,7 @@ void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction)
 
 void GameScreenLevel1::CreateFly(Vector2D position, FACING direction)
 {
-	m_enemies.push_back(new Koopa(m_renderer, "Images/Fighter_Fly.png", position, direction, m_level_map));
+	m_enemies.push_back(new FighterFly(m_renderer, "Images/Fighter_Fly.png", position, direction, m_level_map));
 }
 
 void GameScreenLevel1::CreateCoin(Vector2D position)
@@ -250,8 +252,14 @@ bool GameScreenLevel1::SetUpLevel()
 
 	SetLevelMap();
 
-	mario = new Mario(m_renderer, "Images/Mario.png", Vector2D(0, 0), FACING_RIGHT, m_level_map);
-	luigi = new Luigi(m_renderer, "Images/Luigi.png", Vector2D(100, 0), FACING_RIGHT, m_level_map);
+	LoadMusic("Music/MarioUnderworld.mp3");
+	if (Mix_PlayingMusic() == 0)
+	{
+		Mix_PlayMusic(g_music, -1);
+	}
+
+	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(0, 0), FACING_RIGHT, m_level_map);
+	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(100, 0), FACING_RIGHT, m_level_map);
 
 	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4));
 	CreateFly(Vector2D(TILE_WIDTH, 0), FACING_RIGHT);
@@ -291,6 +299,12 @@ void GameScreenLevel1::SetLevelMap()
 
 	//set the new one
 	m_level_map = new LevelMap(map);
+}
+
+bool GameScreenLevel1::SetUpSounds()
+{
+	m_jump_sound = new SoundEffect("Sounds/Jump.wav");
+	return true;
 }
 
 void GameScreenLevel1::DoScreenShake(float deltaTime) 
