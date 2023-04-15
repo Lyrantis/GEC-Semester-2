@@ -28,7 +28,9 @@ private:
 
 	float m_single_sprite_w;
 	float m_single_sprite_h;
-	int m_num_hits_left;
+	int m_num_hits_left = 3;
+	int m_tiles_width = 2;
+	int m_tiles_height = 2;
 
 };
 

@@ -2,16 +2,16 @@
 
 // Screen
 #define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 832
+#define SCREEN_HEIGHT 896
 #define SHAKE_DURATION 0.25f
 
 // Map
-#define MAP_WIDTH 16
-#define MAP_HEIGHT 13
+#define MAP_WIDTH 32
+#define MAP_HEIGHT 28
 
 // Tiles
-#define TILE_WIDTH 64
-#define TILE_HEIGHT 64
+#define TILE_WIDTH (SCREEN_WIDTH / MAP_WIDTH)
+#define TILE_HEIGHT (SCREEN_HEIGHT / MAP_HEIGHT)
 
 // General Character Physics
 #define GRAVITY_STRENGTH 260.0f
@@ -19,10 +19,12 @@
 #define JUMP_FORCE_DECREMENT 400.0f
 
 // Player
-#define PLAYER_WIDTH 64
-#define PLAYER_HEIGHT 84
+#define PLAYER_WIDTH (TILE_WIDTH * 2)
+#define PLAYER_HEIGHT (TILE_HEIGHT * 2.5)
+
 #define PLAYER_SPRITE_WIDTH 16
 #define PLAYER_SPRITE_HEIGHT 22
+
 #define PLAYER_SPEED 200.0f
 
 // Level 
