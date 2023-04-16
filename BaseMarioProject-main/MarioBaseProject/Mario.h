@@ -1,12 +1,14 @@
 #pragma once
-#include "Character.h"
+#include "Player.h"
+#include "Texture2D.h"
 
-class Mario : public Character
+class Mario : public Player
 {
 public:
 
-	Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map);
+	Mario(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, FACING start_facing, LevelMap* map);
+	~Mario();
 
 	void Update(float deltaTime, SDL_Event e);
-};
 
+};

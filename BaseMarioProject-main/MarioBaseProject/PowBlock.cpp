@@ -14,7 +14,7 @@ PowBlock::PowBlock(SDL_Renderer* renderer, LevelMap* map) {
 	m_single_sprite_w = m_texture->GetWidth() / 3; //there are three images in this sprite sheet in a row
 	m_single_sprite_h = m_texture->GetHeight();
 	m_num_hits_left = 3;
-	m_position = Vector2D((SCREEN_WIDTH * 0.5f) - m_single_sprite_w * 0.5f, 512);
+	m_position = Vector2D(TILE_WIDTH * 15, TILE_HEIGHT * 20);
 
 }
 
@@ -33,8 +33,10 @@ void PowBlock::TakeHit() {
 	if (m_num_hits_left <= 0) {
 
 		m_num_hits_left = 0;
-		m_level_map->SetTileAt(8, 7, 0);
-		m_level_map->SetTileAt(8, 8, 0);
+		m_level_map->SetTileAt(15, 20, 0);
+		m_level_map->SetTileAt(15, 21, 0);
+		m_level_map->SetTileAt(16, 20, 0);
+		m_level_map->SetTileAt(16, 21, 0);
 
 	}
 }
@@ -50,9 +52,7 @@ void PowBlock::Render() {
 		SDL_Rect portion_of_sprite = { left, 0, m_single_sprite_w, m_single_sprite_h };
 
 		//determine where to draw it
-		SDL_Rect dest_rect = {
-		static_cast<int>(m_position.x), static_cast<int>(m_position.y), TILE_WIDTH, TILE_HEIGHT
-		};
+		SDL_Rect dest_rect = {static_cast<int>(m_position.x), static_cast<int>(m_position.y), TILE_WIDTH * 2, TILE_HEIGHT * 2};
 
 		//draw the sprite
 		m_texture->Render(portion_of_sprite, dest_rect, SDL_FLIP_NONE);

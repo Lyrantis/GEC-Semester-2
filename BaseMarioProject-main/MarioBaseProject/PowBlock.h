@@ -14,7 +14,8 @@ public:
 	~PowBlock();
 
 	void Render();
-	Rect2D GetCollisionBox() { return Rect2D(m_position.x, m_position.y, m_single_sprite_w, m_single_sprite_h);}
+	Rect2D GetCollisionBox() { return Rect2D(m_position.x, m_position.y, TILE_WIDTH, TILE_HEIGHT);}
+	Vector2D GetPosition() { return m_position; }
 	void TakeHit();
 	bool IsAvailable() { return m_num_hits_left > 0;}
 
@@ -27,7 +28,9 @@ private:
 
 	float m_single_sprite_w;
 	float m_single_sprite_h;
-	int m_num_hits_left;
+	int m_num_hits_left = 3;
+	int m_tiles_width = 2;
+	int m_tiles_height = 2;
 
 };
 

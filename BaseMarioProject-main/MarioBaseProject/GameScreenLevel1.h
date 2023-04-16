@@ -1,5 +1,6 @@
 #pragma once
 #include "game.h"
+#include <vector>
 
 class Texture2D;
 class PowBlock;
@@ -14,17 +15,31 @@ private:
 	Mario* mario;
 	Luigi* luigi;
 
+	vector<Enemy*> m_enemies;
+	vector<Coin*> m_coins;
+
 	PowBlock* m_pow_block;
+
+	SoundEffect* m_player_spawn_sound;
+	SoundEffect* m_enemy_spawn_sound;
+
+	float m_enemy_wave_time;
 
 	bool m_screenshake;
 	float m_shake_time;
 	float m_wobble;
 	float m_background_yPos;
 
-
 	bool SetUpLevel();
 	void SetLevelMap();
-	void DoScreenShake();
+	void DoScreenShake(float deltaTime);
+
+	void UpdateEnemies(float deltaTime, SDL_Event e);
+	void CreateKoopa(Vector2D position, FACING direction);
+	void CreateFly(Vector2D position, FACING direction);
+
+	void CreateCoin(Vector2D position);
+	void UpdateCoins(float deltaTime);
 
 public:
 
@@ -33,5 +48,5 @@ public:
 
 	void Render() override;
 	void Update(float deltaTime, SDL_Event e) override;
-	void UpdatePOWBlock();
+	void UpdatePOWBlock(float deltaTime);
 };

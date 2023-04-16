@@ -1,20 +1,14 @@
 #include "Luigi.h"
 #include "Texture2D.h"
 
-Luigi::Luigi(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, int imageW, int imageH, LevelMap* map) : Character(renderer, imagePath, start_position, imageW, imageH, map) {
+Luigi::Luigi(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, FACING start_facing, LevelMap* map) : Player(renderer, imagePath, start_position, start_facing, map) 
+{
 
-	m_renderer = renderer;
-	m_position = start_position;
+}
 
-	m_texture = new Texture2D(m_renderer);
+Luigi::~Luigi()
+{
 
-	m_size = Vector2D(imageW, imageH);
-
-	if (!m_texture->LoadFromFile(imagePath, imageW, imageH)) {
-
-		std::cout << "Failed to load player texture!\n";
-
-	}
 }
 
 void Luigi::Update(float deltaTime, SDL_Event e) {
@@ -33,7 +27,7 @@ void Luigi::Update(float deltaTime, SDL_Event e) {
 
 			if (m_can_jump) {
 
-				Jump(deltaTime);
+				Player::Jump(deltaTime);
 			}
 			
 			break;
@@ -89,7 +83,5 @@ void Luigi::Update(float deltaTime, SDL_Event e) {
 
 	}
 
-	HandleInputs(deltaTime);
-
-	Character::Update(deltaTime, e);
+	Player::Update(deltaTime, e);
 }
