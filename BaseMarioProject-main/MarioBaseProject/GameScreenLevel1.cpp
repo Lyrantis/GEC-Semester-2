@@ -9,7 +9,7 @@ GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : Screen(renderer)
 {
 	m_level_map = nullptr;
 	SetUpLevel();
-	SetUpSounds();
+
 }
 
 GameScreenLevel1::~GameScreenLevel1() 
@@ -75,8 +75,20 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 		}
 	}
 
-	mario->Update(deltaTime, e);
-	luigi->Update(deltaTime, e);
+	if (mario->GetActive())
+	{
+		mario->Update(deltaTime, e);
+	}
+	
+	if (luigi->GetActive())
+	{
+		luigi->Update(deltaTime, e);
+	}
+
+	if (!mario->GetActive() && !luigi->GetActive())
+	{
+		SDL_Quit();
+	}
 
 	UpdateCoins(deltaTime);
 	UpdateEnemies(deltaTime, e);
@@ -91,12 +103,12 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 		for (unsigned int i = 0; i < m_enemies.size(); i++)
 		{
 			//is the enemy off screen to the left / right?
-			if (m_enemies[i]->GetPosition().x <= 0.0f || m_enemies[i]->GetPosition().x >= SCREEN_WIDTH - (float)(m_enemies[i]->GetSize().x))
+			if (m_enemies[i]->GetPosition().x < 0.0f || m_enemies[i]->GetPosition().x > SCREEN_WIDTH - (float)(m_enemies[i]->GetSize().x))
 			{
 				//check if the enemy is on the bottom row of tiles
 				if (m_enemies[i]->GetPosition().y >= SCREEN_HEIGHT - (TILE_HEIGHT + m_enemies[i]->GetSize().y))
 				{
-					m_enemies[i]->SetAlive(false);
+					m_enemies[i]->Die();
 				}
 				else
 				{
@@ -116,7 +128,6 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 				if (Collisions::Instance()->Circle(m_enemies[i]->GetCollisionRadius(), mario->GetCollisionRadius()))
 				{
 
-					std::cout << "Collision detected\n";
 					if (m_enemies[i]->GetInjured())
 					{
 						m_enemies[i]->Die();
@@ -124,14 +135,12 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 					}
 					else
 					{
-						mario->Die();
+						mario->Die(deltaTime);
 					}
 				}
 
 				if (Collisions::Instance()->Circle(m_enemies[i]->GetCollisionRadius(), luigi->GetCollisionRadius()))
 				{
-
-					std::cout << "Collision detected\n";
 					if (m_enemies[i]->GetInjured())
 					{
 						m_enemies[i]->Die();
@@ -139,7 +148,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 					}
 					else
 					{
-						luigi->Die();
+						luigi->Die(deltaTime);
 					}
 				}
 			}
@@ -229,7 +238,7 @@ void GameScreenLevel1::UpdatePOWBlock(float deltaTime)
 	Vector2D POWPos = m_pow_block->GetPosition();
 	int POWGridLocation[2] = { (int)POWPos.x / TILE_WIDTH, (int)POWPos.y / TILE_HEIGHT };
 
-	if (marioGridLocation[0] == POWGridLocation[0] && marioGridLocation[1] == POWGridLocation[1])
+	if (Collisions::Instance()->Box(mario->GetCollisionBox(), m_pow_block->GetCollisionBox()))
 	{
 		if (m_pow_block->IsAvailable())
 		{
@@ -280,7 +289,7 @@ bool GameScreenLevel1::SetUpLevel()
 	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(100, 0), FACING_RIGHT, m_level_map);
 
 	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4));
-	CreateFly(Vector2D(TILE_WIDTH, 0), FACING_RIGHT);
+	//CreateFly(Vector2D(TILE_WIDTH, 0), FACING_RIGHT);
 
 	m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 

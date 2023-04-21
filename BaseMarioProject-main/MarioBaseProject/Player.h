@@ -18,7 +18,7 @@ public:
 	virtual void Update(float deltaTime, SDL_Event e);
 	void Render();
 
-	void Die();
+	void Die(float deltaTime);
 
 	int GetScore() { return m_score; }
 	void AddScore(int scoreToAdd) { m_score += scoreToAdd; }

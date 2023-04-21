@@ -30,17 +30,19 @@ void Mario::Update(float deltaTime, SDL_Event e) {
 
 		case SDLK_s:
 
-			keyStates["s"] = true;
+			
 			break;
 
 		case SDLK_a:
 
-			keyStates["a"] = true;
+			m_direction = FACING_LEFT;
+			m_moving = true;
 			break;
 
 		case SDLK_d:
 
-			keyStates["d"] = true;
+			m_direction = FACING_RIGHT;
+			m_moving = true;
 			break;
 		}
 		break;
@@ -48,30 +50,16 @@ void Mario::Update(float deltaTime, SDL_Event e) {
 	case SDL_KEYUP:
 
 		switch (e.key.keysym.sym) {
-		case SDLK_SPACE:
-
-			//jump
-			break;
-
-		case SDLK_w:
-
-			keyStates["w"] = false;
-			break;
 
 		case SDLK_s:
 
-			keyStates["s"] = false;
 			break;
 
-		case SDLK_a:
+		case SDLK_a: case SDLK_d:
 
-			keyStates["a"] = false;
+			m_moving = false;
 			break;
 
-		case SDLK_d:
-
-			keyStates["d"] = false;
-			break;
 		}
 
 		break;

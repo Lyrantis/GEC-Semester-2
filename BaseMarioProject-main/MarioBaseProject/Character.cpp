@@ -51,6 +51,18 @@ void Character::Update(float deltaTime, SDL_Event e)
 	int foot_position = (int)(m_position.y + (m_size.y)) / TILE_HEIGHT;
 	int head_position = (int)(m_position.y) / TILE_HEIGHT;
 
+	if (m_moving)
+	{
+
+		if (m_direction == FACING_LEFT)
+		{
+			MoveLeft(deltaTime);
+		}
+		else if (m_direction == FACING_RIGHT)
+		{
+			MoveRight(deltaTime);
+		}
+	}
 	//deal with gravity
 	if ((m_current_level_map->GetTileAt(foot_position, leftX_position) == 0) && (m_current_level_map->GetTileAt(foot_position, rightX_position) == 0))
 	{
@@ -58,7 +70,7 @@ void Character::Update(float deltaTime, SDL_Event e)
 		m_can_jump = false;
 		m_is_grounded = false;
 	}
-	else if ((m_current_level_map->GetTileAt(foot_position, leftX_position) == 1) || (m_current_level_map->GetTileAt(foot_position, rightX_position) == 1))
+	else
 	{
 		//collided with ground so we can jump again
 		m_can_jump = true;
@@ -80,41 +92,19 @@ void Character::Update(float deltaTime, SDL_Event e)
 			m_is_jumping = false;
 		}
 	}
+
 }
 
 void Character::Die()
 {
 	m_death_sound->Play(0);
+	m_moving = false;
 	m_alive = false;
-
-}
-
-void Character::HandleInputs(float deltaTime) {
-
-	if (keyStates["w"]) {
-
-		//jump
-	}
-
-	if (keyStates["s"]) {
-
-		//crouch
-	}
-
-	if (keyStates["a"]) {
-
-		MoveLeft(deltaTime);
-	}
-	if (keyStates["d"]) {
-
-		MoveRight(deltaTime); 
-	}
 
 }
 
 void Character::MoveLeft(float deltaTime) 
 {
-	m_direction = FACING_LEFT;
 
 	int leftX_position = (int)(m_position.x) / TILE_WIDTH;
 	int foot_position = (int)(m_position.y + (m_size.y - 1)) / TILE_HEIGHT;
@@ -129,7 +119,6 @@ void Character::MoveLeft(float deltaTime)
 
 void Character::MoveRight(float deltaTime) 
 {
-	m_direction = FACING_RIGHT;
 
 	int rightX_position = (int)(m_position.x + m_size.x) / TILE_WIDTH;
 	int foot_position = (int)(m_position.y + (m_size.y - 1)) / TILE_HEIGHT;

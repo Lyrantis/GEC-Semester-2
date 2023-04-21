@@ -16,6 +16,7 @@ void Enemy::TakeDamage(float deltaTime)
 	{
 		m_sprite_pos.x = m_sprite_size.x;
 		m_injured = true;
+		m_moving = false;
 		m_injured_time = INJURED_TIME;
 		Character::Jump(deltaTime);
 	}
@@ -48,6 +49,7 @@ void Enemy::FlipBackUp(float deltaTime)
 		m_direction = FACING_LEFT;
 	}
 
+	m_moving = true;
 	m_injured = false;
 	m_sprite_pos.x = 0;
 	Character::Jump(deltaTime);

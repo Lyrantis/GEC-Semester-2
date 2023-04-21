@@ -32,19 +32,16 @@ void Luigi::Update(float deltaTime, SDL_Event e) {
 			
 			break;
 
-		case SDLK_DOWN:
-
-			keyStates["s"] = true;
-			break;
-
 		case SDLK_LEFT:
 
-			keyStates["a"] = true;
+			m_moving = true;
+			m_direction = FACING_LEFT;
 			break;
 
 		case SDLK_RIGHT:
 
-			keyStates["d"] = true;
+			m_moving = true;
+			m_direction = FACING_RIGHT;
 			break;
 		}
 		break;
@@ -52,31 +49,11 @@ void Luigi::Update(float deltaTime, SDL_Event e) {
 	case SDL_KEYUP:
 
 		switch (e.key.keysym.sym) {
-		case SDLK_SPACE:
 
-			//jump
+		case SDLK_LEFT: case SDLK_RIGHT:
+			
+			m_moving = false;
 			break;
-
-		case SDLK_UP:
-
-			keyStates["w"] = false;
-			break;
-
-		case SDLK_DOWN:
-
-			keyStates["s"] = false;
-			break;
-
-		case SDLK_LEFT:
-
-			keyStates["a"] = false;
-			break;
-
-		case SDLK_RIGHT:
-
-			keyStates["d"] = false;
-			break;
-
 		}
 
 		break;

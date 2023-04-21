@@ -27,24 +27,17 @@ protected:
 	SoundEffect* m_death_sound;
 	Vector2D m_size;
 	float m_collision_radius;
-
+	float m_animation_frame_delay;
+	bool m_moving = false;
 	bool m_alive = true;
 	bool m_injured = false;
 	bool m_is_grounded = false;
 
+	bool m_active = true;
+
 public:
 
 	float m_movement_speed;
-
-	std::map<std::string, bool> keyStates{
-		{"w", false},
-		{"a", false},
-		{"s", false},
-		{"d", false},
-		{"space", false},
-		{"shift", false}
-	};
-
 	bool m_can_jump = false;
 	bool m_is_jumping = false;
 	float m_jump_force = INITIAL_JUMP_FORCE;
@@ -59,7 +52,6 @@ public:
 
 	virtual void Die();
 
-	void HandleInputs(float deltaTime);
 	void MoveLeft(float deltaTime);
 	void MoveRight(float deltaTime);
 
@@ -78,7 +70,7 @@ public:
 	Vector2D GetSize() { return m_size; }
 	bool GetInjured() { return m_injured; }
 	bool GetAlive() { return m_alive; }
-	void SetAlive(bool isAlive) { m_alive = isAlive; }
+	bool GetActive() { return m_active; }
 
 	void FlipDirection();
 

@@ -25,6 +25,8 @@
 #define PLAYER_SPRITE_WIDTH 16
 #define PLAYER_SPRITE_HEIGHT 22
 
+#define PLAYER_FRAME_DELAY 0.05f
+
 #define PLAYER_SPEED 200.0f
 
 // Level 
@@ -40,6 +42,8 @@
 #define KOOPA_SPRITE_WIDTH 32
 #define KOOPA_SPRITE_HEIGHT 30
 
+#define KOOPA_FRAME_DELAY 0.2f
+
 #define KOOPA_SPEED 96.0f
 
 #define KOOPA_SCORE_VALUE 100
@@ -50,6 +54,8 @@
 
 #define FLY_SPRITE_WIDTH 16
 #define FLY_SPRITE_HEIGHT 16
+
+#define FLY_FRAME_DELAY 0.2f
 
 #define FLY_SPEED 120.0f
 #define FLY_JUMP_FORCE 450.0f

@@ -6,6 +6,8 @@ FighterFly::FighterFly(SDL_Renderer* renderer, std::string imagePath, Vector2D s
 	m_initial_jump_force = FLY_JUMP_FORCE;
 
 	m_score_value = FLY_SCORE_VALUE;
+
+	m_animation_frame_delay = FLY_FRAME_DELAY;
 }
 
 FighterFly::~FighterFly()
@@ -18,25 +20,15 @@ void FighterFly::Update(float deltaTime, SDL_Event e)
 	Enemy::Update(deltaTime, e);
 	if (!m_injured)
 	{
-		if (!m_is_grounded)
+		if (m_is_grounded)
 		{
-			//enemy is not injured so move
-			if (m_direction == FACING_LEFT)
-			{
-				Character::MoveLeft(deltaTime);
-			}
-			else if (m_direction == FACING_RIGHT)
-			{
-				Character::MoveRight(deltaTime);
-			}
-		}
-		else
-		{
+			m_moving = false;
 			m_jump_delay -= deltaTime;
 
 			if (m_jump_delay <= 0)
 			{
 				Character::Jump(deltaTime);
+				m_moving = true;
 				m_jump_delay = FLY_JUMP_DELAY;
 			}
 		}

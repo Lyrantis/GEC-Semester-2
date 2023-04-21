@@ -53,7 +53,7 @@ bool Game::SDLInit() {
 
 		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		{
-			cout << "Mixer failed to init. You fucked it up " << Mix_GetError();
+			cout << "Mixer failed to initialise. Error: " << Mix_GetError();
 			return false;
 		}
 	}
