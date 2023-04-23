@@ -285,8 +285,8 @@ bool GameScreenLevel1::SetUpLevel()
 		Mix_PlayMusic(g_music, -1);
 	}
 
-	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(0, 0), FACING_RIGHT, m_level_map);
-	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(100, 0), FACING_RIGHT, m_level_map);
+	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(100, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
+	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 
 	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4));
 	//CreateFly(Vector2D(TILE_WIDTH, 0), FACING_RIGHT);
