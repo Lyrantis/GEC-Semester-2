@@ -14,7 +14,7 @@ public:
 	~PowBlock();
 
 	void Render();
-	Rect2D GetCollisionBox() { return Rect2D(m_position.x, m_position.y, TILE_WIDTH * 2, TILE_HEIGHT * 2);}
+	Rect2D GetCollisionBox() { return Rect2D(m_position.x, m_position.y, TILE_WIDTH * m_tiles_width, (TILE_HEIGHT * m_tiles_height) + 10);}
 	Vector2D GetPosition() { return m_position; }
 	void TakeHit();
 	bool IsAvailable() { return m_num_hits_left > 0;}

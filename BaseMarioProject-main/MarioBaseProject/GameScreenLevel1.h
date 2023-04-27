@@ -5,11 +5,11 @@
 class Texture2D;
 class PowBlock;
 
-class GameScreenLevel1 : Screen
+class GameScreenLevel1 : public Screen
 {
 
 private:
-	Texture2D* m_backgroundTexture;
+
 	LevelMap* m_level_map;
 
 	Mario* mario;
@@ -47,6 +47,6 @@ public:
 	~GameScreenLevel1();
 
 	void Render() override;
-	void Update(float deltaTime, SDL_Event e) override;
+	SCREENS Update(float deltaTime, SDL_Event e) override;
 	void UpdatePOWBlock(float deltaTime);
 };

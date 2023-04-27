@@ -7,20 +7,23 @@ Screen::Screen(SDL_Renderer* renderer) {
 
 }
 
-Screen::Screen() {
+Screen::~Screen() {
 	m_renderer = nullptr;
+	delete m_backgroundTexture;
+	m_backgroundTexture = nullptr;
 }
 
 void Screen::Render(){};
 
-void Screen::Update(float deltaTime, SDL_Event e){};
+SCREENS Screen::Update(float deltaTime, SDL_Event e) { return SCREEN_NONE; };
 
 void Screen::LoadMusic(string path)
 {
-	g_music = Mix_LoadMUS(path.c_str());
+	m_music = Mix_LoadMUS(path.c_str());
 
-	if (g_music == nullptr)
+	if (m_music == nullptr)
 	{
 		cout << "Failed. " << Mix_GetError() << endl;
 	}
 }
+

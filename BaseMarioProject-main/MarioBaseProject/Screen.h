@@ -6,21 +6,28 @@
 #include <iostream>
 #include <vector>
 #include "SoundEffect.h"
+#include "Texture2D.h"
 
 class Screen
 {
+private:
+	
+
 protected:
 	SDL_Renderer* m_renderer;
 
-	Mix_Music* g_music = nullptr; 
+	Mix_Music* m_music = nullptr; 
 
 public:
 
-	Screen();
+	Texture2D* m_backgroundTexture;
+
+	
 	Screen(SDL_Renderer* renderer);
+	~Screen();
 
 	virtual void Render();
-	virtual void Update(float deltaTime, SDL_Event e);
+	virtual SCREENS Update(float deltaTime, SDL_Event e);
 
 	void LoadMusic(std::string path);
 

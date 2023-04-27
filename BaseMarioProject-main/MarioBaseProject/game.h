@@ -7,7 +7,6 @@
 #include <string.h>
 #include <map>
 #include <Windows.h>
-#include <chrono>
 #include "Constants.h"
 #include "Texture2D.h"
 #include "ScreenManager.h"
@@ -37,9 +36,6 @@ private:
 	const float fixedDeltaTime = 1000.0f / fps;
 	int frameCount = 0;
 	int secondsElapsed = 0;
-
-	chrono::high_resolution_clock::time_point startTime;
-	chrono::high_resolution_clock::time_point endTime;
 
 	Uint32 g_old_time;
 	Uint32 new_time;

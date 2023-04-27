@@ -90,7 +90,7 @@ void Game::GameInit() {
 		std::cout << "Init failed\n";
 		SDLClose();
 	}
-	screenManager = new ScreenManager(gameRenderer, SCREEN_LEVEL1);
+	screenManager = new ScreenManager(gameRenderer, SCREEN_MAINMENU);
 	g_old_time = SDL_GetTicks();
 
 }
@@ -113,7 +113,6 @@ void Game::GameLoop() {
 bool Game::Update() {
 
 	new_time = SDL_GetTicks();
-	startTime = chrono::high_resolution_clock::now();
 
 	SDL_PollEvent(&e);
 

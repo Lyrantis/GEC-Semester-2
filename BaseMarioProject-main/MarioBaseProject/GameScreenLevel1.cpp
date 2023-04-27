@@ -14,8 +14,6 @@ GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : Screen(renderer)
 
 GameScreenLevel1::~GameScreenLevel1() 
 {
-	delete m_backgroundTexture;
-	m_backgroundTexture = nullptr;
 
 	delete mario;
 	mario = nullptr;
@@ -55,7 +53,7 @@ void GameScreenLevel1::Render()
 
 }
 
-void GameScreenLevel1::Update(float deltaTime, SDL_Event e) 
+SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e) 
 {
 	/*
 	 * do the screen shake if required
@@ -93,6 +91,8 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	UpdateCoins(deltaTime);
 	UpdateEnemies(deltaTime, e);
 	UpdatePOWBlock(deltaTime);
+
+	return SCREEN_NONE;
 }
 
 void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
@@ -230,16 +230,23 @@ void GameScreenLevel1::UpdateCoins(float deltaTime)
 void GameScreenLevel1::UpdatePOWBlock(float deltaTime) 
 {
 	Vector2D marioPos = mario->GetPosition();
-	int marioGridLocation[2] = {(int)marioPos.x / TILE_WIDTH, (int)marioPos.y / TILE_HEIGHT};
+	Vector2D marioSize = mario->GetSize();
+	int marioGridLocation1[2] = {(int)marioPos.x / TILE_WIDTH, (int)marioPos.y / TILE_HEIGHT};
+	int marioGridLocation2[2] = { (int)(marioPos.x + marioSize.x) / TILE_WIDTH, (int)marioPos.y / TILE_HEIGHT };
 
 	Vector2D luigiPos = luigi->GetPosition();
-	int luigiGridLocation[2] = { (int)luigiPos.x / TILE_WIDTH, (int)luigiPos.y / TILE_HEIGHT };
+	Vector2D luigiSize = luigi->GetSize();
+	int luigiGridLocation1[2] = { (int)luigiPos.x / TILE_WIDTH, (int)luigiPos.y / TILE_HEIGHT };
+	int luigiGridLocation2[2] = { (int)(luigiPos.x + luigiSize.x) / TILE_WIDTH, (int)luigiPos.y / TILE_HEIGHT };
 
 	Vector2D POWPos = m_pow_block->GetPosition();
-	int POWGridLocation[2] = { (int)POWPos.x / TILE_WIDTH, (int)POWPos.y / TILE_HEIGHT };
+	int POWGridLocation1[2] = { (int)POWPos.x / TILE_WIDTH, ((int)POWPos.y / TILE_HEIGHT) + 1 };
+	int POWGridLocation2[2] = { ((int)POWPos.x / TILE_WIDTH) + 1, ((int)POWPos.y / TILE_HEIGHT) + 1 };
 
-	if (Collisions::Instance()->Box(mario->GetCollisionBox(), m_pow_block->GetCollisionBox()))
+	if ((marioGridLocation1[0] == POWGridLocation1[0] && marioGridLocation1[1] == POWGridLocation1[1]) || (marioGridLocation1[0] == POWGridLocation2[0] && marioGridLocation1[1] == POWGridLocation2[1])
+		|| (marioGridLocation2[0] == POWGridLocation1[0] && marioGridLocation2[1] == POWGridLocation1[1]) || (marioGridLocation2[0] == POWGridLocation2[0] && marioGridLocation2[1] == POWGridLocation2[1]))
 	{
+
 		if (m_pow_block->IsAvailable())
 		{
 			//collided while jumping
@@ -252,14 +259,15 @@ void GameScreenLevel1::UpdatePOWBlock(float deltaTime)
 		}
 	}
 
-	if (luigiGridLocation[0] == POWGridLocation[0] && luigiGridLocation[1] == POWGridLocation[1])
+	if ((luigiGridLocation1[0] == POWGridLocation1[0] && luigiGridLocation1[1] == POWGridLocation1[1]) || (luigiGridLocation1[0] == POWGridLocation2[0] && luigiGridLocation1[1] == POWGridLocation2[1])
+		|| (luigiGridLocation2[0] == POWGridLocation1[0] && luigiGridLocation2[1] == POWGridLocation1[1]) || (luigiGridLocation2[0] == POWGridLocation2[0] && luigiGridLocation2[1] == POWGridLocation2[1]))
 	{
 		if (m_pow_block->IsAvailable())
 		{
 			//collided while jumping
 			if (luigi->IsJumping())
 			{
-				//DoScreenShake();
+				DoScreenShake(deltaTime);
 				m_pow_block->TakeHit();
 				luigi->CancelJump();
 			}
@@ -282,7 +290,7 @@ bool GameScreenLevel1::SetUpLevel()
 	LoadMusic("Music/MarioUnderworld.mp3");
 	if (Mix_PlayingMusic() == 0)
 	{
-		Mix_PlayMusic(g_music, -1);
+		Mix_PlayMusic(m_music, -1);
 	}
 
 	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(100, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
