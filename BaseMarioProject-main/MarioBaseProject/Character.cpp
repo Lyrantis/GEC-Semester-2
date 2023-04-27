@@ -136,6 +136,7 @@ void Character::Jump(float deltaTime)
 	m_jump_force = m_initial_jump_force;
 	m_is_jumping = true;
 	m_can_jump = false;
+	m_is_grounded = false;
 }
 
 void Character::AddGravity(float deltaTime) 
