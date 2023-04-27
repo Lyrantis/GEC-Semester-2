@@ -11,15 +11,13 @@
 class Screen
 {
 private:
-	
 
 protected:
-	SDL_Renderer* m_renderer;
-
-	Mix_Music* m_music = nullptr; 
+	SDL_Renderer* m_renderer; 
 
 public:
 
+	Mix_Music* m_music = nullptr;
 	Texture2D* m_backgroundTexture;
 
 	

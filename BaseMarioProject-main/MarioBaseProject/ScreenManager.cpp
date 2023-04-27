@@ -30,7 +30,7 @@ void ScreenManager::Update(float deltaTime,  SDL_Event e) {
 
 	if (screenToChangeTo != SCREEN_NONE)
 	{
-		m_currentScreen->
+		Mix_FreeMusic(m_currentScreen->m_music);
 		ChangeScreen(screenToChangeTo);
 	}
 	
