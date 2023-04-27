@@ -27,10 +27,15 @@ void FighterFly::Update(float deltaTime, SDL_Event e)
 
 			if (m_jump_delay <= 0)
 			{
-				Character::Jump(deltaTime);
 				m_moving = true;
 				m_jump_delay = FLY_JUMP_DELAY;
+				Character::Jump(deltaTime);
 			}
 		}
+		else if (m_is_jumping)
+		{
+			m_moving = true;
+		}
 	}
+
 }
