@@ -56,6 +56,11 @@ bool Game::SDLInit() {
 			cout << "Mixer failed to initialise. Error: " << Mix_GetError();
 			return false;
 		}
+
+		if (TTF_Init() == -1)
+		{
+			cout << "TTF failed to initialise. Error: " << TTF_GetError();
+		}
 	}
 
 	return true;
@@ -70,6 +75,8 @@ void Game::SDLClose() {
 	//quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
+	Mix_Quit();
+	TTF_Quit();
 
 	//Release Renderer
 	SDL_DestroyRenderer(gameRenderer);
