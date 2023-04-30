@@ -180,6 +180,7 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PowBlock.cpp" />
+    <ClCompile Include="ScoreSystem.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PowBlock.h" />
+    <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ScreenManager.h" />
     <ClInclude Include="SoundEffect.h" />

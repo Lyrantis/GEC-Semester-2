@@ -140,7 +140,8 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 					if (m_enemies[i]->GetInjured())
 					{
 						m_enemies[i]->Die();
-						mario->AddScore(m_enemies[i]->GetScoreValue());
+						ScoreSystem::Instance()->AddMarioScore(m_enemies[i]->GetScoreValue());
+						m_marioScoreText->SetMessage(to_string(ScoreSystem::Instance()->GetMarioScore()));
 					}
 					else
 					{
@@ -153,7 +154,8 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 					if (m_enemies[i]->GetInjured())
 					{
 						m_enemies[i]->Die();
-						luigi->AddScore(m_enemies[i]->GetScoreValue());
+						ScoreSystem::Instance()->AddLuigiScore(m_enemies[i]->GetScoreValue());
+						m_luigiScoreText->SetMessage(to_string(ScoreSystem::Instance()->GetLuigiScore()));
 					}
 					else
 					{
@@ -214,14 +216,14 @@ void GameScreenLevel1::UpdateCoins(float deltaTime)
 
 			if (Collisions::Instance()->Circle(mario->GetCollisionRadius(), m_coins[i]->GetCollisionRadius()))
 			{
-				mario->AddScore(m_coins[i]->GetScoreValue());
-				m_marioScoreText->SetMessage(to_string(mario->GetScore()));
+				ScoreSystem::Instance()->AddMarioScore(m_coins[i]->GetScoreValue());
+				m_marioScoreText->SetMessage(to_string(ScoreSystem::Instance()->GetMarioScore()));
 				m_coins[i]->Die();
 			}
 			else if (Collisions::Instance()->Circle(luigi->GetCollisionRadius(), m_coins[i]->GetCollisionRadius()))
 			{
-				luigi->AddScore(m_coins[i]->GetScoreValue());
-				m_luigiScoreText->SetMessage(to_string(luigi->GetScore()));
+				ScoreSystem::Instance()->AddLuigiScore(m_coins[i]->GetScoreValue());
+				m_luigiScoreText->SetMessage(to_string(ScoreSystem::Instance()->GetLuigiScore()));
 				m_coins[i]->Die();
 			}
 
@@ -308,7 +310,7 @@ bool GameScreenLevel1::SetUpLevel()
 	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, 10), FACING_RIGHT, m_level_map);
 
 	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4));
-	CreateFly(Vector2D(TILE_WIDTH, 0), FACING_RIGHT);
+	//CreateFly(Vector2D(TILE_WIDTH, 0), FACING_RIGHT);
 
 	m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 

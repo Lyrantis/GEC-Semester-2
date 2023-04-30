@@ -22,6 +22,7 @@
 #include "Screen.h"
 #include "Commons.h"
 #include "LevelMap.h"
+#include "ScoreSystem.h"
 
 
 using namespace std;
