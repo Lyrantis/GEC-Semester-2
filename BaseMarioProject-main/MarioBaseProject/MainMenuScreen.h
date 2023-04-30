@@ -5,6 +5,9 @@ class MainMenuScreen : public Screen
 {
 private:
 
+	TextRenderer* m_text;
+	std::string m_textMessage = "Welcome! Press space to start!\n";
+
 	bool SetUpScreen();
 
 public:

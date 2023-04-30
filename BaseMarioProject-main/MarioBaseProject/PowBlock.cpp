@@ -33,10 +33,10 @@ void PowBlock::TakeHit() {
 	if (m_num_hits_left <= 0) {
 
 		m_num_hits_left = 0;
-		m_level_map->SetTileAt(15, 20, 0);
-		m_level_map->SetTileAt(15, 21, 0);
-		m_level_map->SetTileAt(16, 20, 0);
-		m_level_map->SetTileAt(16, 21, 0);
+		m_level_map->SetTileAt(20, 15, 0);
+		m_level_map->SetTileAt(21, 15, 0);
+		m_level_map->SetTileAt(20, 16, 0);
+		m_level_map->SetTileAt(21, 16, 0);
 
 	}
 }

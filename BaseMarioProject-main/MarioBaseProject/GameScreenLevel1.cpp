@@ -15,7 +15,6 @@ GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : Screen(renderer)
 
 GameScreenLevel1::~GameScreenLevel1() 
 {
-
 	delete mario;
 	mario = nullptr;
 
@@ -31,6 +30,12 @@ GameScreenLevel1::~GameScreenLevel1()
 
 	delete m_pow_block;
 	m_pow_block = nullptr;
+
+	delete m_marioScoreText;
+	m_marioScoreText = nullptr;
+
+	delete m_luigiScoreText;
+	m_luigiScoreText = nullptr;
 }
 
 void GameScreenLevel1::Render() 
@@ -51,6 +56,9 @@ void GameScreenLevel1::Render()
 	}
 
 	m_pow_block->Render();
+
+	m_marioScoreText->Render(150, -6);
+	m_luigiScoreText->Render(840, -6);
 
 }
 
@@ -207,11 +215,13 @@ void GameScreenLevel1::UpdateCoins(float deltaTime)
 			if (Collisions::Instance()->Circle(mario->GetCollisionRadius(), m_coins[i]->GetCollisionRadius()))
 			{
 				mario->AddScore(m_coins[i]->GetScoreValue());
+				m_marioScoreText->SetMessage(to_string(mario->GetScore()));
 				m_coins[i]->Die();
 			}
 			else if (Collisions::Instance()->Circle(luigi->GetCollisionRadius(), m_coins[i]->GetCollisionRadius()))
 			{
 				luigi->AddScore(m_coins[i]->GetScoreValue());
+				m_luigiScoreText->SetMessage(to_string(luigi->GetScore()));
 				m_coins[i]->Die();
 			}
 
@@ -259,7 +269,7 @@ void GameScreenLevel1::UpdatePOWBlock(float deltaTime)
 			}
 		}
 	}
-
+	
 	if ((luigiGridLocation1[0] == POWGridLocation1[0] && luigiGridLocation1[1] == POWGridLocation1[1]) || (luigiGridLocation1[0] == POWGridLocation2[0] && luigiGridLocation1[1] == POWGridLocation2[1])
 		|| (luigiGridLocation2[0] == POWGridLocation1[0] && luigiGridLocation2[1] == POWGridLocation1[1]) || (luigiGridLocation2[0] == POWGridLocation2[0] && luigiGridLocation2[1] == POWGridLocation2[1]))
 	{
@@ -295,7 +305,7 @@ bool GameScreenLevel1::SetUpLevel()
 	}
 
 	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(100, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
-	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
+	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, 10), FACING_RIGHT, m_level_map);
 
 	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4));
 	CreateFly(Vector2D(TILE_WIDTH, 0), FACING_RIGHT);
@@ -306,6 +316,15 @@ bool GameScreenLevel1::SetUpLevel()
 
 	m_screenshake = false;
 	m_background_yPos = 0.0f;
+
+	SDL_Color colour;
+	colour.r = 255; colour.g = 255; colour.b = 255; colour.a = 255;
+
+	m_marioScoreText = new TextRenderer(m_renderer);
+	m_marioScoreText->LoadFont("Fonts/PixelEmulator.ttf", 32, "0", colour);
+
+	m_luigiScoreText = new TextRenderer(m_renderer);
+	m_luigiScoreText->LoadFont("Fonts/PixelEmulator.ttf", 32, "0", colour);
 
 	return true;
 }

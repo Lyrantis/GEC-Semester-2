@@ -14,7 +14,7 @@ class Character
 
 private:
 
-	LevelMap* m_current_level_map;
+	
 
 protected:
 
@@ -36,7 +36,7 @@ protected:
 	bool m_active = true;
 
 public:
-
+	LevelMap* m_current_level_map;
 	float m_movement_speed;
 	bool m_can_jump = false;
 	bool m_is_jumping = false;

@@ -7,6 +7,7 @@
 #include <vector>
 #include "SoundEffect.h"
 #include "Texture2D.h"
+#include "TextRenderer.h"
 
 class Screen
 {

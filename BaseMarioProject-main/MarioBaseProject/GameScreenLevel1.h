@@ -23,6 +23,9 @@ private:
 	SoundEffect* m_player_spawn_sound;
 	SoundEffect* m_enemy_spawn_sound;
 
+	TextRenderer* m_marioScoreText;
+	TextRenderer* m_luigiScoreText;
+
 	float m_enemy_wave_time;
 
 	bool m_screenshake;

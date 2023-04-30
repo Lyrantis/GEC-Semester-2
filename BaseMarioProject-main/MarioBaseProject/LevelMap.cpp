@@ -1,5 +1,5 @@
 #include "LevelMap.h"
-
+#include <iostream>
 /*
  * when making a map, remember:
  * 0 = empty space,	1 = blocked/occupied space
@@ -49,4 +49,13 @@ int LevelMap::GetTileAt(unsigned int h, unsigned int w) {
 void LevelMap::SetTileAt(unsigned int row, unsigned int column, unsigned int new_value) {
 
 	m_map[row][column] = new_value;
+	
+	for (int i = 0; i < MAP_HEIGHT; i++)
+	{
+		for (int j = 0; j < MAP_WIDTH; j++)
+		{
+			std::cout << m_map[i][j];
+		}
+		std::cout << std::endl;
+	}
 }

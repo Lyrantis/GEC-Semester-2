@@ -16,6 +16,16 @@ bool MainMenuScreen::SetUpScreen()
 		Mix_PlayMusic(m_music, -1);
 	}
 
+	m_text = new TextRenderer(m_renderer);
+
+	SDL_Color colour;
+	colour.r = 255; colour.g = 255; colour.b = 255; colour.a = 255;
+	if (!m_text->LoadFont("Fonts/PixelEmulator.ttf", 24, m_textMessage, colour))
+	{
+		std::cout << "Failed to load font!\n";
+		return false;
+	}
+
 	return true;
 }
 
@@ -26,6 +36,8 @@ MainMenuScreen::MainMenuScreen(SDL_Renderer* renderer) : Screen(renderer)
 
 MainMenuScreen::~MainMenuScreen()
 {
+	delete m_text;
+	m_text = nullptr;
 }
 
 SCREENS MainMenuScreen::Update(float deltaTime, SDL_Event e)
@@ -39,6 +51,10 @@ SCREENS MainMenuScreen::Update(float deltaTime, SDL_Event e)
 		case SDLK_SPACE:
 			return SCREEN_LEVEL1;
 			break;
+
+		case SDLK_p:
+
+			m_text->SetMessage("Hello");
 		}
 
 	default:
@@ -52,4 +68,5 @@ SCREENS MainMenuScreen::Update(float deltaTime, SDL_Event e)
 void MainMenuScreen::Render()
 {
 	m_backgroundTexture->Render(Vector2D(0.0f, 0.0f), SDL_FLIP_NONE);
+	m_text->Render((SCREEN_WIDTH / 2) - 100, 200);
 }
