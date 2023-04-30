@@ -192,7 +192,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 
 void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction)
 {
-	m_enemies.push_back(new Koopa(m_renderer, "Images/Koopa.png", position, direction, m_level_map));
+	m_enemies.push_back(new Koopa(m_renderer, "Images/ShellCreeper.png", position, direction, m_level_map));
 }
 
 void GameScreenLevel1::CreateFly(Vector2D position, FACING direction)

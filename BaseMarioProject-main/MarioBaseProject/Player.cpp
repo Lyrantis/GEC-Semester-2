@@ -3,6 +3,7 @@
 
 Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, FACING start_facing, LevelMap* map) : Character(renderer, imagePath, Vector2D(PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT), start_position, Vector2D(PLAYER_WIDTH, PLAYER_HEIGHT), start_facing, PLAYER_SPEED, map)
 {
+	m_jump_force = PLAYER_JUMP_FORCE;
 	m_jump_sound = new SoundEffect("Sounds/Jump.wav");
 	m_death_sound = new SoundEffect("Sounds/Death.wav");
 	m_animation_frame_delay = PLAYER_FRAME_DELAY;
@@ -15,6 +16,7 @@ Player::~Player()
 
 void Player::Jump(float deltaTime)
 {
+	m_initial_jump_force = PLAYER_JUMP_FORCE;
 	Character::Jump(deltaTime);
 	m_jump_sound->Play(0);
 

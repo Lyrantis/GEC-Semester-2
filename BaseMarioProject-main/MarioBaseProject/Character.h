@@ -40,8 +40,8 @@ public:
 	float m_movement_speed;
 	bool m_can_jump = false;
 	bool m_is_jumping = false;
-	float m_jump_force = INITIAL_JUMP_FORCE;
-	float m_initial_jump_force = INITIAL_JUMP_FORCE;
+	float m_jump_force;
+	float m_initial_jump_force;
 
 	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, Vector2D size, FACING start_facing, float movement_speed, LevelMap* map);
 

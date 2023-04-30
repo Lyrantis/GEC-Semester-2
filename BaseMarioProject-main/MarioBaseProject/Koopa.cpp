@@ -31,11 +31,36 @@ void Koopa::Update(float deltaTime, SDL_Event e)
 			m_sprite_pos.x += m_sprite_size.x;
 
 			//loop frame around if it goes beyond the number of frames
-			if (m_sprite_pos.x > m_sprite_size.x * 5)
+			if (m_sprite_pos.x > m_sprite_size.x * 4)
 			{
 				m_sprite_pos.x = 0;
 			}
 		}
 	}
+	else if (m_injured && m_is_grounded)
+	{
+		m_animation_frame_delay -= deltaTime;
+
+		if (m_animation_frame_delay <= 0.0f)
+		{
+			m_sprite_pos.x += m_sprite_size.x;
+			m_animation_frame_delay = INJURED_TIME / 5;
+		}
+	}
 	
+}
+
+void Koopa::TakeDamage(float deltaTime)
+{
+	Enemy::TakeDamage(deltaTime);
+
+	m_sprite_pos.x = m_sprite_size.x * 9;
+	m_animation_frame_delay = m_injured_time / 5;
+}
+
+
+void Koopa::FlipBackUp(float deltaTime)
+{
+	Enemy::FlipBackUp(deltaTime);
+	m_animation_frame_delay = KOOPA_FRAME_DELAY;
 }

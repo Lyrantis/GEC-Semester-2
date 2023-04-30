@@ -16,7 +16,7 @@
 // General Character Physics
 #define GRAVITY_STRENGTH 260.0f
 #define INITIAL_JUMP_FORCE 600.0f
-#define JUMP_FORCE_DECREMENT 300.0f
+#define JUMP_FORCE_DECREMENT 400.0f
 
 // Player
 #define PLAYER_WIDTH (TILE_WIDTH * 2)
@@ -28,21 +28,23 @@
 #define PLAYER_FRAME_DELAY 0.05f
 
 #define PLAYER_SPEED 200.0f
+#define PLAYER_JUMP_FORCE 700.0f
 
 // Level 
 #define INITIAL_ENEMY_WAVE_TIME 10.0f
 
 // Enemy
-#define INJURED_TIME 2.5f
+#define INJURED_TIME 4.0f
+#define ENEMY_JUMP_FORCE 600.0f
 
 // Koopa
 #define KOOPA_WIDTH 64
 #define KOOPA_HEIGHT 64
 
-#define KOOPA_SPRITE_WIDTH 32
-#define KOOPA_SPRITE_HEIGHT 30
+#define KOOPA_SPRITE_WIDTH 16
+#define KOOPA_SPRITE_HEIGHT 16
 
-#define KOOPA_FRAME_DELAY 0.2f
+#define KOOPA_FRAME_DELAY 0.1f
 
 #define KOOPA_SPEED 96.0f
 

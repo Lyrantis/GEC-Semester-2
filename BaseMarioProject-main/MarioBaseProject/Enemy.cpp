@@ -2,6 +2,7 @@
 
 Enemy::Enemy(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, Vector2D size, FACING start_facing, float movement_speed, LevelMap* map) : Character(renderer, imagePath, imageSize, start_position, size, start_facing, movement_speed, map)
 {
+	m_initial_jump_force = ENEMY_JUMP_FORCE;
 	m_death_sound = new SoundEffect("Sounds/EnemyDefeat.wav");
 }
 
@@ -28,12 +29,15 @@ void Enemy::Update(float deltaTime, SDL_Event e)
 
 	if(m_injured)
 	{
-		//count down the injured time
-		m_injured_time -= deltaTime;
-
-		if (m_injured_time <= 0.0)
+		if (m_is_grounded)
 		{
-			FlipBackUp(deltaTime);
+			//count down the injured time
+			m_injured_time -= deltaTime;
+
+			if (m_injured_time <= 0.0)
+			{
+				FlipBackUp(deltaTime);
+			}
 		}
 	}
 }

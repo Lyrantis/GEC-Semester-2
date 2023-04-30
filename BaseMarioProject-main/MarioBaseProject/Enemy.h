@@ -18,7 +18,7 @@ public:
 
 	virtual void TakeDamage(float deltaTime);
 	virtual void Update(float deltaTime, SDL_Event e);
-	void FlipBackUp(float deltaTime);
+	virtual void FlipBackUp(float deltaTime);
 
 	int GetScoreValue() { return m_score_value; }
 };
