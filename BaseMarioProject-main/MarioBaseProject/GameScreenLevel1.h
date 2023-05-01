@@ -15,6 +15,8 @@ private:
 	Mario* mario;
 	Luigi* luigi;
 
+	vector<std::string> m_enemies_to_spawn;
+
 	vector<Enemy*> m_enemies;
 	vector<Coin*> m_coins;
 

@@ -3,9 +3,6 @@
 
 class Player : public Character
 {
-	
-	int m_score = 0;
-
 	SoundEffect* m_jump_sound;
 
 public:
@@ -20,7 +17,5 @@ public:
 
 	void Die(float deltaTime);
 
-	int GetScore() { return m_score; }
-	void AddScore(int scoreToAdd) { m_score += scoreToAdd; }
 };
 

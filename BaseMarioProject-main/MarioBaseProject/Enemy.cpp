@@ -25,18 +25,40 @@ void Enemy::TakeDamage(float deltaTime)
 
 void Enemy::Update(float deltaTime, SDL_Event e)
 {
-	Character::Update(deltaTime, e);
-
-	if(m_injured)
+	if (m_is_in_level)
 	{
-		if (m_is_grounded)
-		{
-			//count down the injured time
-			m_injured_time -= deltaTime;
+		Character::Update(deltaTime, e);
 
-			if (m_injured_time <= 0.0)
+		if (m_injured)
+		{
+			if (m_is_grounded)
 			{
-				FlipBackUp(deltaTime);
+				//count down the injured time
+				m_injured_time -= deltaTime;
+
+				if (m_injured_time <= 0.0)
+				{
+					FlipBackUp(deltaTime);
+				}
+			}
+		}
+	}
+	else
+	{
+		if (m_direction == FACING_LEFT)
+		{
+			MoveLeft(deltaTime);
+			if (m_position.x <= SCREEN_WIDTH - ((TILE_WIDTH * 4) + m_size.x))
+			{
+				m_is_in_level = true;
+			}
+		}
+		else if (m_direction == FACING_RIGHT)
+		{
+			MoveRight(deltaTime);
+			if (m_position.x >= TILE_WIDTH * 4)
+			{
+				m_is_in_level = true;
 			}
 		}
 	}
@@ -57,4 +79,21 @@ void Enemy::FlipBackUp(float deltaTime)
 	m_injured = false;
 	m_sprite_pos.x = 0;
 	Character::Jump(deltaTime);
+}
+
+void Enemy::Respawn()
+{
+	m_position.y = TILE_HEIGHT * 2;
+	m_is_in_level = false;
+
+	if (m_direction == FACING_LEFT)
+	{
+		m_direction = FACING_RIGHT;
+		m_position.x = 0;
+	}
+	else
+	{
+		m_direction = FACING_LEFT;
+		m_position.x = SCREEN_WIDTH - m_size.x;
+	}
 }

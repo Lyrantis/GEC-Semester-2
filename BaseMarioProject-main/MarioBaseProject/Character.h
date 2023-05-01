@@ -73,5 +73,5 @@ public:
 	bool GetActive() { return m_active; }
 
 	void FlipDirection();
-
+	virtual void Respawn() {};
 };

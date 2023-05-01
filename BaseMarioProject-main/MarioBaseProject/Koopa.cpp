@@ -19,35 +19,38 @@ Koopa::~Koopa()
 void Koopa::Update(float deltaTime, SDL_Event e)
 {
 	Enemy::Update(deltaTime, e);
-	if (m_moving && m_is_grounded)
+
+	if (m_is_in_level)
 	{
-		m_animation_frame_delay -= deltaTime;
-		if (m_animation_frame_delay <= 0.0f)
+		if (m_moving && m_is_grounded)
 		{
-			//reset frame delay count
-			m_animation_frame_delay = KOOPA_FRAME_DELAY;
-
-			//move the frame over
-			m_sprite_pos.x += m_sprite_size.x;
-
-			//loop frame around if it goes beyond the number of frames
-			if (m_sprite_pos.x > m_sprite_size.x * 4)
+			m_animation_frame_delay -= deltaTime;
+			if (m_animation_frame_delay <= 0.0f)
 			{
-				m_sprite_pos.x = 0;
+				//reset frame delay count
+				m_animation_frame_delay = KOOPA_FRAME_DELAY;
+
+				//move the frame over
+				m_sprite_pos.x += m_sprite_size.x;
+
+				//loop frame around if it goes beyond the number of frames
+				if (m_sprite_pos.x > m_sprite_size.x * 4)
+				{
+					m_sprite_pos.x = 0;
+				}
+			}
+		}
+		else if (m_injured && m_is_grounded)
+		{
+			m_animation_frame_delay -= deltaTime;
+
+			if (m_animation_frame_delay <= 0.0f)
+			{
+				m_sprite_pos.x += m_sprite_size.x;
+				m_animation_frame_delay = INJURED_TIME / 5;
 			}
 		}
 	}
-	else if (m_injured && m_is_grounded)
-	{
-		m_animation_frame_delay -= deltaTime;
-
-		if (m_animation_frame_delay <= 0.0f)
-		{
-			m_sprite_pos.x += m_sprite_size.x;
-			m_animation_frame_delay = INJURED_TIME / 5;
-		}
-	}
-	
 }
 
 void Koopa::TakeDamage(float deltaTime)

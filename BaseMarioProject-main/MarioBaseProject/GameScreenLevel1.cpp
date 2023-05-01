@@ -40,8 +40,6 @@ GameScreenLevel1::~GameScreenLevel1()
 
 void GameScreenLevel1::Render() 
 {
-	m_backgroundTexture->Render(Vector2D(0.0f, m_background_yPos), SDL_FLIP_NONE);
-
 	for (int i = 0; i < m_enemies.size(); i++)
 	{
 		m_enemies[i]->Render();
@@ -60,6 +58,7 @@ void GameScreenLevel1::Render()
 	m_marioScoreText->Render(150, -6);
 	m_luigiScoreText->Render(840, -6);
 
+	m_backgroundTexture->Render(Vector2D(0.0f, m_background_yPos), SDL_FLIP_NONE);
 }
 
 SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e) 
@@ -115,9 +114,9 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 			if (m_enemies[i]->GetPosition().x < 0.0f || m_enemies[i]->GetPosition().x > SCREEN_WIDTH - (float)(m_enemies[i]->GetSize().x))
 			{
 				//check if the enemy is on the bottom row of tiles
-				if (m_enemies[i]->GetPosition().y >= SCREEN_HEIGHT - (TILE_HEIGHT + m_enemies[i]->GetSize().y))
+				if (m_enemies[i]->GetPosition().y >= SCREEN_HEIGHT - ((TILE_HEIGHT * 2) + m_enemies[i]->GetSize().y))
 				{
-					m_enemies[i]->Die();
+					m_enemies[i]->Respawn();
 				}
 				else
 				{
@@ -128,11 +127,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 			m_enemies[i]->Update(deltaTime, e);
 
 			//check to see if enemy collides with player
-			if ((m_enemies[i]->GetPosition().y > 300.0f || m_enemies[i]->GetPosition().y <= 64.0f) && (m_enemies[i]->GetPosition().x < 64.0f || m_enemies[i]->GetPosition().x > SCREEN_WIDTH - 96.0f))
-			{
-				//ignore collisions if behind pipe
-			}
-			else
+			if (m_enemies[i]->GetAvailable())
 			{
 				if (Collisions::Instance()->Circle(m_enemies[i]->GetCollisionRadius(), mario->GetCollisionRadius()))
 				{
@@ -185,8 +180,37 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 	{
 		m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 
-		CreateKoopa(Vector2D(0, TILE_HEIGHT), FACING_RIGHT);
-		CreateKoopa(Vector2D(SCREEN_WIDTH - KOOPA_WIDTH, TILE_HEIGHT), FACING_LEFT);
+		int enemiesSpawned = 0;
+		while (m_enemies_to_spawn.size() > 0 && enemiesSpawned < 2)
+		{
+			string enemyType = m_enemies_to_spawn[0];
+
+			if (enemiesSpawned == 0)
+			{
+				if (enemyType == "Koopa")
+				{
+					CreateKoopa(Vector2D(0, TILE_HEIGHT * 2), FACING_RIGHT);
+				}
+				else if (enemyType == "Fly")
+				{
+					CreateFly(Vector2D(0, TILE_HEIGHT * 2), FACING_RIGHT);
+				}
+			}
+			else
+			{
+				if (enemyType == "Koopa")
+				{
+					CreateKoopa(Vector2D(SCREEN_WIDTH - KOOPA_WIDTH, TILE_HEIGHT * 2), FACING_LEFT);
+				}
+				else if (enemyType == "Fly")
+				{
+					CreateFly(Vector2D(SCREEN_WIDTH - FLY_WIDTH, TILE_HEIGHT * 2), FACING_LEFT);
+				}
+			}
+
+			m_enemies_to_spawn.erase(m_enemies_to_spawn.begin());
+			enemiesSpawned++;
+		}
 	}
 }
 
@@ -310,7 +334,17 @@ bool GameScreenLevel1::SetUpLevel()
 	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, 10), FACING_RIGHT, m_level_map);
 
 	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4));
-	//CreateFly(Vector2D(TILE_WIDTH, 0), FACING_RIGHT);
+
+	m_enemies_to_spawn.push_back("Koopa");
+	m_enemies_to_spawn.push_back("Koopa");
+	m_enemies_to_spawn.push_back("Koopa");
+	m_enemies_to_spawn.push_back("Koopa");
+	m_enemies_to_spawn.push_back("Koopa");
+	m_enemies_to_spawn.push_back("Koopa");
+	m_enemies_to_spawn.push_back("Fly");
+	m_enemies_to_spawn.push_back("Fly");
+	m_enemies_to_spawn.push_back("Koopa");
+	m_enemies_to_spawn.push_back("Koopa");
 
 	m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 

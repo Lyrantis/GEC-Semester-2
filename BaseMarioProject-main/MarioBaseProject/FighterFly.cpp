@@ -18,24 +18,27 @@ FighterFly::~FighterFly()
 void FighterFly::Update(float deltaTime, SDL_Event e)
 {
 	Enemy::Update(deltaTime, e);
-	if (!m_injured)
-	{
-		if (m_is_grounded)
-		{
-			m_moving = false;
-			m_jump_delay -= deltaTime;
 
-			if (m_jump_delay <= 0)
+	if (m_is_in_level)
+	{
+		if (!m_injured)
+		{
+			if (m_is_grounded)
+			{
+				m_moving = false;
+				m_jump_delay -= deltaTime;
+
+				if (m_jump_delay <= 0)
+				{
+					m_moving = true;
+					m_jump_delay = FLY_JUMP_DELAY;
+					Character::Jump(deltaTime);
+				}
+			}
+			else if (m_is_jumping)
 			{
 				m_moving = true;
-				m_jump_delay = FLY_JUMP_DELAY;
-				Character::Jump(deltaTime);
 			}
 		}
-		else if (m_is_jumping)
-		{
-			m_moving = true;
-		}
 	}
-
 }
