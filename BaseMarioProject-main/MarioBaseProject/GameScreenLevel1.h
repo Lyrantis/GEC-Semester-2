@@ -43,8 +43,8 @@ private:
 	void CreateKoopa(Vector2D position, FACING direction);
 	void CreateFly(Vector2D position, FACING direction);
 
-	void CreateCoin(Vector2D position);
-	void UpdateCoins(float deltaTime);
+	void CreateCoin(Vector2D position, FACING facingDirection);
+	void UpdateCoins(float deltaTime, SDL_Event e);
 
 public:
 

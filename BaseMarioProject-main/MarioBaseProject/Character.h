@@ -43,6 +43,8 @@ public:
 	float m_jump_force;
 	float m_initial_jump_force;
 
+	bool m_is_in_level = false;
+
 	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, Vector2D size, FACING start_facing, float movement_speed, LevelMap* map);
 
 	~Character();

@@ -42,6 +42,20 @@ void Enemy::Update(float deltaTime, SDL_Event e)
 				}
 			}
 		}
+
+		//is the enemy off screen to the left / right?
+		if (m_position.x < 0.0f || m_position.x > SCREEN_WIDTH - (float)(m_size.x))
+		{
+			//check if the enemy is on the bottom row of tiles
+			if (m_position.y >= SCREEN_HEIGHT - ((TILE_HEIGHT * 2) + m_size.y))
+			{
+				Respawn();
+			}
+			else
+			{
+				FlipDirection();
+			}
+		}
 	}
 	else
 	{

@@ -13,7 +13,6 @@ protected:
 	int m_score_value = 100;
 
 public:
-	bool m_is_in_level = false;
 
 	Enemy(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, Vector2D size, FACING start_facing, float movement_speed, LevelMap* map);
 	~Enemy();

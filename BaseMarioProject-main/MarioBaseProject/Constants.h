@@ -48,7 +48,7 @@
 
 #define KOOPA_SPEED 96.0f
 
-#define KOOPA_SCORE_VALUE 100
+#define KOOPA_SCORE_VALUE 1000
 
 // Fly
 #define FLY_WIDTH 48
@@ -59,11 +59,11 @@
 
 #define FLY_FRAME_DELAY 0.2f
 
-#define FLY_SPEED 120.0f
+#define FLY_SPEED 80.0f
 #define FLY_JUMP_FORCE 450.0f
 #define FLY_JUMP_DELAY 1.0f
 
-#define FLY_SCORE_VALUE 200
+#define FLY_SCORE_VALUE 1200
 
 // Coin
 #define COIN_WIDTH 32
@@ -73,4 +73,4 @@
 #define COIN_SPRITE_HEIGHT 22
 #define COIN_FRAME_DELAY 0.2f
 
-#define COIN_POINT_VALUE 100
+#define COIN_POINT_VALUE 800

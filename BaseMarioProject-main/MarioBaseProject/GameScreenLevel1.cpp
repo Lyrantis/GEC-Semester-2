@@ -96,7 +96,7 @@ SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 		SDL_Quit();
 	}
 
-	UpdateCoins(deltaTime);
+	UpdateCoins(deltaTime, e);
 	UpdateEnemies(deltaTime, e);
 	UpdatePOWBlock(deltaTime);
 
@@ -110,19 +110,6 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 		int enemyIndexToDelete = -1;
 		for (unsigned int i = 0; i < m_enemies.size(); i++)
 		{
-			//is the enemy off screen to the left / right?
-			if (m_enemies[i]->GetPosition().x < 0.0f || m_enemies[i]->GetPosition().x > SCREEN_WIDTH - (float)(m_enemies[i]->GetSize().x))
-			{
-				//check if the enemy is on the bottom row of tiles
-				if (m_enemies[i]->GetPosition().y >= SCREEN_HEIGHT - ((TILE_HEIGHT * 2) + m_enemies[i]->GetSize().y))
-				{
-					m_enemies[i]->Respawn();
-				}
-				else
-				{
-					m_enemies[i]->FlipDirection();
-				}
-			}
 
 			m_enemies[i]->Update(deltaTime, e);
 
@@ -134,7 +121,19 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 
 					if (m_enemies[i]->GetInjured())
 					{
+						if (m_enemies[i]->GetPosition().x > SCREEN_WIDTH / 2)
+						{
+							std::cout << "Making Coin\n";
+							CreateCoin(Vector2D(SCREEN_WIDTH - (m_enemies[i]->GetSize().x), TILE_HEIGHT * 2), FACING_LEFT);
+						}
+						else
+						{
+							std::cout << "Making Coin\n";
+							CreateCoin(Vector2D(0, TILE_HEIGHT * 2), FACING_RIGHT);
+						}
+
 						m_enemies[i]->Die();
+
 						ScoreSystem::Instance()->AddMarioScore(m_enemies[i]->GetScoreValue());
 						m_marioScoreText->SetMessage(to_string(ScoreSystem::Instance()->GetMarioScore()));
 					}
@@ -148,6 +147,18 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 				{
 					if (m_enemies[i]->GetInjured())
 					{
+
+						if (m_enemies[i]->GetPosition().x > SCREEN_WIDTH / 2)
+						{
+							std::cout << "Making Coin\n";
+							CreateCoin(Vector2D(SCREEN_WIDTH - (m_enemies[i]->GetSize().x), TILE_HEIGHT * 2), FACING_LEFT);
+						}
+						else
+						{
+							std::cout << "Making Coin\n";
+							CreateCoin(Vector2D(0, TILE_HEIGHT * 2), FACING_RIGHT);
+						}
+
 						m_enemies[i]->Die();
 						ScoreSystem::Instance()->AddLuigiScore(m_enemies[i]->GetScoreValue());
 						m_luigiScoreText->SetMessage(to_string(ScoreSystem::Instance()->GetLuigiScore()));
@@ -224,19 +235,20 @@ void GameScreenLevel1::CreateFly(Vector2D position, FACING direction)
 	m_enemies.push_back(new FighterFly(m_renderer, "Images/Fighter_Fly.png", position, direction, m_level_map));
 }
 
-void GameScreenLevel1::CreateCoin(Vector2D position)
+void GameScreenLevel1::CreateCoin(Vector2D position, FACING facingDirection)
 {
-	m_coins.push_back(new Coin(m_renderer, "Images/Coin.png", position, m_level_map));
+	m_coins.push_back(new Coin(m_renderer, "Images/Coin.png", position, facingDirection, m_level_map));
 }
 
-void GameScreenLevel1::UpdateCoins(float deltaTime)
+void GameScreenLevel1::UpdateCoins(float deltaTime, SDL_Event e)
 {
+
 	if (!m_coins.empty())
 	{
 		int coinIndexToDelete = -1;
 		for (int i = 0; i < m_coins.size(); i++)
 		{
-			m_coins[i]->Update(deltaTime);
+			m_coins[i]->Update(deltaTime, e);
 
 			if (Collisions::Instance()->Circle(mario->GetCollisionRadius(), m_coins[i]->GetCollisionRadius()))
 			{
@@ -333,7 +345,7 @@ bool GameScreenLevel1::SetUpLevel()
 	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(100, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, 10), FACING_RIGHT, m_level_map);
 
-	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4));
+	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4), FACING_RIGHT);
 
 	m_enemies_to_spawn.push_back("Koopa");
 	m_enemies_to_spawn.push_back("Koopa");

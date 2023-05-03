@@ -53,7 +53,6 @@ void Character::Update(float deltaTime, SDL_Event e)
 
 	if (m_moving)
 	{
-
 		if (m_direction == FACING_LEFT)
 		{
 			MoveLeft(deltaTime);

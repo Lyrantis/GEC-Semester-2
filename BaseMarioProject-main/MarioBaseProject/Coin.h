@@ -13,10 +13,10 @@ private:
 
 public:
 
-	Coin(SDL_Renderer* renderer, std::string imagePath, Vector2D position, LevelMap* map);
+	Coin(SDL_Renderer* renderer, std::string imagePath, Vector2D position, FACING direction, LevelMap* map);
 	~Coin();
 
-	void Update(float deltaTime);
+	void Update(float deltaTime, SDL_Event e);
 
 	void Die();
 

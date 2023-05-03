@@ -4,7 +4,7 @@ bool MainMenuScreen::SetUpScreen()
 {
 	m_backgroundTexture = new Texture2D(m_renderer);
 
-	if (!m_backgroundTexture->LoadFromFile("Images/Intro_Screen.png", SCREEN_WIDTH, SCREEN_HEIGHT))
+	if (!m_backgroundTexture->LoadFromFile("Images/TitleScreen.png", SCREEN_WIDTH, SCREEN_HEIGHT))
 	{
 		std::cout << "Failed to load background texture!\n";
 		return false;
@@ -68,5 +68,5 @@ SCREENS MainMenuScreen::Update(float deltaTime, SDL_Event e)
 void MainMenuScreen::Render()
 {
 	m_backgroundTexture->Render(Vector2D(0.0f, 0.0f), SDL_FLIP_NONE);
-	m_text->Render((SCREEN_WIDTH / 2) - 100, 200);
+	m_text->Render((SCREEN_WIDTH / 2) - 250, 650);
 }
