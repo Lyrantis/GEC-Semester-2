@@ -2,14 +2,16 @@
 
 using namespace std;
 
-Game::Game() {
-
+Game::Game() 
+{
+	
 }
-Game::~Game() {
-
+Game::~Game() 
+{
 }
 
-bool Game::SDLInit() {
+bool Game::SDLInit() 
+{
 	//Setup SDL
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
@@ -66,7 +68,8 @@ bool Game::SDLInit() {
 	return true;
 
 }
-void Game::SDLClose() {
+void Game::SDLClose()
+{
 
 	//release the window
 	SDL_DestroyWindow(gameWindow);
@@ -89,7 +92,8 @@ void Game::SDLClose() {
 
 }
 
-void Game::GameInit() {
+void Game::GameInit() 
+{
 	
 	//check if sdl was setup correctly
 	if (!SDLInit())
@@ -100,9 +104,14 @@ void Game::GameInit() {
 	screenManager = new ScreenManager(gameRenderer, SCREEN_MAINMENU);
 	g_old_time = SDL_GetTicks();
 
+	leaderboardNames = new std::string[5];
+	leaderboardScores = new std::string[5];
+	ScoreSystem::Instance()->LoadHighscores(leaderboardNames, leaderboardScores);
+
 }
 
-void Game::GameLoop() {
+void Game::GameLoop() 
+{
 
 	GameInit();
 
@@ -117,7 +126,8 @@ void Game::GameLoop() {
 
 }
 
-bool Game::Update() {
+bool Game::Update() 
+{
 
 	new_time = SDL_GetTicks();
 

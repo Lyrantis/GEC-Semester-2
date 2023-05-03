@@ -91,14 +91,19 @@ SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 		luigi->Update(deltaTime, e);
 	}
 
+	UpdateCoins(deltaTime, e);
+	UpdateEnemies(deltaTime, e);
+	UpdatePOWBlock(deltaTime);
+
 	if (!mario->GetActive() && !luigi->GetActive())
 	{
 		SDL_Quit();
 	}
 
-	UpdateCoins(deltaTime, e);
-	UpdateEnemies(deltaTime, e);
-	UpdatePOWBlock(deltaTime);
+	if (m_enemies.size() == 0 && m_enemies_to_spawn.size() == 0)
+	{
+		//Win
+	}
 
 	return SCREEN_NONE;
 }

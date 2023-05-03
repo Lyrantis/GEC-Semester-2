@@ -34,22 +34,14 @@ private:
 
 	ScreenManager* screenManager;
 
-	const float fps = 60.0f;
-	const float fixedDeltaTime = 1000.0f / fps;
 	int frameCount = 0;
 	int secondsElapsed = 0;
 
 	Uint32 g_old_time;
 	Uint32 new_time;
 
-	map<string, bool> keyStates{
-		{"w", false},
-		{"a", false},
-		{"s", false},
-		{"d", false},
-		{"space", false},
-		{"shift", false}
-	};
+	std::string* leaderboardNames;
+	std::string* leaderboardScores;
 
 
 public:
@@ -72,7 +64,5 @@ public:
 	void GameLoop();
 	bool Update();
 	void Render();
-
-	void LoadMusic(string path);
 };
 

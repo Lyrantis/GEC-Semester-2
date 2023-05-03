@@ -1,4 +1,9 @@
 #pragma once
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <vector>
 
 class ScoreSystem
 {
@@ -16,6 +21,8 @@ public:
 
 	int GetMarioScore() { return m_MarioScore; }
 	int GetLuigiScore() { return m_LuigiScore; }
+
+	bool LoadHighscores(std::string* leaderboardNames, std::string* leaderboardScores);
 
 private:
 
