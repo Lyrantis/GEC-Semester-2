@@ -32,17 +32,13 @@ class Game
 
 private:
 
-	ScreenManager* screenManager;
+	ScreenManager* screenManager = nullptr;
 
 	int frameCount = 0;
 	int secondsElapsed = 0;
 
 	Uint32 g_old_time;
 	Uint32 new_time;
-
-	std::string* leaderboardNames;
-	std::string* leaderboardScores;
-
 
 public:
 

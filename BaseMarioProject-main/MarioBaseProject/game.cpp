@@ -1,3 +1,4 @@
+
 #include "game.h"
 
 using namespace std;
@@ -101,12 +102,10 @@ void Game::GameInit()
 		std::cout << "Init failed\n";
 		SDLClose();
 	}
+
+	ScoreSystem::Instance();
 	screenManager = new ScreenManager(gameRenderer, SCREEN_MAINMENU);
 	g_old_time = SDL_GetTicks();
-
-	leaderboardNames = new std::string[5];
-	leaderboardScores = new std::string[5];
-	ScoreSystem::Instance()->LoadHighscores(leaderboardNames, leaderboardScores);
 
 }
 

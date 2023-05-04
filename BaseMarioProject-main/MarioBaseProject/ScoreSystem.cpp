@@ -6,6 +6,17 @@ ScoreSystem::ScoreSystem()
 {
 	m_MarioScore = 0;
 	m_LuigiScore = 0;
+
+	leaderboardNames = new std::string[5];
+	leaderboardScores = new std::string[5];
+
+	LoadHighscores(leaderboardNames, leaderboardScores);
+
+	for (int i = 0; i < 5; i++)
+	{
+		std::cout << leaderboardNames[i] << " " << leaderboardScores[i] << std::endl;
+	}
+
 }
 
 ScoreSystem::~ScoreSystem()
@@ -37,7 +48,6 @@ bool ScoreSystem::LoadHighscores(std::string* leaderboardNames, std::string* lea
 	std::string currentLine;
 	std::string name;
 	std::string score;
-	std::stringstream lineStream(currentLine);
 	std::vector<std::string> namesIn;
 	std::vector<std::string> scoresIn;
 
@@ -45,17 +55,19 @@ bool ScoreSystem::LoadHighscores(std::string* leaderboardNames, std::string* lea
 	while (!fileIn.eof())
 	{
 		std::getline(fileIn, currentLine, '\n');
+		std::stringstream lineStream(currentLine);
 		std::getline(lineStream, name, ' ');
 		std::getline(lineStream, score, ' ');
 
-		namesIn.push_back(name);
-		scoresIn.push_back(score);
+
+		namesIn.push_back(name.c_str());
+		scoresIn.push_back(score.c_str());
 	}
 
 	for (int i = 0; i < namesIn.size(); i++)
 	{
-		leaderboardNames[i] = namesIn[i];
-		leaderboardScores[i] = scoresIn[i];
+		leaderboardNames[i] = namesIn[i].c_str();
+		leaderboardScores[i] = scoresIn[i].c_str();
 	}
 
 	for (int i = namesIn.size(); i < 5; i++)
@@ -64,6 +76,37 @@ bool ScoreSystem::LoadHighscores(std::string* leaderboardNames, std::string* lea
 		leaderboardScores[i] = "---";
 	}
 
-	
+	fileIn.close();
+
 	return true;
+}
+
+void ScoreSystem::UpdateLeaderBoard(std::string playerName, int playerScoreTotal)
+{
+	int playerPos = 0;
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (stoi(leaderboardScores[i]) > playerScoreTotal)
+		{
+			playerPos++;
+		}
+	}
+
+	if (playerPos < 5)
+	{
+		leaderboardNames[playerPos - 1] = playerName;
+		leaderboardScores[playerPos - 1] = std::to_string(playerScoreTotal);
+	}
+
+	std::ofstream fileOut;
+	fileOut.open("txt/LeaderBoard.txt");
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (leaderboardNames[i] != "---")
+		{
+			fileOut << leaderboardNames[i] << " " << leaderboardScores[i] << "\n";
+		}
+	}
 }

@@ -4,10 +4,14 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <string>
 
 class ScoreSystem
 {
 public:
+
+	std::string* leaderboardNames = nullptr;
+	std::string* leaderboardScores = nullptr;
 
 	~ScoreSystem();
 
@@ -23,6 +27,8 @@ public:
 	int GetLuigiScore() { return m_LuigiScore; }
 
 	bool LoadHighscores(std::string* leaderboardNames, std::string* leaderboardScores);
+
+	void UpdateLeaderBoard(std::string playerName, int playerScoreTotal);
 
 private:
 

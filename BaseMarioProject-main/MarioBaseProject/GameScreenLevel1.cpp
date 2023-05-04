@@ -57,6 +57,7 @@ void GameScreenLevel1::Render()
 
 	m_marioScoreText->Render(150, -6);
 	m_luigiScoreText->Render(840, -6);
+	m_highScoreText->Render(480, -6);
 
 	m_backgroundTexture->Render(Vector2D(0.0f, m_background_yPos), SDL_FLIP_NONE);
 }
@@ -378,6 +379,9 @@ bool GameScreenLevel1::SetUpLevel()
 
 	m_luigiScoreText = new TextRenderer(m_renderer);
 	m_luigiScoreText->LoadFont("Fonts/PixelEmulator.ttf", 32, "0", colour);
+
+	m_highScoreText = new TextRenderer(m_renderer);
+	m_highScoreText->LoadFont("Fonts/PixelEmulator.ttf", 32, ScoreSystem::Instance()->leaderboardScores[0], colour);
 
 	return true;
 }

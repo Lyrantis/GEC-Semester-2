@@ -10,23 +10,24 @@ class GameScreenLevel1 : public Screen
 
 private:
 
-	LevelMap* m_level_map;
+	LevelMap* m_level_map = nullptr;
 
-	Mario* mario;
-	Luigi* luigi;
+	Mario* mario = nullptr;
+	Luigi* luigi = nullptr;
 
 	vector<std::string> m_enemies_to_spawn;
 
 	vector<Enemy*> m_enemies;
 	vector<Coin*> m_coins;
 
-	PowBlock* m_pow_block;
+	PowBlock* m_pow_block = nullptr;
 
-	SoundEffect* m_player_spawn_sound;
-	SoundEffect* m_enemy_spawn_sound;
+	SoundEffect* m_player_spawn_sound = nullptr;
+	SoundEffect* m_enemy_spawn_sound = nullptr;
 
-	TextRenderer* m_marioScoreText;
-	TextRenderer* m_luigiScoreText;
+	TextRenderer* m_marioScoreText = nullptr;
+	TextRenderer* m_luigiScoreText = nullptr;
+	TextRenderer* m_highScoreText = nullptr;
 
 	float m_enemy_wave_time;
 
