@@ -106,7 +106,7 @@ SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 		return SCREEN_HIGHSCORES;
 	}
 
-	return SCREEN_HIGHSCORES;
+	return SCREEN_NONE;
 }
 
 void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)

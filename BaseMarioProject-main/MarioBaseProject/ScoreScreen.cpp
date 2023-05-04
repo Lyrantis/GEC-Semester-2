@@ -67,20 +67,67 @@ ScoreScreen::~ScoreScreen()
 
 SCREENS ScoreScreen::Update(float deltaTime, SDL_Event e)
 {
-	switch (e.type)
+	if (nameEntered)
 	{
-	case SDL_KEYDOWN:
+		timeToChange -= deltaTime;
 
-		switch (e.key.keysym.sym)
+		if (timeToChange <= 0.0f)
 		{
-		case SDLK_SPACE:
-			
-			if (!keyStates[4])
-			{
-				keyStates[4] = true;
+			return SCREEN_MAINMENU;
+		}
+	}
+	else
+	{
+		switch (e.type)
+		{
+		case SDL_KEYDOWN:
 
-				if (m_pointerPos == 28)
+			switch (e.key.keysym.sym)
+			{
+			case SDLK_SPACE:
+
+				if (!keyStates[4])
 				{
+					keyStates[4] = true;
+
+					if (m_pointerPos == 28)
+					{
+						if (m_name[currentLetter] == '-' && currentLetter > 0)
+						{
+							currentLetter--;
+							m_name[currentLetter] = '-';
+						}
+						else
+						{
+							m_name[currentLetter] = '-';
+						}
+
+						m_nameText->SetMessage(m_name);
+					}
+					else if (m_pointerPos == 29)
+					{
+						//Done
+					}
+					else
+					{
+						m_name[currentLetter] = characters[m_pointerPos];
+						m_nameText->SetMessage(m_name);
+
+						if (currentLetter < 2)
+						{
+							currentLetter++;
+						}
+					}
+				}
+
+				break;
+
+			case SDLK_BACKSPACE:
+
+				if (!keyStates[5])
+				{
+					keyStates[5] = true;
+
 					if (m_name[currentLetter] == '-' && currentLetter > 0)
 					{
 						currentLetter--;
@@ -92,199 +139,165 @@ SCREENS ScoreScreen::Update(float deltaTime, SDL_Event e)
 					}
 
 					m_nameText->SetMessage(m_name);
+
 				}
-				else if (m_pointerPos == 29)
+
+				break;
+
+			case SDLK_RETURN:
+
+				if (!keyStates[6])
 				{
+					keyStates[6] = true;
+					nameEntered = true;
+					ScoreSystem::Instance()->UpdateLeaderBoard(m_name);
+
+					for (int i = 0; i < 5; i++)
+					{
+						m_highScoreNameTexts[i]->SetMessage(ScoreSystem::Instance()->leaderboardNames[i]);
+						m_highScoreTexts[i]->SetMessage(ScoreSystem::Instance()->leaderboardScores[i]);
+					}
 					//Done
 				}
-				else
-				{
-					m_name[currentLetter] = characters[m_pointerPos];
-					m_nameText->SetMessage(m_name);
 
-					if (currentLetter < 2)
+				break;
+
+			case SDLK_w: case SDLK_UP:
+
+				if (!keyStates[0])
+				{
+					keyStates[0] = true;
+
+					m_pointerPos -= 10;
+					m_pointerRect->y -= m_letterWidth;
+
+					if (m_pointerPos < 0)
 					{
-						currentLetter++;
+						m_pointerPos += 30;
+						m_pointerRect->y += (3 * m_letterWidth);
 					}
 				}
+
+				break;
+
+			case SDLK_s: case SDLK_DOWN:
+
+				if (!keyStates[1])
+				{
+					keyStates[1] = true;
+
+					m_pointerPos += 10;
+					m_pointerRect->y += m_letterWidth;
+
+					if (m_pointerPos > 30)
+					{
+						m_pointerPos -= 30;
+						m_pointerRect->y -= (3 * m_letterWidth);
+					}
+				}
+
+				break;
+
+			case SDLK_a: case SDLK_LEFT:
+
+				if (!keyStates[2])
+				{
+					keyStates[2] = true;
+
+					if (m_pointerPos % 10 == 0)
+					{
+						m_pointerPos += 9;
+						m_pointerRect->x += (9 * m_letterWidth);
+					}
+					else
+					{
+						m_pointerPos--;
+						m_pointerRect->x -= m_letterWidth;
+					}
+				}
+
+
+				break;
+
+			case SDLK_d: case SDLK_RIGHT:
+
+				if (!keyStates[3])
+				{
+					keyStates[3] = true;
+
+					if ((m_pointerPos + 1) % 10 == 0)
+					{
+						m_pointerPos -= 9;
+						m_pointerRect->x -= (9 * m_letterWidth);
+					}
+					else
+					{
+						m_pointerPos++;
+						m_pointerRect->x += m_letterWidth;
+					}
+
+				}
+
+				break;
 			}
 
 			break;
 
-		case SDLK_BACKSPACE:
+		case SDL_KEYUP:
 
-			if (!keyStates[5])
+			switch (e.key.keysym.sym)
 			{
-				keyStates[5] = true;
+			case SDLK_SPACE:
 
-				if (m_name[currentLetter] == '-' && currentLetter > 0)
-				{
-					currentLetter--;
-					m_name[currentLetter] = '-';
-				}
-				else
-				{
-					m_name[currentLetter] = '-';
-				}
+				keyStates[4] = false;
 
-				m_nameText->SetMessage(m_name);
+				break;
 
-			}
-			
-			break;
+			case SDLK_BACKSPACE:
 
-		case SDLK_RETURN:
+				keyStates[5] = false;
 
-			if (!keyStates[6])
-			{
-				keyStates[6] = true;
-				std::cout << "HERE\n";
-				ScoreSystem::Instance()->UpdateLeaderBoard(m_name);
+				break;
 
-				for (int i = 0; i < 5; i++)
-				{
-					m_highScoreNameTexts[i]->SetMessage(ScoreSystem::Instance()->leaderboardNames[i]);
-					m_highScoreTexts[i]->SetMessage(ScoreSystem::Instance()->leaderboardScores[i]);
-				}
-				//Done
-			}
-			
-			break;
+			case SDLK_KP_ENTER:
 
-		case SDLK_w: case SDLK_UP:
+				keyStates[6] = false;
+				break;
 
-			if (!keyStates[0])
-			{
-				keyStates[0] = true;
+			case SDLK_w: case SDLK_UP:
 
-				m_pointerPos -= 10;
-				m_pointerRect->y -= m_letterWidth;
+				keyStates[0] = false;
 
-				if (m_pointerPos < 0)
-				{
-					m_pointerPos += 30;
-					m_pointerRect->y += (3 * m_letterWidth);
-				}
+				break;
+
+			case SDLK_s: case SDLK_DOWN:
+
+				keyStates[1] = false;
+
+				break;
+
+			case SDLK_a: case SDLK_LEFT:
+
+				keyStates[2] = false;
+
+				break;
+
+			case SDLK_d: case SDLK_RIGHT:
+
+				keyStates[3] = false;
+
+				break;
 			}
 
 			break;
 
-		case SDLK_s: case SDLK_DOWN:
-			
-			if (!keyStates[1])
-			{
-				keyStates[1] = true;
-
-				m_pointerPos += 10;
-				m_pointerRect->y += m_letterWidth;
-
-				if (m_pointerPos > 30)
-				{
-					m_pointerPos -= 30;
-					m_pointerRect->y -= (3 * m_letterWidth);
-				}
-			}
+		default:
 
 			break;
 
-		case SDLK_a: case SDLK_LEFT:
-			
-			if (!keyStates[2])
-			{
-				keyStates[2] = true;
-
-				if (m_pointerPos % 10 == 0)
-				{
-					m_pointerPos += 9;
-					m_pointerRect->x += (9 * m_letterWidth);
-				}
-				else
-				{
-					m_pointerPos--;
-					m_pointerRect->x -= m_letterWidth;
-				}
-			}
-			
-
-			break;
-
-		case SDLK_d: case SDLK_RIGHT:
-			
-			if (!keyStates[3])
-			{
-				keyStates[3] = true;
-
-				if ((m_pointerPos + 1) % 10 == 0)
-				{
-					m_pointerPos -= 9;
-					m_pointerRect->x -= (9 * m_letterWidth);
-				}
-				else
-				{
-					m_pointerPos++;
-					m_pointerRect->x += m_letterWidth;
-				}
-				
-			}
-
-			break;
 		}
-
-		break;
-
-	case SDL_KEYUP:
-
-		switch (e.key.keysym.sym)
-		{
-		case SDLK_SPACE:
-
-			keyStates[4] = false;
-
-			break;
-
-		case SDLK_BACKSPACE:
-
-			keyStates[5] = false;
-
-			break;
-
-		case SDLK_KP_ENTER:
-
-			keyStates[6] = false;
-			break;
-
-		case SDLK_w: case SDLK_UP:
-
-			keyStates[0] = false;
-
-			break;
-
-		case SDLK_s: case SDLK_DOWN:
-
-			keyStates[1] = false;
-
-			break;
-
-		case SDLK_a: case SDLK_LEFT:
-
-			keyStates[2] = false;
-
-			break;
-
-		case SDLK_d: case SDLK_RIGHT:
-
-			keyStates[3] = false;
-
-			break;
-		}
-
-		break;
-
-	default:
-
-		break;
-
 	}
+	
 	return SCREEN_NONE;
 }
 

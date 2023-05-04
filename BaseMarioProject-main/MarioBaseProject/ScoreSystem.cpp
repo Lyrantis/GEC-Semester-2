@@ -4,19 +4,13 @@ ScoreSystem* ScoreSystem::m_instance = nullptr;
 
 ScoreSystem::ScoreSystem()
 {
-	m_MarioScore = 300;
-	m_LuigiScore = 800;
+	m_MarioScore = 0;
+	m_LuigiScore = 0;
 
 	leaderboardNames = new std::string[5];
 	leaderboardScores = new std::string[5];
 
 	LoadHighscores(leaderboardNames, leaderboardScores);
-
-	for (int i = 0; i < 5; i++)
-	{
-		std::cout << leaderboardNames[i] << " " << leaderboardScores[i] << std::endl;
-	}
-
 }
 
 ScoreSystem::~ScoreSystem()

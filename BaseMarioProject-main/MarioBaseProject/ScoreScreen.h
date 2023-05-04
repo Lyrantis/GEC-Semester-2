@@ -23,7 +23,8 @@ private:
 	char characters[28] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'l', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '.', '-'};
 
 	bool keyStates[7] = { false };
-
+	bool nameEntered = false;
+	float timeToChange = 5.0f;
 
 public:
 
