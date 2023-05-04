@@ -5,7 +5,7 @@ ScoreSystem* ScoreSystem::m_instance = nullptr;
 ScoreSystem::ScoreSystem()
 {
 	m_MarioScore = 300;
-	m_LuigiScore = 700;
+	m_LuigiScore = 800;
 
 	leaderboardNames = new std::string[5];
 	leaderboardScores = new std::string[5];
@@ -88,7 +88,7 @@ void ScoreSystem::UpdateLeaderBoard(std::string playerName)
 
 	for (int i = 0; i < 5; i++)
 	{
-		if (stoi(leaderboardScores[i]) > playerScoreTotal)
+		if (stoi(leaderboardScores[i]) >= playerScoreTotal)
 		{
 			playerPos++;
 		}
@@ -96,8 +96,15 @@ void ScoreSystem::UpdateLeaderBoard(std::string playerName)
 
 	if (playerPos < 5)
 	{
-		leaderboardNames[playerPos - 1] = playerName;
-		leaderboardScores[playerPos - 1] = std::to_string(playerScoreTotal);
+
+		for (int i = 3; i > playerPos - 1; i--)
+		{
+			leaderboardNames[i + 1] = leaderboardNames[i];
+			leaderboardScores[i + 1] = leaderboardScores[i];
+		}
+
+		leaderboardNames[playerPos] = playerName;
+		leaderboardScores[playerPos] = std::to_string(playerScoreTotal);
 	}
 
 	std::ofstream fileOut;
@@ -107,7 +114,15 @@ void ScoreSystem::UpdateLeaderBoard(std::string playerName)
 	{
 		if (leaderboardNames[i] != "---")
 		{
-			fileOut << leaderboardNames[i] << " " << leaderboardScores[i] << "\n";
+			fileOut << leaderboardNames[i] << " " << leaderboardScores[i];
+
+			if (i != 4)
+			{
+				fileOut << "\n";
+			}
 		}
+
 	}
+
+	fileOut.close();
 }
