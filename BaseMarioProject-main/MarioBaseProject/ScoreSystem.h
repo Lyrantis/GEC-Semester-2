@@ -28,7 +28,7 @@ public:
 
 	bool LoadHighscores(std::string* leaderboardNames, std::string* leaderboardScores);
 
-	void UpdateLeaderBoard(std::string playerName, int playerScoreTotal);
+	void UpdateLeaderBoard(std::string playerName);
 
 private:
 

@@ -24,6 +24,5 @@ bool SoundEffect::Load(std::string path)
 
 void SoundEffect::Play(int loop)
 {
-	//Mix_Volume(-1, m_volume);
 	Mix_PlayChannel(-1, m_sound, loop);
 }

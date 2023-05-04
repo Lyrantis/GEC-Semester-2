@@ -1,8 +1,8 @@
 #include "ScreenManager.h"
-#include "Screen.h"
 #include "GameScreenLevel1.h"
 #include "MainMenuScreen.h"
-#include "ScreenManager.h"
+#include "ScoreScreen.h"
+
 
 ScreenManager::ScreenManager(SDL_Renderer* renderer, SCREENS startScreen) {
 
@@ -40,6 +40,7 @@ void ScreenManager::ChangeScreen(SCREENS newScreen) {
 
 	if (m_currentScreen != nullptr) {
 		delete m_currentScreen;
+		m_currentScreen = nullptr;
 	}
 
 	Screen* tempScreen;
@@ -63,6 +64,9 @@ void ScreenManager::ChangeScreen(SCREENS newScreen) {
 	case SCREEN_GAMEOVER:
 		break;
 	case SCREEN_HIGHSCORES:
+		tempScreen = new ScoreScreen(m_renderer);
+		m_currentScreen = (Screen*)tempScreen;
+		tempScreen = nullptr;
 		break;
 	default:
 		break;

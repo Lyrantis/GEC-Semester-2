@@ -98,15 +98,15 @@ SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 	if (!mario->GetActive() && !luigi->GetActive())
 	{
-		SDL_Quit();
+		return SCREEN_HIGHSCORES;
 	}
 
 	if (m_enemies.size() == 0 && m_enemies_to_spawn.size() == 0)
 	{
-		//Win
+		return SCREEN_HIGHSCORES;
 	}
 
-	return SCREEN_NONE;
+	return SCREEN_HIGHSCORES;
 }
 
 void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)

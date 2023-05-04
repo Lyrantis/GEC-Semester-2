@@ -4,8 +4,8 @@ ScoreSystem* ScoreSystem::m_instance = nullptr;
 
 ScoreSystem::ScoreSystem()
 {
-	m_MarioScore = 0;
-	m_LuigiScore = 0;
+	m_MarioScore = 300;
+	m_LuigiScore = 700;
 
 	leaderboardNames = new std::string[5];
 	leaderboardScores = new std::string[5];
@@ -81,8 +81,9 @@ bool ScoreSystem::LoadHighscores(std::string* leaderboardNames, std::string* lea
 	return true;
 }
 
-void ScoreSystem::UpdateLeaderBoard(std::string playerName, int playerScoreTotal)
+void ScoreSystem::UpdateLeaderBoard(std::string playerName)
 {
+	int playerScoreTotal = m_MarioScore + m_LuigiScore;
 	int playerPos = 0;
 
 	for (int i = 0; i < 5; i++)
