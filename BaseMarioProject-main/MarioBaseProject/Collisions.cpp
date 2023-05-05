@@ -34,13 +34,22 @@ bool Collisions::Circle(Circle2D circle1, Circle2D circle2) {
 
 bool Collisions::Box(Rect2D rect1, Rect2D rect2) {
 
-	if (rect1.x + (rect1.w / 2) > rect2.x &&
-		rect1.x + (rect1.w / 2) < rect2.x + rect2.w &&
-		rect1.y + (rect1.h / 2) > rect2.y &&
-		rect1.y + (rect1.h / 2) < rect2.y + rect2.h)
+	if (rect1.x + rect1.w < rect2.x)
 	{
-		return true;
+		return false;
 	}
-	return false;
+	if (rect1.x > rect2.x + rect2.w)
+	{
+		return false;
+	}
+	if (rect1.y + rect1.h < rect2.y)
+	{
+		return false;
+	}
+	if (rect1.y > rect2.h + rect2.y)
+	{
+		return false;
+	}
+	return true;
 
 }

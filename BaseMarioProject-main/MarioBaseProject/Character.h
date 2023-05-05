@@ -42,6 +42,9 @@ public:
 	bool m_is_jumping = false;
 	float m_jump_force;
 	float m_initial_jump_force;
+	bool m_should_fall = true;
+	bool m_isBumpingPlatform = false;
+	float m_bumpingTime;
 
 	bool m_is_in_level = false;
 

@@ -7,6 +7,7 @@ Player::Player(SDL_Renderer* renderer, std::string imagePath, Vector2D start_pos
 	m_jump_sound = new SoundEffect("Sounds/Jump.wav");
 	m_death_sound = new SoundEffect("Sounds/Death.wav");
 	m_animation_frame_delay = PLAYER_FRAME_DELAY;
+	m_bumpingTime = INITIAL_BUMP_TIME;
 }
 
 Player::~Player()
@@ -24,14 +25,31 @@ void Player::Jump(float deltaTime)
 
 void Player::Update(float deltaTime, SDL_Event e)
 {
-
 	if (m_alive)
 	{
 		Character::Update(deltaTime, e);
 
-		if (m_is_jumping)
+		if (m_is_jumping || m_isBumpingPlatform)
 		{
 			m_sprite_pos.x = m_sprite_size.x * 6;
+
+			if (m_isBumpingPlatform)
+			{
+				std::cout << m_bumpingTime << std::endl; 
+				m_should_fall = false;
+				m_bumpingTime -= deltaTime;
+
+				int leftX_position = (int)(m_position.x + 1) / TILE_WIDTH;
+				int rightX_position = (int)(m_position.x + (m_size.x - 1)) / TILE_WIDTH;
+				int head_position = (int)(m_position.y) / TILE_HEIGHT;
+
+				if (m_bumpingTime <= 0.0f || (m_current_level_map->GetTileAt(head_position, leftX_position) == 0 && m_current_level_map->GetTileAt(head_position, rightX_position) == 0))
+				{
+					m_isBumpingPlatform = false;
+					m_bumpingTime = INITIAL_BUMP_TIME;
+					m_should_fall = true;
+				}
+			}
 		}
 		else if (m_moving)
 		{
@@ -101,4 +119,5 @@ void Player::Die(float deltaTime)
 	Character::Die();
 	Character::Jump(deltaTime);
 	m_sprite_pos.y = m_sprite_size.y;
+	m_isBumpingPlatform = false;
 }

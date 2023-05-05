@@ -60,6 +60,8 @@ void GameScreenLevel1::Render()
 	m_highScoreText->Render(480, -6);
 
 	m_backgroundTexture->Render(Vector2D(0.0f, m_background_yPos), SDL_FLIP_NONE);
+
+	m_bumpedPlatformTexture->Render(Rect2D(0, 0, 32, 16), *m_bumpedPlatformRect, SDL_FLIP_NONE);
 }
 
 SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e) 
@@ -85,6 +87,16 @@ SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 	if (mario->GetActive())
 	{
 		mario->Update(deltaTime, e);
+	}
+
+	if (mario->m_isBumpingPlatform)
+	{
+		m_bumpedPlatformRect->x = mario->GetPosition().x - TILE_WIDTH;
+		m_bumpedPlatformRect->y = mario->GetPosition().y - (2 * TILE_HEIGHT) + 1;
+	}
+	else {
+		m_bumpedPlatformRect->x = -100;
+		m_bumpedPlatformRect->y = -100;
 	}
 	
 	if (luigi->GetActive())
@@ -116,7 +128,6 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 		int enemyIndexToDelete = -1;
 		for (unsigned int i = 0; i < m_enemies.size(); i++)
 		{
-
 			m_enemies[i]->Update(deltaTime, e);
 
 			//check to see if enemy collides with player
@@ -129,12 +140,10 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 					{
 						if (m_enemies[i]->GetPosition().x > SCREEN_WIDTH / 2)
 						{
-							std::cout << "Making Coin\n";
 							CreateCoin(Vector2D(SCREEN_WIDTH - (m_enemies[i]->GetSize().x), TILE_HEIGHT * 2), FACING_LEFT);
 						}
 						else
 						{
-							std::cout << "Making Coin\n";
 							CreateCoin(Vector2D(0, TILE_HEIGHT * 2), FACING_RIGHT);
 						}
 
@@ -156,12 +165,10 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 
 						if (m_enemies[i]->GetPosition().x > SCREEN_WIDTH / 2)
 						{
-							std::cout << "Making Coin\n";
 							CreateCoin(Vector2D(SCREEN_WIDTH - (m_enemies[i]->GetSize().x), TILE_HEIGHT * 2), FACING_LEFT);
 						}
 						else
 						{
-							std::cout << "Making Coin\n";
 							CreateCoin(Vector2D(0, TILE_HEIGHT * 2), FACING_RIGHT);
 						}
 
@@ -172,6 +179,19 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 					else
 					{
 						luigi->Die(deltaTime);
+					}
+				}
+				std::cout << m_enemies[i]->IsJumping() << std::endl;
+				if (Collisions::Instance()->Box(m_enemies[i]->GetCollisionBox(), *m_bumpedPlatformRect) && !m_enemies[i]->m_is_jumping)
+				{
+					std::cout << "HERE\n";
+					if (m_enemies[i]->GetInjured())
+					{
+						m_enemies[i]->FlipBackUp(deltaTime);
+					}
+					else
+					{
+						m_enemies[i]->TakeDamage(deltaTime);
 					}
 				}
 			}
@@ -339,6 +359,17 @@ bool GameScreenLevel1::SetUpLevel()
 		cout << "Failed to load background texture!\n";
 		return false;
 	}
+
+	m_bumpedPlatformTexture = new Texture2D(m_renderer);
+
+	if (!m_bumpedPlatformTexture->LoadFromFile("Images/BumpedPlatform.png", TILE_HEIGHT * 2, TILE_WIDTH * 4))
+	{
+		std::cout << "Failed to load Bumped Platform texture!\n";
+		return false;
+	}
+
+	m_bumpedPlatformRect = new Rect2D(-100, -100, TILE_WIDTH * 4, TILE_HEIGHT * 2);
+
 
 	SetLevelMap();
 

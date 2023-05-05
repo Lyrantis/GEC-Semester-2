@@ -50,12 +50,4 @@ void LevelMap::SetTileAt(unsigned int row, unsigned int column, unsigned int new
 
 	m_map[row][column] = new_value;
 	
-	for (int i = 0; i < MAP_HEIGHT; i++)
-	{
-		for (int j = 0; j < MAP_WIDTH; j++)
-		{
-			std::cout << m_map[i][j];
-		}
-		std::cout << std::endl;
-	}
 }

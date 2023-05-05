@@ -83,6 +83,7 @@ void Character::Update(float deltaTime, SDL_Event e)
 		
 		if ((m_current_level_map->GetTileAt(head_position, leftX_position) == 1) || (m_current_level_map->GetTileAt(head_position, rightX_position) == 1))
 		{
+			m_isBumpingPlatform = true;
 			CancelJump();
 		}
 
@@ -138,12 +139,15 @@ void Character::Jump(float deltaTime)
 
 void Character::AddGravity(float deltaTime) 
 {
-	m_position.y += GRAVITY_STRENGTH * deltaTime;
-
-	if (m_position.y >= SCREEN_HEIGHT - m_size.y) 
+	if (m_should_fall)
 	{
-		m_position.y = SCREEN_HEIGHT - m_size.y;
-		m_can_jump = true;
+		m_position.y += GRAVITY_STRENGTH * deltaTime;
+
+		if (m_position.y >= SCREEN_HEIGHT - m_size.y)
+		{
+			m_position.y = SCREEN_HEIGHT - m_size.y;
+			m_can_jump = true;
+		}
 	}
 }
 
