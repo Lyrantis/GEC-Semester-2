@@ -74,6 +74,10 @@ void Character::Update(float deltaTime, SDL_Event e)
 	{
 		//collided with ground so we can jump again
 		m_can_jump = true;
+		//footPosition % tileHeight = pixels to fix??
+
+		m_position.y = m_position.y - ((int)(m_position.y + m_size.y) % TILE_HEIGHT);
+
 	}
 	
 	if (m_is_jumping) 

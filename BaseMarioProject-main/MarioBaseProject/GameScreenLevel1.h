@@ -12,8 +12,11 @@ private:
 
 	LevelMap* m_level_map = nullptr;
 
-	Texture2D* m_bumpedPlatformTexture;
-	Rect2D* m_bumpedPlatformRect;
+	Texture2D* m_bumpedPlatformTexture = nullptr;
+	Rect2D* m_mario_bumped_platform_rect = nullptr;
+
+	Texture2D* m_luigi_bumped_platform_texture = nullptr;
+	Rect2D* m_luigi_bumped_platform_rect = nullptr;
 
 	Mario* mario = nullptr;
 	Luigi* luigi = nullptr;

@@ -61,7 +61,8 @@ void GameScreenLevel1::Render()
 
 	m_backgroundTexture->Render(Vector2D(0.0f, m_background_yPos), SDL_FLIP_NONE);
 
-	m_bumpedPlatformTexture->Render(Rect2D(0, 0, 32, 16), *m_bumpedPlatformRect, SDL_FLIP_NONE);
+	m_bumpedPlatformTexture->Render(Rect2D(0, 0, 32, 16), *m_mario_bumped_platform_rect, SDL_FLIP_NONE);
+	m_bumpedPlatformTexture->Render(Rect2D(0, 0, 32, 16), *m_luigi_bumped_platform_rect, SDL_FLIP_NONE);
 }
 
 SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e) 
@@ -91,17 +92,27 @@ SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 	if (mario->m_isBumpingPlatform)
 	{
-		m_bumpedPlatformRect->x = mario->GetPosition().x - TILE_WIDTH;
-		m_bumpedPlatformRect->y = mario->GetPosition().y - (2 * TILE_HEIGHT) + 1;
+		m_mario_bumped_platform_rect->x = mario->GetPosition().x - TILE_WIDTH;
+		m_mario_bumped_platform_rect->y = mario->GetPosition().y - (2 * TILE_HEIGHT) + 1;
 	}
 	else {
-		m_bumpedPlatformRect->x = -100;
-		m_bumpedPlatformRect->y = -100;
+		m_mario_bumped_platform_rect->x = -100;
+		m_mario_bumped_platform_rect->y = -100;
 	}
 	
 	if (luigi->GetActive())
 	{
 		luigi->Update(deltaTime, e);
+	}
+
+	if (luigi->m_isBumpingPlatform)
+	{
+		m_luigi_bumped_platform_rect->x = luigi ->GetPosition().x - TILE_WIDTH;
+		m_luigi_bumped_platform_rect->y = luigi->GetPosition().y - (2 * TILE_HEIGHT) + 1;
+	}
+	else {
+		m_luigi_bumped_platform_rect->x = -100;
+		m_luigi_bumped_platform_rect->y = -100;
 	}
 
 	UpdateCoins(deltaTime, e);
@@ -182,7 +193,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 					}
 				}
 				std::cout << m_enemies[i]->IsJumping() << std::endl;
-				if (Collisions::Instance()->Box(m_enemies[i]->GetCollisionBox(), *m_bumpedPlatformRect) && !m_enemies[i]->m_is_jumping)
+				if (Collisions::Instance()->Box(m_enemies[i]->GetCollisionBox(), *m_mario_bumped_platform_rect) && !m_enemies[i]->m_is_jumping)
 				{
 					std::cout << "HERE\n";
 					if (m_enemies[i]->GetInjured())
@@ -368,7 +379,8 @@ bool GameScreenLevel1::SetUpLevel()
 		return false;
 	}
 
-	m_bumpedPlatformRect = new Rect2D(-100, -100, TILE_WIDTH * 4, TILE_HEIGHT * 2);
+	m_mario_bumped_platform_rect = new Rect2D(-100, -100, TILE_WIDTH * 4, TILE_HEIGHT * 2);
+	m_luigi_bumped_platform_rect = new Rect2D(-100, -100, TILE_WIDTH * 4, TILE_HEIGHT * 2);
 
 
 	SetLevelMap();
@@ -380,7 +392,7 @@ bool GameScreenLevel1::SetUpLevel()
 	}
 
 	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(100, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
-	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, 10), FACING_RIGHT, m_level_map);
+	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 
 	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4), FACING_RIGHT);
 
