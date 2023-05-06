@@ -2,12 +2,8 @@
 
 Koopa::Koopa(SDL_Renderer* renderer, std::string imagePath, Vector2D start_position, FACING start_facing, LevelMap* map) : Enemy(renderer, imagePath, Vector2D(KOOPA_SPRITE_WIDTH, KOOPA_SPRITE_HEIGHT), start_position, Vector2D(KOOPA_WIDTH, KOOPA_HEIGHT), start_facing, KOOPA_SPEED, map)
 {
-	m_injured = false;
 	m_moving = true;
-	m_sprite_pos.x = 0.0f;
-
 	m_score_value = KOOPA_SCORE_VALUE;
-
 	m_animation_frame_delay = KOOPA_FRAME_DELAY;
 }
 
@@ -58,6 +54,8 @@ void Koopa::TakeDamage(float deltaTime)
 	Enemy::TakeDamage(deltaTime);
 
 	m_sprite_pos.x = m_sprite_size.x * 9;
+	m_sprite_pos.y = m_sprite_size.y;
+	m_movement_speed = KOOPA_SPEED * 1.5; 
 	m_animation_frame_delay = m_injured_time / 5;
 }
 

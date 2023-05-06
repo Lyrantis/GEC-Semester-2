@@ -205,12 +205,10 @@ void MainLevel::UpdateEnemies(float deltaTime, SDL_Event e)
 					{
 						if (m_enemies[i]->GetInjured())
 						{
-							std::cout << "FlipBack\n";
 							m_enemies[i]->FlipBackUp(deltaTime);
 						}
 						else
 						{
-							std::cout << "Hit\n";
 							m_enemies[i]->TakeDamage(deltaTime);
 						}
 					}
@@ -414,7 +412,7 @@ bool MainLevel::SetUpLevel()
 	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(100, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 
-	if (m_levelNum == 1)
+	if (m_levelNum > 0)
 	{
 		m_enemies_to_spawn.push_back("Fly");
 		m_enemies_to_spawn.push_back("Fly");
@@ -430,6 +428,18 @@ bool MainLevel::SetUpLevel()
 		m_enemies_to_spawn.push_back("Koopa");
 		m_enemies_to_spawn.push_back("Koopa");
 		m_enemies_to_spawn.push_back("Koopa");
+	}
+
+	switch (m_levelNum)
+	{
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	default:
+		break;
 	}
 
 	m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;

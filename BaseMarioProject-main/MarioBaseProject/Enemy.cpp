@@ -2,6 +2,9 @@
 
 Enemy::Enemy(SDL_Renderer* renderer, std::string imagePath, Vector2D imageSize, Vector2D start_position, Vector2D size, FACING start_facing, float movement_speed, LevelMap* map) : Character(renderer, imagePath, imageSize, start_position, size, start_facing, movement_speed, map)
 {
+	m_sprite_pos.x = 0.0f;
+	m_injured = false;
+
 	m_initial_jump_force = ENEMY_JUMP_FORCE;
 	m_death_sound = new SoundEffect("Sounds/EnemyDefeat.wav");
 }
@@ -104,8 +107,6 @@ void Enemy::FlipBackUp(float deltaTime)
 	m_moving = true;
 	m_injured = false;
 	m_sprite_pos.x = 0;
-	m_sprite_pos.y = m_sprite_size.y;
-	m_movement_speed = KOOPA_SPEED * 1.5;
 	Character::Jump(deltaTime);
 }
 
