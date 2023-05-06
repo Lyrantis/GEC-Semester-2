@@ -1,15 +1,16 @@
 #include "ScreenManager.h"
-#include "GameScreenLevel1.h"
+#include "MainLevel.h"
 #include "MainMenuScreen.h"
 #include "ScoreScreen.h"
 
 
-ScreenManager::ScreenManager(SDL_Renderer* renderer, SCREENS startScreen) {
+ScreenManager::ScreenManager(SDL_Renderer* renderer, int startScreen) {
 
 	m_renderer = renderer;
 	m_currentScreen = nullptr;
+	m_currentlevel = startScreen;
 
-	ChangeScreen(startScreen);
+	ChangeScreen();
 }
 
 ScreenManager::~ScreenManager() {
@@ -26,17 +27,31 @@ void ScreenManager::Render() {
 
 void ScreenManager::Update(float deltaTime,  SDL_Event e) {
 
-	SCREENS screenToChangeTo =  m_currentScreen->Update(deltaTime, e);
+	bool changeLevel =  m_currentScreen->Update(deltaTime, e);
 
-	if (screenToChangeTo != SCREEN_NONE)
+	if (changeLevel)
 	{
 		Mix_FreeMusic(m_currentScreen->m_music);
-		ChangeScreen(screenToChangeTo);
+
+		if (m_currentScreen->WinOrLose())
+		{
+			m_currentlevel++;
+		}
+		else
+		{
+			m_currentlevel = 3;
+		}
+		ChangeScreen();
 	}
 	
 }
 
-void ScreenManager::ChangeScreen(SCREENS newScreen) {
+void ScreenManager::ChangeScreen() {
+
+	if (m_currentlevel >= m_levelCount)
+	{
+		m_currentlevel = 0;
+	}
 
 	if (m_currentScreen != nullptr) {
 		delete m_currentScreen;
@@ -45,30 +60,34 @@ void ScreenManager::ChangeScreen(SCREENS newScreen) {
 
 	Screen* tempScreen;
 
-	switch (newScreen)
+	switch (m_currentlevel)
 	{
-	case SCREEN_INTRO:
-		break;
-	case SCREEN_MAINMENU:
+	case 0:
+
+		ScoreSystem::Instance()->ResetScores();
 		tempScreen = new MainMenuScreen(m_renderer);
 		m_currentScreen = (Screen*)tempScreen;
-		tempScreen = nullptr;
+
 		break;
-	case SCREEN_LEVEL1:
-		tempScreen = new GameScreenLevel1(m_renderer);
+
+	case 1: case 2:
+
+		tempScreen = new MainLevel(m_renderer, m_currentlevel);
 		m_currentScreen = (Screen*)tempScreen;
-		tempScreen = nullptr;
+		
 		break;
-	case SCREEN_LEVEL2:
-		break;
-	case SCREEN_GAMEOVER:
-		break;
-	case SCREEN_HIGHSCORES:
+
+	case 3:
+
 		tempScreen = new ScoreScreen(m_renderer);
 		m_currentScreen = (Screen*)tempScreen;
-		tempScreen = nullptr;
+
 		break;
+
 	default:
+
 		break;
 	}
+
+	tempScreen = nullptr;
 }

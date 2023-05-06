@@ -104,7 +104,7 @@ void Game::GameInit()
 	}
 
 	ScoreSystem::Instance();
-	screenManager = new ScreenManager(gameRenderer, SCREEN_MAINMENU);
+	screenManager = new ScreenManager(gameRenderer, 0);
 	g_old_time = SDL_GetTicks();
 
 }

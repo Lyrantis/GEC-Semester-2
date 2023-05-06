@@ -65,7 +65,7 @@ ScoreScreen::~ScoreScreen()
 
 }
 
-SCREENS ScoreScreen::Update(float deltaTime, SDL_Event e)
+bool ScoreScreen::Update(float deltaTime, SDL_Event e)
 {
 	if (nameEntered)
 	{
@@ -73,7 +73,7 @@ SCREENS ScoreScreen::Update(float deltaTime, SDL_Event e)
 
 		if (timeToChange <= 0.0f)
 		{
-			return SCREEN_MAINMENU;
+			return true;
 		}
 	}
 	else
@@ -298,7 +298,7 @@ SCREENS ScoreScreen::Update(float deltaTime, SDL_Event e)
 		}
 	}
 	
-	return SCREEN_NONE;
+	return false;
 }
 
 void ScoreScreen::Render()

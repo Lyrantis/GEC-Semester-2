@@ -27,6 +27,12 @@ ScoreSystem* ScoreSystem::Instance()
 	return m_instance;
 }
 
+void ScoreSystem::ResetScores()
+{
+	m_MarioScore = 0;
+	m_LuigiScore = 0;
+}
+
 bool ScoreSystem::LoadHighscores(std::string* leaderboardNames, std::string* leaderboardScores)
 {
 	std::ifstream fileIn;

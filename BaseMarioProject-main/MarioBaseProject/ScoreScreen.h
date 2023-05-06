@@ -31,6 +31,6 @@ public:
 	ScoreScreen(SDL_Renderer* renderer);
 	~ScoreScreen();
 
-	SCREENS Update(float deltaTime, SDL_Event e);
+	bool Update(float deltaTime, SDL_Event e);
 	void Render();
 };

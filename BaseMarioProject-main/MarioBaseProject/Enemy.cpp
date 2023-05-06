@@ -13,9 +13,9 @@ Enemy::~Enemy()
 
 void Enemy::TakeDamage(float deltaTime)
 {
-	if (!m_is_jumping)
+	if (m_i_frames <= 0.0f)
 	{
-		m_sprite_pos.x = m_sprite_size.x;
+		m_i_frames = ENEMY_IFRAMES;
 		m_injured = true;
 		m_moving = false;
 		m_injured_time = INJURED_TIME;
@@ -47,13 +47,23 @@ void Enemy::Update(float deltaTime, SDL_Event e)
 		if (m_position.x < 0.0f || m_position.x > SCREEN_WIDTH - (float)(m_size.x))
 		{
 			//check if the enemy is on the bottom row of tiles
-			if (m_position.y >= SCREEN_HEIGHT - ((TILE_HEIGHT * 2) + m_size.y))
+			if (m_position.y >= TILE_HEIGHT * 20)
 			{
 				Respawn();
 			}
 			else
 			{
 				FlipDirection();
+			}
+		}
+
+		if (m_i_frames > 0)
+		{
+			m_i_frames -= deltaTime;
+			
+			if (m_i_frames < 0.0f)
+			{
+				m_i_frames = 0.0f;
 			}
 		}
 	}
@@ -80,6 +90,8 @@ void Enemy::Update(float deltaTime, SDL_Event e)
 
 void Enemy::FlipBackUp(float deltaTime)
 {
+	m_i_frames = ENEMY_IFRAMES;
+
 	if (m_direction == FACING_LEFT)
 	{
 		m_direction = FACING_RIGHT;
@@ -92,6 +104,8 @@ void Enemy::FlipBackUp(float deltaTime)
 	m_moving = true;
 	m_injured = false;
 	m_sprite_pos.x = 0;
+	m_sprite_pos.y = m_sprite_size.y;
+	m_movement_speed = KOOPA_SPEED * 1.5;
 	Character::Jump(deltaTime);
 }
 

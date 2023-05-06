@@ -74,7 +74,6 @@ void Character::Update(float deltaTime, SDL_Event e)
 	{
 		//collided with ground so we can jump again
 		m_can_jump = true;
-		//footPosition % tileHeight = pixels to fix??
 
 		m_position.y = m_position.y - ((int)(m_position.y + m_size.y) % TILE_HEIGHT);
 
@@ -83,7 +82,15 @@ void Character::Update(float deltaTime, SDL_Event e)
 	if (m_is_jumping) 
 	{
 		m_position.y -= m_jump_force * deltaTime;
-		m_jump_force -= JUMP_FORCE_DECREMENT * deltaTime;
+		if (m_can_fly)
+		{
+			m_jump_force -= (JUMP_FORCE_DECREMENT / 2) * deltaTime;
+		}
+		else
+		{
+			m_jump_force -= JUMP_FORCE_DECREMENT * deltaTime;
+		}
+		
 		
 		if ((m_current_level_map->GetTileAt(head_position, leftX_position) == 1) || (m_current_level_map->GetTileAt(head_position, rightX_position) == 1))
 		{
@@ -137,8 +144,9 @@ void Character::MoveRight(float deltaTime)
 
 void Character::Jump(float deltaTime) 
 {
-	m_jump_force = m_initial_jump_force;
+	m_jump_force = m_initial_jump_force; 
 	m_is_jumping = true;
+	m_is_grounded = false;
 }
 
 void Character::AddGravity(float deltaTime) 

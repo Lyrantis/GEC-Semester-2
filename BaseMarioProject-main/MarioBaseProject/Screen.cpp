@@ -15,7 +15,7 @@ Screen::~Screen() {
 
 void Screen::Render(){};
 
-SCREENS Screen::Update(float deltaTime, SDL_Event e) { return SCREEN_NONE; };
+bool Screen::Update(float deltaTime, SDL_Event e) { return false; };
 
 void Screen::LoadMusic(string path)
 {

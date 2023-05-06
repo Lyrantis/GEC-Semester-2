@@ -1,4 +1,4 @@
-#include "GameScreenLevel1.h"
+#include "MainLevel.h"
 #include <iostream>
 #include <fstream>
 #include "Texture2D.h"
@@ -6,14 +6,15 @@
 
 using namespace std;
 
-GameScreenLevel1::GameScreenLevel1(SDL_Renderer* renderer) : Screen(renderer) 
+MainLevel::MainLevel(SDL_Renderer* renderer, int levelNum) : Screen(renderer) 
 {
 	m_level_map = nullptr;
+	m_levelNum = levelNum;
 	SetUpLevel();
 
 }
 
-GameScreenLevel1::~GameScreenLevel1() 
+MainLevel::~MainLevel() 
 {
 	delete mario;
 	mario = nullptr;
@@ -38,7 +39,7 @@ GameScreenLevel1::~GameScreenLevel1()
 	m_luigiScoreText = nullptr;
 }
 
-void GameScreenLevel1::Render() 
+void MainLevel::Render() 
 {
 	for (int i = 0; i < m_enemies.size(); i++)
 	{
@@ -65,7 +66,7 @@ void GameScreenLevel1::Render()
 	m_bumpedPlatformTexture->Render(Rect2D(0, 0, 32, 16), *m_luigi_bumped_platform_rect, SDL_FLIP_NONE);
 }
 
-SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e) 
+bool MainLevel::Update(float deltaTime, SDL_Event e) 
 {
 	/*
 	 * do the screen shake if required
@@ -92,8 +93,11 @@ SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 	if (mario->m_isBumpingPlatform)
 	{
-		m_mario_bumped_platform_rect->x = mario->GetPosition().x - TILE_WIDTH;
-		m_mario_bumped_platform_rect->y = mario->GetPosition().y - (2 * TILE_HEIGHT) + 1;
+		if (m_level_map->GetTileAt((int)(mario->GetPosition().y) / TILE_HEIGHT, (int)(mario->GetPosition().x - TILE_WIDTH) / TILE_WIDTH) && m_level_map->GetTileAt(((int)mario->GetPosition().y) / TILE_HEIGHT, (int)(mario->GetPosition().x - TILE_WIDTH + 100) / TILE_WIDTH))
+		{
+			m_mario_bumped_platform_rect->x = mario->GetPosition().x - TILE_WIDTH;
+			m_mario_bumped_platform_rect->y = mario->GetPosition().y - (2 * TILE_HEIGHT) + 1;
+		}
 	}
 	else {
 		m_mario_bumped_platform_rect->x = -100;
@@ -107,8 +111,11 @@ SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 	if (luigi->m_isBumpingPlatform)
 	{
-		m_luigi_bumped_platform_rect->x = luigi ->GetPosition().x - TILE_WIDTH;
-		m_luigi_bumped_platform_rect->y = luigi->GetPosition().y - (2 * TILE_HEIGHT) + 1;
+		if (m_level_map->GetTileAt((int)(luigi->GetPosition().y) / TILE_HEIGHT, (int)(luigi->GetPosition().x - TILE_WIDTH) / TILE_WIDTH) && m_level_map->GetTileAt(((int)luigi->GetPosition().y) / TILE_HEIGHT, (int)(luigi->GetPosition().x - TILE_WIDTH + 100) / TILE_WIDTH))
+		{
+			m_luigi_bumped_platform_rect->x = luigi->GetPosition().x - TILE_WIDTH;
+			m_luigi_bumped_platform_rect->y = luigi->GetPosition().y - (2 * TILE_HEIGHT) + 1;
+		}
 	}
 	else {
 		m_luigi_bumped_platform_rect->x = -100;
@@ -121,18 +128,18 @@ SCREENS GameScreenLevel1::Update(float deltaTime, SDL_Event e)
 
 	if (!mario->GetActive() && !luigi->GetActive())
 	{
-		return SCREEN_HIGHSCORES;
+		return true;
 	}
 
 	if (m_enemies.size() == 0 && m_enemies_to_spawn.size() == 0)
 	{
-		return SCREEN_HIGHSCORES;
+		return true;
 	}
 
-	return SCREEN_NONE;
+	return false;
 }
 
-void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
+void MainLevel::UpdateEnemies(float deltaTime, SDL_Event e)
 {
 	if (!m_enemies.empty())
 	{
@@ -192,17 +199,20 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 						luigi->Die(deltaTime);
 					}
 				}
-				std::cout << m_enemies[i]->IsJumping() << std::endl;
-				if (Collisions::Instance()->Box(m_enemies[i]->GetCollisionBox(), *m_mario_bumped_platform_rect) && !m_enemies[i]->m_is_jumping)
+				if (Collisions::Instance()->Box(m_enemies[i]->GetCollisionBox(), *m_mario_bumped_platform_rect) || (Collisions::Instance()->Box(m_enemies[i]->GetCollisionBox(), *m_luigi_bumped_platform_rect)))
 				{
-					std::cout << "HERE\n";
-					if (m_enemies[i]->GetInjured())
+					if (m_enemies[i]->m_i_frames == 0.0f)
 					{
-						m_enemies[i]->FlipBackUp(deltaTime);
-					}
-					else
-					{
-						m_enemies[i]->TakeDamage(deltaTime);
+						if (m_enemies[i]->GetInjured())
+						{
+							std::cout << "FlipBack\n";
+							m_enemies[i]->FlipBackUp(deltaTime);
+						}
+						else
+						{
+							std::cout << "Hit\n";
+							m_enemies[i]->TakeDamage(deltaTime);
+						}
 					}
 				}
 			}
@@ -228,12 +238,11 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 	{
 		m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 
-		int enemiesSpawned = 0;
-		while (m_enemies_to_spawn.size() > 0 && enemiesSpawned < 2)
+		if (m_enemies_to_spawn.size() > 0)
 		{
 			string enemyType = m_enemies_to_spawn[0];
 
-			if (enemiesSpawned == 0)
+			if (sideToSpawn == 0)
 			{
 				if (enemyType == "Koopa")
 				{
@@ -243,6 +252,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 				{
 					CreateFly(Vector2D(0, TILE_HEIGHT * 2), FACING_RIGHT);
 				}
+				sideToSpawn--;
 			}
 			else
 			{
@@ -254,30 +264,30 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event e)
 				{
 					CreateFly(Vector2D(SCREEN_WIDTH - FLY_WIDTH, TILE_HEIGHT * 2), FACING_LEFT);
 				}
+				sideToSpawn++;
 			}
 
 			m_enemies_to_spawn.erase(m_enemies_to_spawn.begin());
-			enemiesSpawned++;
 		}
 	}
 }
 
-void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction)
+void MainLevel::CreateKoopa(Vector2D position, FACING direction)
 {
 	m_enemies.push_back(new Koopa(m_renderer, "Images/ShellCreeper.png", position, direction, m_level_map));
 }
 
-void GameScreenLevel1::CreateFly(Vector2D position, FACING direction)
+void MainLevel::CreateFly(Vector2D position, FACING direction)
 {
 	m_enemies.push_back(new FighterFly(m_renderer, "Images/Fighter_Fly.png", position, direction, m_level_map));
 }
 
-void GameScreenLevel1::CreateCoin(Vector2D position, FACING facingDirection)
+void MainLevel::CreateCoin(Vector2D position, FACING facingDirection)
 {
 	m_coins.push_back(new Coin(m_renderer, "Images/Coin.png", position, facingDirection, m_level_map));
 }
 
-void GameScreenLevel1::UpdateCoins(float deltaTime, SDL_Event e)
+void MainLevel::UpdateCoins(float deltaTime, SDL_Event e)
 {
 
 	if (!m_coins.empty())
@@ -300,6 +310,12 @@ void GameScreenLevel1::UpdateCoins(float deltaTime, SDL_Event e)
 				m_coins[i]->Die();
 			}
 
+			if ((Collisions::Instance()->Box(m_coins[i]->GetCollisionBox(), *m_mario_bumped_platform_rect) || (Collisions::Instance()->Box(m_coins[i]->GetCollisionBox(), *m_luigi_bumped_platform_rect)) && !m_coins[i]->m_is_jumping))
+			{
+				m_coins[i]->FlipDirection();
+				m_coins[i]->Jump(deltaTime);
+			}
+
 			if (m_coins[i]->GetCollected())
 			{
 				coinIndexToDelete = i;
@@ -313,7 +329,7 @@ void GameScreenLevel1::UpdateCoins(float deltaTime, SDL_Event e)
 	}
 }
 
-void GameScreenLevel1::UpdatePOWBlock(float deltaTime) 
+void MainLevel::UpdatePOWBlock(float deltaTime) 
 {
 	Vector2D marioPos = mario->GetPosition();
 	Vector2D marioSize = mario->GetSize();
@@ -361,11 +377,13 @@ void GameScreenLevel1::UpdatePOWBlock(float deltaTime)
 	}
 }
 
-bool GameScreenLevel1::SetUpLevel() 
+bool MainLevel::SetUpLevel() 
 {
 	m_backgroundTexture = new Texture2D(m_renderer);
 
-	if (!m_backgroundTexture->LoadFromFile("Images/Level1.png", SCREEN_WIDTH, SCREEN_HEIGHT)) 
+	std::string backgroundPath = "Images/Level" + to_string(m_levelNum) + ".png";
+
+	if (!m_backgroundTexture->LoadFromFile(backgroundPath, SCREEN_WIDTH, SCREEN_HEIGHT)) 
 	{
 		cout << "Failed to load background texture!\n";
 		return false;
@@ -373,7 +391,9 @@ bool GameScreenLevel1::SetUpLevel()
 
 	m_bumpedPlatformTexture = new Texture2D(m_renderer);
 
-	if (!m_bumpedPlatformTexture->LoadFromFile("Images/BumpedPlatform.png", TILE_HEIGHT * 2, TILE_WIDTH * 4))
+	std::string bumpedPath = "Images/BumpedPlatform" + to_string(m_levelNum) + ".png";
+
+	if (!m_bumpedPlatformTexture->LoadFromFile(bumpedPath, TILE_HEIGHT * 2, TILE_WIDTH * 4))
 	{
 		std::cout << "Failed to load Bumped Platform texture!\n";
 		return false;
@@ -394,18 +414,23 @@ bool GameScreenLevel1::SetUpLevel()
 	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(100, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 
-	CreateCoin(Vector2D(TILE_WIDTH * 7,TILE_HEIGHT * 4), FACING_RIGHT);
-
-	m_enemies_to_spawn.push_back("Koopa");
-	m_enemies_to_spawn.push_back("Koopa");
-	m_enemies_to_spawn.push_back("Koopa");
-	m_enemies_to_spawn.push_back("Koopa");
-	m_enemies_to_spawn.push_back("Koopa");
-	m_enemies_to_spawn.push_back("Koopa");
-	m_enemies_to_spawn.push_back("Fly");
-	m_enemies_to_spawn.push_back("Fly");
-	m_enemies_to_spawn.push_back("Koopa");
-	m_enemies_to_spawn.push_back("Koopa");
+	if (m_levelNum == 1)
+	{
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+	}
 
 	m_enemy_wave_time = INITIAL_ENEMY_WAVE_TIME;
 
@@ -418,10 +443,10 @@ bool GameScreenLevel1::SetUpLevel()
 	colour.r = 255; colour.g = 255; colour.b = 255; colour.a = 255;
 
 	m_marioScoreText = new TextRenderer(m_renderer);
-	m_marioScoreText->LoadFont("Fonts/PixelEmulator.ttf", 32, "0", colour);
+	m_marioScoreText->LoadFont("Fonts/PixelEmulator.ttf", 32, to_string(ScoreSystem::Instance()->GetMarioScore()), colour);
 
 	m_luigiScoreText = new TextRenderer(m_renderer);
-	m_luigiScoreText->LoadFont("Fonts/PixelEmulator.ttf", 32, "0", colour);
+	m_luigiScoreText->LoadFont("Fonts/PixelEmulator.ttf", 32, to_string(ScoreSystem::Instance()->GetLuigiScore()), colour);
 
 	m_highScoreText = new TextRenderer(m_renderer);
 	m_highScoreText->LoadFont("Fonts/PixelEmulator.ttf", 32, ScoreSystem::Instance()->leaderboardScores[0], colour);
@@ -429,7 +454,7 @@ bool GameScreenLevel1::SetUpLevel()
 	return true;
 }
 
-void GameScreenLevel1::SetLevelMap() 
+void MainLevel::SetLevelMap() 
 {
 
 	ifstream mapFile;
@@ -461,7 +486,7 @@ void GameScreenLevel1::SetLevelMap()
 	m_level_map = new LevelMap(map);
 }
 
-void GameScreenLevel1::DoScreenShake(float deltaTime) 
+void MainLevel::DoScreenShake(float deltaTime) 
 {
 	m_screenshake = true;
 	m_shake_time = SHAKE_DURATION;
@@ -469,6 +494,19 @@ void GameScreenLevel1::DoScreenShake(float deltaTime)
 
 	for (int i = 0; i < m_enemies.size(); i++)
 	{
-		m_enemies[i]->TakeDamage(deltaTime);
+		if (!m_enemies[i]->IsJumping())
+		{
+			m_enemies[i]->TakeDamage(deltaTime);
+		}
 	}
+}
+
+bool MainLevel::WinOrLose()
+{
+	if (mario->GetAlive() || luigi->GetAlive())
+	{
+		return true;
+	}
+
+	return false;
 }

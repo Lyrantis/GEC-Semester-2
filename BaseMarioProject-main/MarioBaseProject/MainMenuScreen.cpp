@@ -40,7 +40,7 @@ MainMenuScreen::~MainMenuScreen()
 	m_text = nullptr;
 }
 
-SCREENS MainMenuScreen::Update(float deltaTime, SDL_Event e)
+bool MainMenuScreen::Update(float deltaTime, SDL_Event e)
 {
 	switch (e.type)
 	{
@@ -49,7 +49,7 @@ SCREENS MainMenuScreen::Update(float deltaTime, SDL_Event e)
 		switch (e.key.keysym.sym)
 		{
 		case SDLK_SPACE:
-			return SCREEN_LEVEL1;
+			return true;
 			break;
 
 		case SDLK_p:
@@ -62,7 +62,7 @@ SCREENS MainMenuScreen::Update(float deltaTime, SDL_Event e)
 		break;
 		
 	}
-	return SCREEN_NONE;
+	return false;
 }
 
 void MainMenuScreen::Render()

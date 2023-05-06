@@ -26,7 +26,9 @@ public:
 	~Screen();
 
 	virtual void Render();
-	virtual SCREENS Update(float deltaTime, SDL_Event e);
+	virtual bool Update(float deltaTime, SDL_Event e);
+
+	virtual bool WinOrLose() { return true; }
 
 	void LoadMusic(std::string path);
 

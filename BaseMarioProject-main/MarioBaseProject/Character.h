@@ -33,6 +33,7 @@ protected:
 	bool m_injured = false;
 	bool m_is_grounded = false;
 
+	bool m_can_fly = false;
 	bool m_active = true;
 
 public:
@@ -41,7 +42,7 @@ public:
 	bool m_can_jump = false;
 	bool m_is_jumping = false;
 	float m_jump_force;
-	float m_initial_jump_force;
+	float m_initial_jump_force = 500.0f;
 	bool m_should_fall = true;
 	bool m_isBumpingPlatform = false;
 	float m_bumpingTime;
@@ -76,6 +77,7 @@ public:
 	bool GetInjured() { return m_injured; }
 	bool GetAlive() { return m_alive; }
 	bool GetActive() { return m_active; }
+	bool GetGrounded() { return m_is_grounded; }
 
 	void FlipDirection();
 	virtual void Respawn() {};

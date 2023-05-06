@@ -8,6 +8,7 @@ FighterFly::FighterFly(SDL_Renderer* renderer, std::string imagePath, Vector2D s
 	m_score_value = FLY_SCORE_VALUE;
 
 	m_animation_frame_delay = FLY_FRAME_DELAY;
+	m_can_fly = true;
 }
 
 FighterFly::~FighterFly()
@@ -25,6 +26,7 @@ void FighterFly::Update(float deltaTime, SDL_Event e)
 		{
 			if (m_is_grounded)
 			{
+				m_sprite_pos.x = 0.0f;
 				m_moving = false;
 				m_jump_delay -= deltaTime;
 
@@ -38,7 +40,25 @@ void FighterFly::Update(float deltaTime, SDL_Event e)
 			else if (m_is_jumping)
 			{
 				m_moving = true;
+				m_animation_frame_delay -= deltaTime;
+
+				if (m_animation_frame_delay <= 0)
+				{
+					m_animation_frame_delay = FLY_FRAME_DELAY;
+					m_sprite_pos.x += m_sprite_size.x;
+
+					if (m_sprite_pos.x > m_sprite_size.x * 5)
+					{
+						m_sprite_pos.x = m_sprite_size.x;
+					}
+				}
 			}
 		}
 	}
+}
+
+void FighterFly::TakeDamage(float deltaTime)
+{
+	m_sprite_pos.x = m_sprite_size.x * 6;
+	Enemy::TakeDamage(deltaTime);
 }

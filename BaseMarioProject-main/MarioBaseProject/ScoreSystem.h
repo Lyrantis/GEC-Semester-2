@@ -23,6 +23,8 @@ public:
 	void RemoveMarioScore(int scoreToRemove) { m_MarioScore -= scoreToRemove; }
 	void RemoveLuigiScore(int scoreToRemove) { m_LuigiScore -= scoreToRemove; }
 
+	void ResetScores();
+
 	int GetMarioScore() { return m_MarioScore; }
 	int GetLuigiScore() { return m_LuigiScore; }
 

@@ -15,7 +15,7 @@ public:
 	MainMenuScreen(SDL_Renderer* renderer);
 	~MainMenuScreen();
 
-	SCREENS Update(float deltaTime, SDL_Event e);
+	bool Update(float deltaTime, SDL_Event e);
 	void Render();
 };
 

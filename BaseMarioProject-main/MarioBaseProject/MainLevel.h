@@ -1,15 +1,17 @@
 #pragma once
 #include "game.h"
-#include "GameScreen.h"
+#include "Screen.h"
 #include <vector>
 
 class Texture2D;
 class PowBlock;
 
-class GameScreenLevel1 : public GameScreen
+class MainLevel : public Screen
 {
 
 private:
+
+	int m_levelNum;
 
 	LevelMap* m_level_map = nullptr;
 
@@ -36,6 +38,7 @@ private:
 	TextRenderer* m_highScoreText = nullptr;
 
 	float m_enemy_wave_time;
+	int sideToSpawn = 0;
 
 	bool m_screenshake;
 	float m_shake_time;
@@ -53,12 +56,14 @@ private:
 	void CreateCoin(Vector2D position, FACING facingDirection);
 	void UpdateCoins(float deltaTime, SDL_Event e);
 
+	bool WinOrLose();
+
 public:
 
-	GameScreenLevel1(SDL_Renderer* renderer);
-	~GameScreenLevel1();
+	MainLevel(SDL_Renderer* renderer, int levelNum = 1);
+	~MainLevel();
 
 	void Render() override;
-	SCREENS Update(float deltaTime, SDL_Event e) override;
+	bool Update(float deltaTime, SDL_Event e) override;
 	void UpdatePOWBlock(float deltaTime);
 };

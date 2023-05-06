@@ -17,7 +17,7 @@
 #define GRAVITY_STRENGTH 260.0f
 #define INITIAL_JUMP_FORCE 600.0f
 #define JUMP_FORCE_DECREMENT 400.0f
-#define INITIAL_BUMP_TIME 0.5f
+#define INITIAL_BUMP_TIME 0.2f
 
 // Player
 #define PLAYER_WIDTH (TILE_WIDTH * 2)
@@ -32,11 +32,12 @@
 #define PLAYER_JUMP_FORCE 700.0f
 
 // Level 
-#define INITIAL_ENEMY_WAVE_TIME 10.0f
+#define INITIAL_ENEMY_WAVE_TIME 3.0f
 
 // Enemy
 #define INJURED_TIME 4.0f
-#define ENEMY_JUMP_FORCE 600.0f
+#define ENEMY_IFRAMES 0.25f
+#define ENEMY_JUMP_FORCE 400.0f
 
 // Koopa
 #define KOOPA_WIDTH 64
@@ -58,11 +59,11 @@
 #define FLY_SPRITE_WIDTH 16
 #define FLY_SPRITE_HEIGHT 16
 
-#define FLY_FRAME_DELAY 0.2f
+#define FLY_FRAME_DELAY 0.02f
 
-#define FLY_SPEED 80.0f
-#define FLY_JUMP_FORCE 450.0f
-#define FLY_JUMP_DELAY 1.0f
+#define FLY_SPEED 40.0f
+#define FLY_JUMP_FORCE 400.0f
+#define FLY_JUMP_DELAY 0.2f
 
 #define FLY_SCORE_VALUE 1200
 

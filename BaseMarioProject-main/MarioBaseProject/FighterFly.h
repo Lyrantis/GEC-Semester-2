@@ -13,5 +13,6 @@ public:
 	~FighterFly();
 
 	void Update(float deltaTime, SDL_Event e);
+	void TakeDamage(float deltaTime);
 
 };

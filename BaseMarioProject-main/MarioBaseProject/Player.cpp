@@ -35,7 +35,6 @@ void Player::Update(float deltaTime, SDL_Event e)
 
 			if (m_isBumpingPlatform)
 			{
-				std::cout << m_bumpingTime << std::endl; 
 				m_should_fall = false;
 				m_bumpingTime -= deltaTime;
 

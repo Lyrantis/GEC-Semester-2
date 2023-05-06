@@ -170,8 +170,7 @@
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="GameScreen.cpp" />
-    <ClCompile Include="GameScreenLevel1.cpp" />
+    <ClCompile Include="MainLevel.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="LevelMap.cpp" />
     <ClCompile Include="Luigi.cpp" />
@@ -218,8 +217,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FighterFly.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="GameScreen.h" />
-    <ClInclude Include="GameScreenLevel1.h" />
+    <ClInclude Include="MainLevel.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="LevelMap.h" />
     <ClInclude Include="Luigi.h" />
