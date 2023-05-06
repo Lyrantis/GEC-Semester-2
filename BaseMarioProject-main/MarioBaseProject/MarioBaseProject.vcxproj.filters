@@ -111,6 +111,9 @@
     <ClCompile Include="ScoreScreen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2\DLL\libFLAC-8.dll">
@@ -233,6 +236,9 @@
       <Filter>Header Files\Screen</Filter>
     </ClInclude>
     <ClInclude Include="ScoreScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

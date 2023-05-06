@@ -1,11 +1,12 @@
 #pragma once
 #include "game.h"
+#include "GameScreen.h"
 #include <vector>
 
 class Texture2D;
 class PowBlock;
 
-class GameScreenLevel1 : public Screen
+class GameScreenLevel1 : public GameScreen
 {
 
 private:
@@ -13,9 +14,8 @@ private:
 	LevelMap* m_level_map = nullptr;
 
 	Texture2D* m_bumpedPlatformTexture = nullptr;
-	Rect2D* m_mario_bumped_platform_rect = nullptr;
 
-	Texture2D* m_luigi_bumped_platform_texture = nullptr;
+	Rect2D* m_mario_bumped_platform_rect = nullptr;
 	Rect2D* m_luigi_bumped_platform_rect = nullptr;
 
 	Mario* mario = nullptr;
