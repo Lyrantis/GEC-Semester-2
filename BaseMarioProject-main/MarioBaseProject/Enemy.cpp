@@ -54,10 +54,6 @@ void Enemy::Update(float deltaTime, SDL_Event e)
 			{
 				Respawn();
 			}
-			else
-			{
-				FlipDirection();
-			}
 		}
 
 		if (m_i_frames > 0)

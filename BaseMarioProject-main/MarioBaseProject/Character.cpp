@@ -126,6 +126,11 @@ void Character::MoveLeft(float deltaTime)
 	{
 		m_position.x -= m_movement_speed * deltaTime;
 	}
+
+	if (m_position.x <= 0 - m_size.x)
+	{
+		m_position.x = SCREEN_WIDTH - 1;
+	}
 }
 
 void Character::MoveRight(float deltaTime) 
@@ -139,6 +144,11 @@ void Character::MoveRight(float deltaTime)
 	if ((m_current_level_map->GetTileAt(foot_position, rightX_position) == 0) && (m_current_level_map->GetTileAt(head_position, rightX_position) == 0) && (m_current_level_map->GetTileAt(middle_y_position, rightX_position) == 0))
 	{
 		m_position.x += m_movement_speed * deltaTime;
+	}
+
+	if (m_position.x >= SCREEN_WIDTH)
+	{
+		m_position.x = 0 - m_size.x + 1;
 	}
 }
 

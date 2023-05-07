@@ -54,11 +54,28 @@ void FighterFly::Update(float deltaTime, SDL_Event e)
 				}
 			}
 		}
+		else
+		{
+			m_animation_frame_delay -= deltaTime;
+
+			if (m_animation_frame_delay <= 0.0f)
+			{
+				m_animation_frame_delay = INJURED_FRAME_DELAY;
+
+				m_sprite_pos.x += m_sprite_size.x;
+
+				if (m_sprite_pos.x > m_sprite_size.x * 7)
+				{
+					m_sprite_pos.x = m_sprite_size.x * 6;
+				}
+			}
+		}
 	}
 }
 
 void FighterFly::TakeDamage(float deltaTime)
 {
 	m_sprite_pos.x = m_sprite_size.x * 6;
+	m_animation_frame_delay = INJURED_FRAME_DELAY;
 	Enemy::TakeDamage(deltaTime);
 }

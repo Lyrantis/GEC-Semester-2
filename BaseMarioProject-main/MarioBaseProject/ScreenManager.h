@@ -11,7 +11,7 @@ class ScreenManager
 		Screen* m_currentScreen;
 
 		int m_currentlevel = 0;
-		int m_levelCount = 5;
+		int m_levelCount = 9;
 
 	public:
 

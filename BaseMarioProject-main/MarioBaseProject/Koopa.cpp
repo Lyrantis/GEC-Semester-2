@@ -54,8 +54,6 @@ void Koopa::TakeDamage(float deltaTime)
 	Enemy::TakeDamage(deltaTime);
 
 	m_sprite_pos.x = m_sprite_size.x * 9;
-	m_sprite_pos.y = m_sprite_size.y;
-	m_movement_speed = KOOPA_SPEED * 1.5; 
 	m_animation_frame_delay = m_injured_time / 5;
 }
 
@@ -64,4 +62,6 @@ void Koopa::FlipBackUp(float deltaTime)
 {
 	Enemy::FlipBackUp(deltaTime);
 	m_animation_frame_delay = KOOPA_FRAME_DELAY;
+	m_sprite_pos.y = m_sprite_size.y;
+	m_movement_speed = KOOPA_SPEED * 1.5f;
 }

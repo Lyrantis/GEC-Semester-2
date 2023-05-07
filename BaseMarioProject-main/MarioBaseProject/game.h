@@ -11,13 +11,6 @@
 #include "Constants.h"
 #include "Texture2D.h"
 #include "ScreenManager.h"
-#include "Character.h"
-#include "Mario.h"
-#include "Luigi.h"
-#include "Koopa.h"
-#include "FighterFly.h"
-#include "Coin.h"
-#include "Collisions.h"
 #include <time.h>
 #include "Screen.h"
 #include "Commons.h"

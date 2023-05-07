@@ -10,7 +10,7 @@ public:
 
 	void TakeDamage(float deltaTime);
 	void Update(float deltaTime, SDL_Event e);
-	void FLipBackUp();
+	void FLipBackUp(float deltaTime);
 
 private:
 

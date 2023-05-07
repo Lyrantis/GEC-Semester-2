@@ -1,5 +1,13 @@
 #pragma once
 #include "game.h"
+#include "Character.h"
+#include "Mario.h"
+#include "Luigi.h"
+#include "Koopa.h"
+#include "FighterFly.h"
+#include "SideStepper.h"
+#include "Coin.h"
+#include "Collisions.h"
 #include "Screen.h"
 #include <vector>
 
@@ -50,8 +58,10 @@ private:
 	void DoScreenShake(float deltaTime);
 
 	void UpdateEnemies(float deltaTime, SDL_Event e);
+
 	void CreateKoopa(Vector2D position, FACING direction);
 	void CreateFly(Vector2D position, FACING direction);
+	void CreateSideStepper(Vector2D position, FACING direction);
 
 	void CreateCoin(Vector2D position, FACING facingDirection);
 	void UpdateCoins(float deltaTime, SDL_Event e);

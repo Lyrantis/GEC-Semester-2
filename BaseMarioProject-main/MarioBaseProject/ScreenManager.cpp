@@ -35,21 +35,20 @@ void ScreenManager::Update(float deltaTime,  SDL_Event e) {
 
 		if (m_currentScreen->WinOrLose())
 		{
-			cout << "Here\n";
 			m_currentlevel++;
 		}
 		else
 		{
-			m_currentlevel = 3;
+			m_currentlevel = 9;
 		}
 		ChangeScreen();
 	}
 	
 }
 
-void ScreenManager::ChangeScreen() {
+void ScreenManager::ChangeScreen() 
+{
 
-	std::cout << "Changing Screen\n";
 	if (m_currentlevel >= m_levelCount)
 	{
 		m_currentlevel = 0;
@@ -72,7 +71,7 @@ void ScreenManager::ChangeScreen() {
 
 		break;
 
-	case 4:
+	case 9:
 
 		tempScreen = new ScoreScreen(m_renderer);
 		m_currentScreen = (Screen*)tempScreen;

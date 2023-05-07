@@ -250,6 +250,10 @@ void MainLevel::UpdateEnemies(float deltaTime, SDL_Event e)
 				{
 					CreateFly(Vector2D(0, TILE_HEIGHT * 2), FACING_RIGHT);
 				}
+				else if (enemyType == "SideStepper")
+				{
+					CreateSideStepper(Vector2D(0, TILE_HEIGHT * 2), FACING_RIGHT);
+				}
 				sideToSpawn--;
 			}
 			else
@@ -261,6 +265,10 @@ void MainLevel::UpdateEnemies(float deltaTime, SDL_Event e)
 				else if (enemyType == "Fly")
 				{
 					CreateFly(Vector2D(SCREEN_WIDTH - FLY_WIDTH, TILE_HEIGHT * 2), FACING_LEFT);
+				}
+				else if (enemyType == "SideStepper")
+				{
+					CreateSideStepper(Vector2D(SCREEN_WIDTH - SIDESTEPPER_WIDTH, TILE_HEIGHT * 2), FACING_LEFT);
 				}
 				sideToSpawn++;
 			}
@@ -278,6 +286,11 @@ void MainLevel::CreateKoopa(Vector2D position, FACING direction)
 void MainLevel::CreateFly(Vector2D position, FACING direction)
 {
 	m_enemies.push_back(new FighterFly(m_renderer, "Images/Fighter_Fly.png", position, direction, m_level_map));
+}
+
+void MainLevel::CreateSideStepper(Vector2D position, FACING direction)
+{
+	m_enemies.push_back(new SideStepper(m_renderer, "Images/SideStepper.png", position, direction, m_level_map));
 }
 
 void MainLevel::CreateCoin(Vector2D position, FACING facingDirection)
@@ -379,7 +392,21 @@ bool MainLevel::SetUpLevel()
 {
 	m_backgroundTexture = new Texture2D(m_renderer);
 
-	std::string backgroundPath = "Images/Level" + to_string(m_levelNum) + ".png";
+	int backgroundNum;
+
+	if (m_levelNum < 3)
+	{
+		backgroundNum = 1;
+	}
+	else if (m_levelNum < 5)
+	{
+		backgroundNum = 2;
+	}
+	else
+	{
+		backgroundNum = 3;
+	}
+	std::string backgroundPath = "Images/Level" + to_string(backgroundNum) + ".png";
 
 	if (!m_backgroundTexture->LoadFromFile(backgroundPath, SCREEN_WIDTH, SCREEN_HEIGHT)) 
 	{
@@ -389,7 +416,7 @@ bool MainLevel::SetUpLevel()
 
 	m_bumpedPlatformTexture = new Texture2D(m_renderer);
 
-	std::string bumpedPath = "Images/BumpedPlatform" + to_string(m_levelNum) + ".png";
+	std::string bumpedPath = "Images/BumpedPlatform" + to_string(backgroundNum) + ".png";
 
 	if (!m_bumpedPlatformTexture->LoadFromFile(bumpedPath, TILE_HEIGHT * 2, TILE_WIDTH * 4))
 	{
@@ -412,8 +439,9 @@ bool MainLevel::SetUpLevel()
 	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(100, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 
-	if (m_levelNum > 0)
+	/*if (m_levelNum > 0)
 	{
+		m_enemies_to_spawn.push_back("SideStepper");
 		m_enemies_to_spawn.push_back("Fly");
 		m_enemies_to_spawn.push_back("Fly");
 		m_enemies_to_spawn.push_back("Koopa");
@@ -428,16 +456,89 @@ bool MainLevel::SetUpLevel()
 		m_enemies_to_spawn.push_back("Koopa");
 		m_enemies_to_spawn.push_back("Koopa");
 		m_enemies_to_spawn.push_back("Koopa");
-	}
+	}*/
 
 	switch (m_levelNum)
 	{
 	case 1:
+
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
 		break;
+
 	case 2:
+
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
 		break;
+
 	case 3:
+
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("SideStepper");
 		break;
+
+	case 4:
+
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		break;
+
+	case 5:
+
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Fly");
+		break;
+
+	case 6:
+
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Fly");
+		break;
+
+	case 7:
+
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("Koopa");
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("SideStepper");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Fly");
+		m_enemies_to_spawn.push_back("Koopa");
 	default:
 		break;
 	}
