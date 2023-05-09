@@ -39,7 +39,7 @@ void ScreenManager::Update(float deltaTime,  SDL_Event e) {
 		}
 		else
 		{
-			m_currentlevel = 9;
+			m_currentlevel = 8;
 		}
 		ChangeScreen();
 	}
@@ -71,7 +71,7 @@ void ScreenManager::ChangeScreen()
 
 		break;
 
-	case 9:
+	case 8:
 
 		tempScreen = new ScoreScreen(m_renderer);
 		m_currentScreen = (Screen*)tempScreen;

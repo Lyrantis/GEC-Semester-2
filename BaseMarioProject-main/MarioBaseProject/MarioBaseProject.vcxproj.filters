@@ -109,10 +109,10 @@
       <Filter>Source Files\Screen</Filter>
     </ClCompile>
     <ClCompile Include="ScoreScreen.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Screen</Filter>
     </ClCompile>
     <ClCompile Include="SideStepper.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Characters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,10 +236,10 @@
       <Filter>Header Files\Screen</Filter>
     </ClInclude>
     <ClInclude Include="ScoreScreen.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Screen</Filter>
     </ClInclude>
     <ClInclude Include="SideStepper.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Characters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
