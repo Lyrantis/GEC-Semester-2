@@ -36,7 +36,9 @@ void Coin::Update(float deltaTime, SDL_Event e)
 			}
 			else
 			{
-				Die();
+				m_moving = false;
+				m_alive = false;
+				m_collected = true;
 			}
 		}
 
