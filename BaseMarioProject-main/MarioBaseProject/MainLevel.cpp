@@ -439,25 +439,6 @@ bool MainLevel::SetUpLevel()
 	mario = new Mario(m_renderer, "Images/MarioSprites.png", Vector2D(100, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 	luigi = new Luigi(m_renderer, "Images/LuigiSprites.png", Vector2D(SCREEN_WIDTH - 100 - PLAYER_WIDTH, SCREEN_HEIGHT - (TILE_HEIGHT * 2) - PLAYER_HEIGHT), FACING_RIGHT, m_level_map);
 
-	/*if (m_levelNum > 0)
-	{
-		m_enemies_to_spawn.push_back("SideStepper");
-		m_enemies_to_spawn.push_back("Fly");
-		m_enemies_to_spawn.push_back("Fly");
-		m_enemies_to_spawn.push_back("Koopa");
-		m_enemies_to_spawn.push_back("Koopa");
-		m_enemies_to_spawn.push_back("Koopa");
-		m_enemies_to_spawn.push_back("Koopa");
-		m_enemies_to_spawn.push_back("Koopa");
-		m_enemies_to_spawn.push_back("Koopa");
-		m_enemies_to_spawn.push_back("Fly");
-		m_enemies_to_spawn.push_back("Fly");
-		m_enemies_to_spawn.push_back("Koopa");
-		m_enemies_to_spawn.push_back("Koopa");
-		m_enemies_to_spawn.push_back("Koopa");
-		m_enemies_to_spawn.push_back("Koopa");
-	}*/
-
 	switch (m_levelNum)
 	{
 	case 1:
