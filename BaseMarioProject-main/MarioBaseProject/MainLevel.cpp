@@ -201,7 +201,7 @@ void MainLevel::UpdateEnemies(float deltaTime, SDL_Event e)
 				}
 				if (Collisions::Instance()->Box(m_enemies[i]->GetCollisionBox(), *m_mario_bumped_platform_rect) || (Collisions::Instance()->Box(m_enemies[i]->GetCollisionBox(), *m_luigi_bumped_platform_rect)))
 				{
-					if (m_enemies[i]->m_i_frames == 0.0f)
+					if (m_enemies[i]->m_i_frames == 0.0f && m_enemies[i]->GetGrounded())
 					{
 						if (m_enemies[i]->GetInjured())
 						{
@@ -363,7 +363,7 @@ void MainLevel::UpdatePOWBlock(float deltaTime)
 		if (m_pow_block->IsAvailable())
 		{
 			//collided while jumping
-			if (mario->IsJumping())
+			if (mario->IsJumping() && mario->GetAlive())
 			{
 				DoScreenShake(deltaTime);
 				m_pow_block->TakeHit();
@@ -375,7 +375,7 @@ void MainLevel::UpdatePOWBlock(float deltaTime)
 	if ((luigiGridLocation1[0] == POWGridLocation1[0] && luigiGridLocation1[1] == POWGridLocation1[1]) || (luigiGridLocation1[0] == POWGridLocation2[0] && luigiGridLocation1[1] == POWGridLocation2[1])
 		|| (luigiGridLocation2[0] == POWGridLocation1[0] && luigiGridLocation2[1] == POWGridLocation1[1]) || (luigiGridLocation2[0] == POWGridLocation2[0] && luigiGridLocation2[1] == POWGridLocation2[1]))
 	{
-		if (m_pow_block->IsAvailable())
+		if (m_pow_block->IsAvailable() && luigi->GetAlive())
 		{
 			//collided while jumping
 			if (luigi->IsJumping())
